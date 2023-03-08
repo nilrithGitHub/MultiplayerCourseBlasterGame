@@ -14,6 +14,12 @@ class BLASTER_API ALobbyGameMode : public AGameMode
 {
 	GENERATED_BODY()
 public:
+	ALobbyGameMode();
+protected:
+	FString FreeForAllPath;
+	FString TeamsPath;
+	FString CaptureTheFlagPath;
+public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
 };
