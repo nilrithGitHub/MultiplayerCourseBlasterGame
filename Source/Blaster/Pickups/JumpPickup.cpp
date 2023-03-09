@@ -18,6 +18,5 @@ void AJumpPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			Buff->BuffJump(JumpZVelocityBuff, JumpBuffTime);
 		}
 	}
-
 	Destroy();
 }

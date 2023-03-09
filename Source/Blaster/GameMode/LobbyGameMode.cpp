@@ -65,7 +65,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		/*UMultiplayerSessionsSubsystem* Subsystem = GameInstance->GetSubsystem<UMultiplayerSessionsSubsystem>();
 		check(Subsystem);*/
 
-		if (NumberOfPlayers == 2)
+		/*if (NumberOfPlayers == 2)
 		{
 			UWorld* World = GetWorld();
 			if (World)
@@ -74,6 +74,6 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 				World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap?listen"));
 			}
-		}
+		}*/
 	}
 }

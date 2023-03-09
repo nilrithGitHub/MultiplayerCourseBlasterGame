@@ -610,6 +610,7 @@ void ABlasterCharacter::GrenadeButtonPressed()
 	if (Combat)
 	{
 		if (Combat->bHoldingTheFlag) return;
+
 		Combat->ThrowGrenade();
 	}
 }
@@ -984,9 +985,10 @@ void ABlasterCharacter::SpawDefaultWeapon()
 {
 	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	UWorld* World = GetWorld();
-	if (BlasterGameMode && World && !bElimmed && DefaultWeaponClass)
+	if (BlasterGameMode && World && !bElimmed && DefaultWeaponClassList.Num() > 0)
 	{
-		AWeapon* StartingWeapon = World->SpawnActor<AWeapon>(DefaultWeaponClass);
+		int32 RanIndex = FMath::RandRange(0, DefaultWeaponClassList.Num() - 1);
+		AWeapon* StartingWeapon = World->SpawnActor<AWeapon>(DefaultWeaponClassList[RanIndex]);
 		StartingWeapon->bDestroyWeapon = true;
 		if (Combat)
 		{
@@ -1105,11 +1107,12 @@ bool ABlasterCharacter::IsLocallyReloading()
 	return Combat->bLocallyReloading;
 }
 
-bool ABlasterCharacter::IsHoldingTheFlag() const
-{
-	if (Combat == nullptr) return false;
-	return Combat->bHoldingTheFlag;
-}
+//bool ABlasterCharacter::IsHoldingTheFlag() const
+//{
+//	/*if (Combat == nullptr) return false;
+//	return Combat->bHoldingTheFlag;*/
+//	return false;
+//}
 
 ETeam ABlasterCharacter::GetTeam()
 {

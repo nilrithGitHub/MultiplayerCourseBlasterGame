@@ -349,8 +349,11 @@ private:
 	* Default weapon
 	*/
 
+	/*UPROPERTY(EditAnywhere)
+	TSubclassOf<AWeapon> DefaultWeaponClass;*/
+
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AWeapon> DefaultWeaponClass;
+	TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
 
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
@@ -381,7 +384,7 @@ public:
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	bool IsLocallyReloading();
 	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
-	FORCEINLINE bool IsHoldingTheFlag() const;
+	//FORCEINLINE bool IsHoldingTheFlag() const;
 	ETeam GetTeam();
 	void SetHoldingTheFlag(bool bHolding);
 };
