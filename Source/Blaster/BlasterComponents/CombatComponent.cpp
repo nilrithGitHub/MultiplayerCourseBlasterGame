@@ -293,7 +293,11 @@ void UCombatComponent::SwapWeapons()
 void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
 {
 	if (WeaponToEquip == nullptr) return;
-	DropEquippedWeapon();
+	//DropEquippedWeapon();
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Destroy();
+	}
 	EquippedWeapon = WeaponToEquip;
 	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
 	AttachActorToRightHand(EquippedWeapon);
