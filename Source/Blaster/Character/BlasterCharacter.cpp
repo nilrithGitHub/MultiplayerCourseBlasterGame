@@ -477,6 +477,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("LookUp", this, &ABlasterCharacter::LookUp);
 
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &ABlasterCharacter::EquipButtonPressed);
+	PlayerInputComponent->BindAction("SwitchWeapon", IE_Pressed, this, &ABlasterCharacter::SwitchButtonPressed);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ABlasterCharacter::CrouchButtonPressed);
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &ABlasterCharacter::AimButtonPressed);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &ABlasterCharacter::AimButtonReleased);
@@ -692,6 +693,27 @@ void ABlasterCharacter::EquipButtonPressed()
 	{
 		if (Combat->bHoldingTheFlag) return;
 		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerEquipButtonPressed();
+		/*bool bSwap = Combat->ShouldSwapWeapons() &&
+			!HasAuthority() &&
+			Combat->CombatState == ECombatState::ECS_Unoccupied &&
+			OverlappingWeapon == nullptr;
+
+		if (bSwap)
+		{
+			PlaySwapMontage();
+			Combat->CombatState = ECombatState::ECS_SwappingWeapons;
+			bFinishedSwapping = false;
+		}*/
+	}
+}
+
+void ABlasterCharacter::SwitchButtonPressed()
+{
+	if (bDisableGameplay) return;
+	if (Combat)
+	{
+		if (Combat->bHoldingTheFlag) return;
+		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerSwitchButtonPressed();
 		bool bSwap = Combat->ShouldSwapWeapons() &&
 			!HasAuthority() &&
 			Combat->CombatState == ECombatState::ECS_Unoccupied &&
@@ -714,7 +736,22 @@ void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
 		{
 			Combat->EquipWeapon(OverlappingWeapon);
 		}
-		else if (Combat->ShouldSwapWeapons())
+		/*else if (Combat->ShouldSwapWeapons())
+		{
+			Combat->SwapWeapons();
+		}*/
+	}
+}
+
+void ABlasterCharacter::ServerSwitchButtonPressed_Implementation()
+{
+	if (Combat)
+	{
+		/*if (OverlappingWeapon)
+		{
+			Combat->EquipWeapon(OverlappingWeapon);
+		}*/
+		if (Combat->ShouldSwapWeapons())
 		{
 			Combat->SwapWeapons();
 		}

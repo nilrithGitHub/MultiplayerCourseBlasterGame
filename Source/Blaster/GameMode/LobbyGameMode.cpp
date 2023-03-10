@@ -62,18 +62,36 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	UGameInstance* GameInstance = GetGameInstance();
 	if (GameInstance)
 	{
-		/*UMultiplayerSessionsSubsystem* Subsystem = GameInstance->GetSubsystem<UMultiplayerSessionsSubsystem>();
-		check(Subsystem);*/
+		UMultiplayerSessionsSubsystem* Subsystem = GameInstance->GetSubsystem<UMultiplayerSessionsSubsystem>();
+		check(Subsystem);
 
-		/*if (NumberOfPlayers == 2)
+		if (NumberOfPlayers == Subsystem->DesiredNumPublicConnections)
 		{
 			UWorld* World = GetWorld();
 			if (World)
 			{
 				bUseSeamlessTravel = true;
 
-				World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap?listen"));
+				FString MatchType = Subsystem->DesiredMatchType;
+				if (MatchType == "FreeForAll")
+				{
+					//World->ServerTravel(FString("/Game/Maps/BlasterMap?listen"));
+					//World->ServerTravel(FreeForAllPath);
+					World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap1?listen"));
+				}
+				else if (MatchType == "Teams")
+				{
+					//World->ServerTravel(FString("/Game/Maps/Teams?listen"));
+					//World->ServerTravel(TeamsPath);
+					World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap2?listen"));
+				}
+				else if (MatchType == "CaptureTheFlag")
+				{
+					//World->ServerTravel(FString("/Game/Maps/CaptureTheFlag?listen"));
+					//World->ServerTravel(CaptureTheFlagPath);
+					World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap2?listen"));
+				}
 			}
-		}*/
+		}
 	}
 }
