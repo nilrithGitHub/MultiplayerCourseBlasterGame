@@ -89,7 +89,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 				{
 					//World->ServerTravel(FString("/Game/Maps/CaptureTheFlag?listen"));
 					//World->ServerTravel(CaptureTheFlagPath);
-					World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap2?listen"));
+					World->ServerTravel(FString("/Game/Maps/Nil/Nil_BlasterMap3?listen"));
 				}
 			}
 		}
