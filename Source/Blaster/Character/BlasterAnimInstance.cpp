@@ -39,6 +39,10 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	bRotateRootBone = BlasterCharacter->ShouldRotateRootBone();
 	bElimmed = BlasterCharacter->IsElimmed();
 	//bHoldingTheFlag = BlasterCharacter->IsHoldingTheFlag();
+	if (EquippedWeapon)
+	{
+		WeaponType = EquippedWeapon->GetWeaponType();
+	}
 
 	// Offset Yaw for Strafing
 	FRotator AimRotation = BlasterCharacter->GetBaseAimRotation();
@@ -74,11 +78,14 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 			RightHandRotation = FMath::RInterpTo(RightHandRotation, LookAtRotation, DeltaTime, 30.f);
 		}
 	}
+	bool bNotInBow = BlasterCharacter->GetEquippedWeapon() != nullptr &&
+		BlasterCharacter->GetEquippedWeapon()->GetWeaponType() != EWeaponType::EWT_Bow;
 
-	bUseFABRIK = BlasterCharacter->GetCombatState() == ECombatState::ECS_Unoccupied;
+	bUseFABRIK = BlasterCharacter->GetCombatState() == ECombatState::ECS_Unoccupied && bNotInBow;
 	bool bFABRIKOverride = BlasterCharacter->IsLocallyControlled() &&
 		BlasterCharacter->GetCombatState() != ECombatState::ECS_ThrowingGrenade &&
-		BlasterCharacter->bFinishedSwapping;
+		BlasterCharacter->bFinishedSwapping &&
+		bNotInBow;
 	if (bFABRIKOverride)
 	{
 		bUseFABRIK = !BlasterCharacter->IsLocallyReloading();

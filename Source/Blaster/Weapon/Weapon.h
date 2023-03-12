@@ -25,6 +25,7 @@ enum class EFireType : uint8
 	EFT_HitScan UMETA(DisplayName = "Hit Scan Weapon"),
 	EFT_Projectile UMETA(DisplayName = "Projectile Weapon"),
 	EFT_Shotgun UMETA(DisplayName = "Shotgun Weapon"),
+	EFT_Charge UMETA(DisplayName = "Charge Weapon"),
 
 	EFT_MAX UMETA(DisplayName = "DefaultMAX")
 };
@@ -42,6 +43,8 @@ public:
 	void SetHUDAmmo();
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
+	virtual void ChargeStart();
+	virtual void ChargeEnd();
 	virtual void Dropped();
 	void AddAmmo(int32 AmmoToAdd);
 	FVector TraceEndWithScatter(const FVector& HitTarget);
@@ -143,6 +146,9 @@ protected:
 	UPROPERTY(Replicated, EditAnywhere)
 	bool bUseServerSideRewind = false;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon Properties")
+		float ChargeTimer;
+
 	UPROPERTY()
 	class ABlasterCharacter* BlasterOwnerCharacter;
 	UPROPERTY()
@@ -174,6 +180,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	int32 Ammo;
+
+	float ChargeStartTime;
+	bool bCharging;
 
 	UFUNCTION(Client, Reliable)
 	void ClientUpdateAmmo(int32 ServerAmmo);

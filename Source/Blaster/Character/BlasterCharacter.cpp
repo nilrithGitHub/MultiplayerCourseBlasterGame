@@ -678,12 +678,13 @@ void ABlasterCharacter::MoveRight(float Value)
 
 void ABlasterCharacter::Turn(float Value)
 {
-	AddControllerYawInput(Value);
+	
+	AddControllerYawInput(IsAiming() ? Value * 0.65f : Value);
 }
 
 void ABlasterCharacter::LookUp(float Value)
 {
-	AddControllerPitchInput(Value);
+	AddControllerPitchInput(IsAiming() ? Value * 0.65f : Value);
 }
 
 void ABlasterCharacter::EquipButtonPressed()

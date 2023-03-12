@@ -67,6 +67,7 @@ protected:
 	void FireProjectileWeapon();
 	void FireHitScanWeapon();
 	void FireShotgun();
+	//void FireBow();
 	void LocalFire(const FVector_NetQuantize& TraceHitTarget);
 	void ShotgunLocalFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
 
@@ -104,7 +105,9 @@ protected:
 	void AttachActorToRightHand(AActor* ActorToAttach);
 	void AttachActorToLeftHand(AActor* ActorToAttach);
 	void AttachFlagToLeftHand(AWeapon* Flag);
+	void AttachBowToLeftHand(AWeapon* Bow);
 	void AttachActorToBackpack(AActor* ActorToAttach);
+	void AttachWeaponToHand(AWeapon* Weapon);
 	void UpdateCarriedAmmo();
 	void PlayEquipWeaponSound(AWeapon* WeaponToEquip);
 	void ReloadEmptyWeapon();

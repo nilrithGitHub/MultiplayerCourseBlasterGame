@@ -324,6 +324,19 @@ void AWeapon::Fire(const FVector& HitTarget)
 	SpendRound();
 }
 
+void AWeapon::ChargeStart()
+{
+	bCharging = true;
+	ChargeStartTime = GetWorld()->GetTime().GetWorldTimeSeconds();
+	ChargeTimer = 0;
+}
+
+void AWeapon::ChargeEnd()
+{
+	bCharging = false;
+	ChargeTimer = GetWorld()->GetTime().GetWorldTimeSeconds() - ChargeStartTime;
+}
+
 void AWeapon::Dropped()
 {
 	SetWeaponState(EWeaponState::EWS_Dropped);
