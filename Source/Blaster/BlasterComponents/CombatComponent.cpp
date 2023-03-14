@@ -113,7 +113,7 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 		}
 		else
 		{
-			Fire();
+				`();
 		}
 	}
 	else

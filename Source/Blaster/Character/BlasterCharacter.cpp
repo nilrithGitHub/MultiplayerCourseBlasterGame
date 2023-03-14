@@ -678,7 +678,6 @@ void ABlasterCharacter::MoveRight(float Value)
 
 void ABlasterCharacter::Turn(float Value)
 {
-	
 	AddControllerYawInput(IsAiming() ? Value * 0.65f : Value);
 }
 

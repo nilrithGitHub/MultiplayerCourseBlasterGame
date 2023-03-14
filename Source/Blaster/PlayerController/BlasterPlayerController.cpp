@@ -33,25 +33,25 @@ void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerStat
 		{
 			if (Attacker == Self && Victim != Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName());
+				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName(), "delete");
 				return;
 			}
 			if (Victim == Self && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you", "delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker == Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", "yourself");
+				BlasterHUD->AddElimAnnouncement("You", "yourself", "delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves", "delete");
 				return;
 			}
-			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName());
+			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName(), "delete");
 		}
 	}
 }

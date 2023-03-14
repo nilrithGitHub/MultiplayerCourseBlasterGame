@@ -29,9 +29,17 @@ protected:
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ReturnButton;
+	UPROPERTY(meta = (BindWidget))
+	class USlider* Slider_MouseSen;
+	UPROPERTY(meta = (BindWidget))
+	USlider* Slider_MouseZoomSen;
 
 	UFUNCTION()
 	void ReturnButtonClicked();
+	UFUNCTION()
+	void OnSliderMouseSenChanged(float Value);
+	UFUNCTION()
+	void OnSliderMouseZoomSenChanged(float Value);
 
 	UPROPERTY()
 	class UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem;
