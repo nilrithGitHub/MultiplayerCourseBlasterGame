@@ -45,7 +45,6 @@ void UCombatComponent::ShotgunShellReload()
 	{
 		UpdateShotgunAmmoValues();
 	}
-
 }
 
 void UCombatComponent::PickupAmmo(EWeaponType WeaponType, int32 AmmoAmount)
@@ -113,7 +112,7 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 		}
 		else
 		{
-				`();
+			Fire();
 		}
 	}
 	else

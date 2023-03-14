@@ -114,6 +114,7 @@ void AProjectile::StartDestroyTimer()
 void AProjectile::DestroyTimerFinished()
 {
 	Destroy();
+
 }
 
 void AProjectile::Destroyed()
