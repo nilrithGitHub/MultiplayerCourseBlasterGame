@@ -803,6 +803,7 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		else
 		{
 			HUDPackage.CrosshairsColor = FLinearColor::White;
+			TraceHitResult.ImpactPoint = End;
 		}
 	}
 }
