@@ -1163,3 +1163,8 @@ void ABlasterCharacter::SetHoldingTheFlag(bool bHolding)
 	if (Combat == nullptr) return;
 	Combat->bHoldingTheFlag = bHolding;
 }
+
+void ABlasterCharacter::OnCrosshairesDetected_Implementation(bool bIsDetected)
+{
+
+}

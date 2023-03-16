@@ -48,7 +48,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 					SpawnedProjectile = World->SpawnActor<AProjectile>(ServerSideRewindProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
 					SpawnedProjectile->bUseServerSideRewind = true;
 					SpawnedProjectile->TraceStart = SocketTransform.GetLocation();
-					SpawnedProjectile->InitialVelocity = SpawnedProjectile->GetActorForwardVector() * SpawnedProjectile->InitialSpeed;
+					SpawnedProjectile->InitialVelocity = SpawnedProjectile->GetActorForwardVector() * SpawnedProjectile->InitialSpeed * (FireType == EFireType::EFT_Charge ? ChargeTimer : 1);
 				}
 				else // client, not locally controlled - spawn non-replicated projectile, no SSR
 				{

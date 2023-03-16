@@ -102,13 +102,7 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 	{
 		if (EquippedWeapon && EquippedWeapon->FireType == EFireType::EFT_Charge)
 		{
-			if (CanFire())
-			{
-				if (EquippedWeapon && Character)
-				{
-					EquippedWeapon->ChargeStart();
-				}
-			}
+			EquippedWeapon->ChargeStart();
 		}
 		else
 		{
@@ -147,7 +141,7 @@ void UCombatComponent::Fire()
 				break;
 			case EFireType::EFT_Charge:
 				//FireBow();
-				FireProjectileWeapon();
+				FireChargeWeapon();
 				break;
 			}
 		}
@@ -187,15 +181,15 @@ void UCombatComponent::FireShotgun()
 	}
 }
 
-//void UCombatComponent::FireBow()
-//{
-//	if (EquippedWeapon && Character)
-//	{
-//		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
-//		if (!Character->HasAuthority()) LocalFire(HitTarget);
-//		ServerFire(HitTarget, EquippedWeapon->FireDelay);
-//	}
-//}
+void UCombatComponent::FireChargeWeapon()
+{
+	if (EquippedWeapon && Character)
+	{
+		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
+		if (!Character->HasAuthority()) LocalFire(HitTarget);
+		ServerFire(HitTarget, EquippedWeapon->FireDelay);
+	}
+}
 
 void UCombatComponent::StartFireTimer()
 {
@@ -798,10 +792,21 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		);
 		if (TraceHitResult.GetActor() && TraceHitResult.GetActor()->Implements<UInteractWithCrosshairsInterface>())
 		{
+			if (IsValid(LastInteractCrosshairsActor))
+			{
+				IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected (LastInteractCrosshairsActor, false);
+			}
+			LastInteractCrosshairsActor = TraceHitResult.GetActor();
 			HUDPackage.CrosshairsColor = FLinearColor::Red;
+			IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected (LastInteractCrosshairsActor, true);
 		}
 		else
 		{
+			if (IsValid(LastInteractCrosshairsActor) && LastInteractCrosshairsActor->Implements<UInteractWithCrosshairsInterface>())
+			{
+				IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected (LastInteractCrosshairsActor, false);
+				LastInteractCrosshairsActor = nullptr;
+			}
 			HUDPackage.CrosshairsColor = FLinearColor::White;
 			TraceHitResult.ImpactPoint = End;
 		}

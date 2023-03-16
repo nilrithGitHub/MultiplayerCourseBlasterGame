@@ -67,7 +67,7 @@ protected:
 	void FireProjectileWeapon();
 	void FireHitScanWeapon();
 	void FireShotgun();
-	//void FireBow();
+	void FireChargeWeapon();
 	void LocalFire(const FVector_NetQuantize& TraceHitTarget);
 	void ShotgunLocalFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
 
@@ -121,6 +121,8 @@ private:
 	class ABlasterPlayerController* Controller;
 	UPROPERTY()
 	class ABlasterHUD* HUD;
+	UPROPERTY()
+	class AActor* LastInteractCrosshairsActor;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* EquippedWeapon;

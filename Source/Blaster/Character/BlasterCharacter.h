@@ -390,4 +390,7 @@ public:
 	//FORCEINLINE bool IsHoldingTheFlag() const;
 	ETeam GetTeam();
 	void SetHoldingTheFlag(bool bHolding);
+
+	// Interface
+	void OnCrosshairesDetected_Implementation(bool bIsDetected);
 };
