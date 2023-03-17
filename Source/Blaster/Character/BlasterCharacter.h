@@ -361,6 +361,10 @@ private:
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
 
+	UPROPERTY(EditAnywhere)
+		//TArray<TSubclassOf<class APickup>> PickupClasses;
+	TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
+
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();

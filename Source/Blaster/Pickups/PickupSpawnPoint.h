@@ -17,7 +17,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	UPROPERTY(EditAnywhere)
+		bool bDisableSpawn;
 	UPROPERTY(EditAnywhere)
 	//TArray<TSubclassOf<class APickup>> PickupClasses;
 	TArray<TSubclassOf<class AActor>> PickupClasses;

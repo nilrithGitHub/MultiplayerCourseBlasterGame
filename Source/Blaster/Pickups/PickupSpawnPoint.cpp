@@ -13,7 +13,10 @@ APickupSpawnPoint::APickupSpawnPoint()
 void APickupSpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	StartSpawnPickupTimer((AActor*)nullptr);
+	if (!bDisableSpawn)
+	{
+		StartSpawnPickupTimer((AActor*)nullptr);
+	}
 }
 
 void APickupSpawnPoint::SpawnPickup()
@@ -53,6 +56,5 @@ void APickupSpawnPoint::StartSpawnPickupTimer(AActor* DestroyedActor)
 void APickupSpawnPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
