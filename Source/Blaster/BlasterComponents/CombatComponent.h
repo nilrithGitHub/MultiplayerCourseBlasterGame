@@ -53,9 +53,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
+	void SetCharging(bool bIsCharging);
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetCharging(bool bIsCharging);
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
@@ -132,11 +136,16 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Aiming)
 	bool bAiming = false;
+	UPROPERTY(ReplicatedUsing = OnRep_Charging)
+	bool bCharging = false;
 
 	bool bAimButtonPressed = false;
+	bool bChargingButtonPressed = false;
 
 	UFUNCTION()
 	void OnRep_Aiming();
+	UFUNCTION()
+	void OnRep_Charging();
 
 	UPROPERTY(EditAnywhere)
 	float BaseWalkSpeed;

@@ -33,6 +33,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
 	DOREPLIFETIME(UCombatComponent, SecondaryWeapon);
 	DOREPLIFETIME(UCombatComponent, bAiming);
+	DOREPLIFETIME(UCombatComponent, bCharging);
 	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
 	DOREPLIFETIME(UCombatComponent, CombatState);
 	DOREPLIFETIME(UCombatComponent, Grenades);
@@ -102,7 +103,10 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 	{
 		if (EquippedWeapon && EquippedWeapon->FireType == EFireType::EFT_Charge)
 		{
-			EquippedWeapon->ChargeStart();
+			if (CanFire())
+			{
+				SetCharging(true);
+			}
 		}
 		else
 		{
@@ -113,8 +117,11 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 	{
 		if (EquippedWeapon && EquippedWeapon->FireType == EFireType::EFT_Charge)
 		{
-			EquippedWeapon->ChargeEnd();
-			Fire();
+			if (bCharging)
+			{
+				SetCharging(false);
+				Fire();
+			}
 		}
 	}
 }
@@ -353,6 +360,14 @@ void UCombatComponent::OnRep_Aiming()
 	if (Character && Character->IsLocallyControlled())
 	{
 		bAiming = bAimButtonPressed;
+	}
+}
+
+void UCombatComponent::OnRep_Charging()
+{
+	if (Character && Character->IsLocallyControlled())
+	{
+		bCharging = bChargingButtonPressed;
 	}
 }
 
@@ -784,7 +799,7 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 
 		FVector End = Start + CrosshairWorldDirection * TRACE_LENGTH;
 
-		GetWorld()->LineTraceSingleByChannel(
+		bool bIsHit = GetWorld()->LineTraceSingleByChannel(
 			TraceHitResult,
 			Start,
 			End,
@@ -792,13 +807,20 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		);
 		if (TraceHitResult.GetActor() && TraceHitResult.GetActor()->Implements<UInteractWithCrosshairsInterface>())
 		{
-			if (IsValid(LastInteractCrosshairsActor))
+			if (TraceHitResult.GetComponent() && TraceHitResult.GetComponent()->ComponentHasTag("IgnoreDamage"))
 			{
-				IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected (LastInteractCrosshairsActor, false);
+				HUDPackage.CrosshairsColor = FLinearColor::White;
 			}
-			LastInteractCrosshairsActor = TraceHitResult.GetActor();
-			HUDPackage.CrosshairsColor = FLinearColor::Red;
-			IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected (LastInteractCrosshairsActor, true);
+			else
+			{
+				if (IsValid(LastInteractCrosshairsActor))
+				{
+					IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected(LastInteractCrosshairsActor, false);
+				}
+				LastInteractCrosshairsActor = TraceHitResult.GetActor();
+				HUDPackage.CrosshairsColor = FLinearColor::Red;
+				IInteractWithCrosshairsInterface::Execute_OnCrosshairesDetected(LastInteractCrosshairsActor, true);
+			}
 		}
 		else
 		{
@@ -915,12 +937,54 @@ void UCombatComponent::SetAiming(bool bIsAiming)
 	if (Character->IsLocallyControlled()) bAimButtonPressed = bIsAiming;
 }
 
+void UCombatComponent::SetCharging(bool bIsCharging)
+{
+	if (Character == nullptr || EquippedWeapon == nullptr) return;
+	bCharging = bIsCharging;
+	ServerSetCharging(bIsCharging);
+	if (Character)
+	{
+		Character->GetCharacterMovement()->MaxWalkSpeed = bIsCharging ? AimWalkSpeed : BaseWalkSpeed;
+	}
+	if (Character->IsLocallyControlled() && EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle)
+	{
+		Character->ShowSniperScopeWidget(bIsCharging);
+	}
+	if (Character->IsLocallyControlled()) bChargingButtonPressed = bIsCharging;
+	if (bIsCharging)
+	{
+		EquippedWeapon->ChargeStart();
+	}
+	else
+	{
+		EquippedWeapon->ChargeEnd();
+	}
+}
+
 void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
 {
 	bAiming = bIsAiming;
 	if (Character)
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;
+	}
+}
+
+void UCombatComponent::ServerSetCharging_Implementation(bool bIsCharging)
+{
+	bCharging = bIsCharging;
+
+	if (Character)
+	{
+		Character->GetCharacterMovement()->MaxWalkSpeed = bIsCharging ? AimWalkSpeed : BaseWalkSpeed;
+	}
+	if (bIsCharging)
+	{
+		EquippedWeapon->ChargeStart();
+	}
+	else
+	{
+		EquippedWeapon->ChargeEnd();
 	}
 }
 

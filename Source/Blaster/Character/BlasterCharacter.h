@@ -208,6 +208,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	class UAnimMontage* FireWeaponMontage;
+	UPROPERTY(EditAnywhere, Category = Combat)
+		UAnimMontage* FireBowMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ReloadMontage;
@@ -361,14 +363,15 @@ private:
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
 
-	UPROPERTY(EditAnywhere)
-		//TArray<TSubclassOf<class APickup>> PickupClasses;
-	TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
+	//UPROPERTY(EditAnywhere)
+	//	//TArray<TSubclassOf<class APickup>> PickupClasses;
+	//TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
 
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();
+	bool IsCharging();
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	AWeapon* GetEquippedWeapon();

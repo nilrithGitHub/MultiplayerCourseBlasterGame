@@ -326,6 +326,10 @@ void AWeapon::Fire(const FVector& HitTarget)
 
 void AWeapon::ChargeStart()
 {
+	if (ChargeAnimation)
+	{
+		WeaponMesh->PlayAnimation(ChargeAnimation, false);
+	}
 	bCharging = true;
 	ChargeStartTime = GetWorld()->GetTime().GetWorldTimeSeconds();
 	ChargeTimer = 0;

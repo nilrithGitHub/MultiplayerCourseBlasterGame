@@ -123,6 +123,20 @@ void ABlasterGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacte
 	if (ElimmedCharacter)
 	{
 		ElimmedCharacter->Elim(false);
+
+		FVector ElimmedLocation = ElimmedCharacter->GetActorLocation();
+		// Spawn Buff
+		int32 NumPickupClasses = SpawnOnPlayerDeadClasses.Num();
+		if (NumPickupClasses > 0)
+		{
+			int32 Selection = FMath::RandRange(0, NumPickupClasses - 1);
+			AActor* Spawned = GetWorld()->SpawnActor<AActor>(SpawnOnPlayerDeadClasses[Selection], FTransform(FRotator::ZeroRotator, ElimmedLocation));
+
+			/*if (HasAuthority() && Spawned)
+			{
+				Spawned->OnDestroyed.AddDynamic(this, &APickupSpawnPoint::StartSpawnPickupTimer);
+			}*/
+		}
 	}
 
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)

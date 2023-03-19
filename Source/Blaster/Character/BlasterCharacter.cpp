@@ -248,20 +248,6 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 		CrownComponent->DestroyComponent();
 	}
 
-	FVector ElimmedLocation = GetActorLocation();
-	// Spawn Buff
-	int32 NumPickupClasses = SpawnOnPlayerDeadClasses.Num();
-	if (NumPickupClasses > 0)
-	{
-		int32 Selection = FMath::RandRange(0, NumPickupClasses - 1);
-		AActor* Spawned = GetWorld()->SpawnActor<AActor>(SpawnOnPlayerDeadClasses[Selection], FTransform(FRotator::ZeroRotator, ElimmedLocation));
-
-		/*if (HasAuthority() && Spawned)
-		{
-			Spawned->OnDestroyed.AddDynamic(this, &APickupSpawnPoint::StartSpawnPickupTimer);
-		}*/
-	}
-
 	GetWorldTimerManager().SetTimer(
 		ElimTimer,
 		this,
@@ -533,15 +519,27 @@ void ABlasterCharacter::PlayFireMontage(bool bAiming)
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && FireWeaponMontage)
+	if (AnimInstance)
 	{
-		AnimInstance->Montage_Play(FireWeaponMontage);
-		FName SectionName;
-		SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
-		AnimInstance->Montage_JumpToSection(SectionName);
+		switch (Combat->EquippedWeapon->FireType)
+		{
+		case EFireType::EFT_Charge:
+			if (FireBowMontage)
+			{
+				AnimInstance->Montage_Play(FireBowMontage);
+			}
+		default:
+			if (FireWeaponMontage)
+			{
+				AnimInstance->Montage_Play(FireWeaponMontage);
+				FName SectionName;
+				SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+				AnimInstance->Montage_JumpToSection(SectionName);
+			}
+			break;
+		}
 	}
 }
-
 void ABlasterCharacter::PlayReloadMontage()
 {
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
@@ -1134,7 +1132,10 @@ bool ABlasterCharacter::IsAiming()
 {
 	return (Combat && Combat->bAiming);
 }
-
+bool ABlasterCharacter::IsCharging()
+{
+	return (Combat && Combat->bCharging);
+}
 AWeapon* ABlasterCharacter::GetEquippedWeapon()
 {
 	if (Combat == nullptr) return nullptr;

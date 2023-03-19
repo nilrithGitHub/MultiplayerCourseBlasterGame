@@ -27,7 +27,12 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 
 		FHitResult FireHit;
 		WeaponTraceHit(Start, HitTarget, FireHit);
-
+		UPrimitiveComponent* HitComp = FireHit.GetComponent();
+		if (HitComp)
+		{
+			if (HitComp->ComponentHasTag("IgnoreDamage"))
+				return;
+		}
 		ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
 		if (BlasterCharacter && InstigatorController)
 		{
