@@ -180,6 +180,14 @@ void AWeapon::SetWeaponState(EWeaponState State)
 	OnWeaponStateSet();
 }
 
+float AWeapon::GetChargePercent() const
+{
+	// [0, ChargeMaxTimer] -> [0, ChargeMaxPower]
+	FVector2D TimerRage(0.f, ChargeMaxTimer);
+	FVector2D PercentRange(0.f, 1.0f);
+	return FMath::GetMappedRangeValueClamped(TimerRage, PercentRange, GetWorld()->GetTime().GetWorldTimeSeconds() - ChargeStartTime);
+}
+
 void AWeapon::OnWeaponStateSet()
 {
 	switch (WeaponState)

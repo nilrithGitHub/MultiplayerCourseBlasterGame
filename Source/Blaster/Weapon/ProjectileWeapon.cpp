@@ -66,23 +66,17 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 				{
 					AArrowProjectile* SpawnedArrow = World->SpawnActor<AArrowProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
 					SpawnedArrow->bUseServerSideRewind = false;
-					SpawnedArrow->Damage = Damage;
-					SpawnedArrow->HeadShotDamage = HeadShotDamage;
-					/*if (!InstigatorPawn->HasAuthority())
-					{
-						SpawnedArrow->ServerSetChargePower(SpeedScale);
-					}*/
-					float SpeedScale = FMath::Clamp(ChargeTimer, 0.1f, 1.0f);
-					if (SpeedScale >= 0.85f)
-					{
-						SpeedScale = 1;
-					}
-					SpawnedArrow->MulticastSetChargePower(SpeedScale * 10.0f);
-					//SpawnedArrow->SetChargePower(SpeedScale);
 
-					//SpawnedProjectile->SetInitialSpeed(SpawnedProjectile->InitialSpeed * SpeedScale);
+					// [0, ChargeMaxTimer] -> [0, ChargeMaxPower]
+					FVector2D TimerRage(0.f, ChargeMaxTimer);
+					FVector2D PowerRange(0.f, ChargeMaxPower);
+					float Power = FMath::GetMappedRangeValueClamped(TimerRage, PowerRange, ChargeTimer);
 
-					/*FString TheFloatStr = FString::SanitizeFloat(SpeedScale);
+					SpawnedArrow->Damage = Damage * Power / ChargeMaxPower;
+					SpawnedArrow->HeadShotDamage = HeadShotDamage * Power / ChargeMaxPower;
+					SpawnedArrow->MulticastSetChargePower(Power);
+
+					/*FString TheFloatStr = FString::SanitizeFloat(Power);
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);*/
 				}
 			}

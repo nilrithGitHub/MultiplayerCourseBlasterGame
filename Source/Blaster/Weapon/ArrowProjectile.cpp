@@ -158,8 +158,7 @@ void AArrowProjectile::SetChargePower(float NewChargePower)
 		ProjectileMovementComponent->MaxSpeed = InitialSpeed * NewChargePower;
 		ProjectileMovementComponent->Velocity = ProjectileMovementComponent->Velocity.GetSafeNormal() * InitialSpeed * NewChargePower;
 
-		//Damage = Damage * NewChargePower / 14.3f;
-		Damage = Damage * NewChargePower / 10.0f;
+		//Damage = Damage * NewChargePower / 10.0f;
 
 		/*FString TheFloatStr = FString::SanitizeFloat(Damage);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);*/

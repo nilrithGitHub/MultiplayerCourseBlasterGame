@@ -861,43 +861,57 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 				HUDPackage.CrosshairsBottom = nullptr;
 				HUDPackage.CrosshairsTop = nullptr;
 			}
-			// Calculate crosshair spread
+			
 
-			// [0, 600] -> [0, 1]
-			FVector2D WalkSpeedRange(0.f, Character->GetCharacterMovement()->MaxWalkSpeed);
-			FVector2D VelocityMultiplierRange(0.f, 1.f);
-			FVector Velocity = Character->GetVelocity();
-			Velocity.Z = 0.f;
-
-			CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, VelocityMultiplierRange, Velocity.Size());
-
-			if (Character->GetCharacterMovement()->IsFalling())
+			if (EquippedWeapon && EquippedWeapon->GetWeaponType() == EWeaponType::EWT_Bow && bCharging)
 			{
-				CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 2.25f, DeltaTime, 2.25f);
+				FVector2D PercentRange(0.f, 1.0f);
+				FVector2D SpreadRange(1.35f, 0.0f);
+
+				HUDPackage.CrosshairSpread = FMath::GetMappedRangeValueClamped(PercentRange, SpreadRange, EquippedWeapon->GetChargePercent());
+
+				/*FString TheFloatStr = FString::SanitizeFloat(EquippedWeapon->GetChargePercent());
+				GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::White, *TheFloatStr);*/
 			}
 			else
 			{
-				CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.f, DeltaTime, 30.f);
+				// Calculate crosshair spread
+
+				// [0, 600] -> [0, 1]
+				FVector2D WalkSpeedRange(0.f, Character->GetCharacterMovement()->MaxWalkSpeed);
+				FVector2D VelocityMultiplierRange(0.f, 1.f);
+				FVector Velocity = Character->GetVelocity();
+				Velocity.Z = 0.f;
+
+				CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, VelocityMultiplierRange, Velocity.Size());
+
+				if (Character->GetCharacterMovement()->IsFalling())
+				{
+					CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 2.25f, DeltaTime, 2.25f);
+				}
+				else
+				{
+					CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.f, DeltaTime, 30.f);
+				}
+
+				if (bAiming)
+				{
+					CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.58f, DeltaTime, 30.f);
+				}
+				else
+				{
+					CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.f, DeltaTime, 30.f);
+				}
+
+				CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.f, DeltaTime, 40.f);
+
+				HUDPackage.CrosshairSpread =
+					0.5f +
+					CrosshairVelocityFactor +
+					CrosshairInAirFactor -
+					CrosshairAimFactor +
+					CrosshairShootingFactor;
 			}
-
-			if (bAiming)
-			{
-				CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.58f, DeltaTime, 30.f);
-			}
-			else
-			{
-				CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.f, DeltaTime, 30.f);
-			}
-
-			CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.f, DeltaTime, 40.f);
-
-			HUDPackage.CrosshairSpread =
-				0.5f +
-				CrosshairVelocityFactor +
-				CrosshairInAirFactor -
-				CrosshairAimFactor +
-				CrosshairShootingFactor;
-
 			HUD->SetHUDPackage(HUDPackage);
 		}
 	}

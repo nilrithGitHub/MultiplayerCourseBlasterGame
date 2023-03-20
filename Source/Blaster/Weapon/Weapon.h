@@ -97,6 +97,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bDestroyWeapon = false;
 
+	UPROPERTY(EditAnywhere, Category = "Weapon Charge")
+	float ChargeMaxTimer = 0.85f;
+	UPROPERTY(EditAnywhere, Category = "Weapon Charge")
+	float ChargeMaxPower = 10.f;
+
 	UPROPERTY(EditAnywhere)
 	EFireType FireType;
 
@@ -209,6 +214,7 @@ private:
 
 public:	
 	void SetWeaponState(EWeaponState State);
+	float GetChargePercent() const;
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const { return PickupWidget; }
