@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Blaster/GameState/BlasterGameState.h"
+#include "Blaster/NilBlueprintFunctionLibrary.h"
 
 namespace MatchState
 {
@@ -24,6 +25,19 @@ void ABlasterGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
+
+	FSetting Setting;
+	Setting.MouseIntensity = 0.789f;
+	Setting.MouseZoomIntensity = 0.345;
+	UNilBlueprintFunctionLibrary::SaveSettingsToJson(Setting);
+	
+	FSetting OutSetting = UNilBlueprintFunctionLibrary::LoadSettingsFromJson();
+
+	FString TheFloatStr = FString::SanitizeFloat(OutSetting.MouseIntensity);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);
+
+	FString TheFloatStr1 = FString::SanitizeFloat(OutSetting.MouseIntensity);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr1);
 }
 
 void ABlasterGameMode::Tick(float DeltaTime)

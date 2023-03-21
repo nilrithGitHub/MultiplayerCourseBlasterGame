@@ -876,7 +876,6 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 			else
 			{
 				// Calculate crosshair spread
-
 				// [0, 600] -> [0, 1]
 				FVector2D WalkSpeedRange(0.f, Character->GetCharacterMovement()->MaxWalkSpeed);
 				FVector2D VelocityMultiplierRange(0.f, 1.f);
