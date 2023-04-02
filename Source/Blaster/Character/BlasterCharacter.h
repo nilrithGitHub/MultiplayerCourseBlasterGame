@@ -169,9 +169,12 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* WorldWidgetComp;
 
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	class AWeapon* OverlappingWeapon;
+
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
@@ -251,6 +254,16 @@ private:
 
 	UFUNCTION()
 	void OnRep_Health(float LastHealth);
+
+	/**
+	* World Widget Visisble
+	*/
+
+	UPROPERTY(ReplicatedUsing = OnRep_IsVisibleWorldWidget, VisibleAnywhere, Category = "Player Stats")
+	bool bIsVisibleWorldWidget = false;
+
+	UFUNCTION()
+	void OnRep_IsVisibleWorldWidget(bool bIsVisible);
 
 	/**
 	* Player shield
@@ -368,6 +381,7 @@ private:
 	//TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
 
 public:
+	void SetVisibleWorldWidget(bool bIsVisible);
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();

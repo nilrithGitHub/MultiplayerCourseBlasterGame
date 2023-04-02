@@ -85,6 +85,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	bool bAutomatic = true;
+	UPROPERTY(EditAnywhere, Category = Combat)
+	bool bReloadable = true;
 
 	UPROPERTY(EditAnywhere)
 	class USoundCue* EquipSound;

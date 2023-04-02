@@ -33,25 +33,25 @@ void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerStat
 		{
 			if (Attacker == Self && Victim != Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName(), "delete");
+				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName(), "Delete");
 				return;
 			}
 			if (Victim == Self && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you", "delete");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you", "Delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker == Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", "yourself", "delete");
+				BlasterHUD->AddElimAnnouncement("You", "yourself", "Delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves", "delete");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves", "Delete");
 				return;
 			}
-			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName(), "delete");
+			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName(), "Delete");
 		}
 	}
 }
@@ -475,6 +475,20 @@ void ABlasterPlayerController::SetHUDGrenades(int32 Grenades)
 	{
 		bInitializeGrenades = true;
 		HUDGrenades = Grenades;
+	}
+}
+
+void ABlasterPlayerController::OnTargetRecivedDamage(ABlasterCharacter* TargetChar)
+{
+	/*if (IsLocalPlayerController())
+	{*/
+		// Update Damage World UI
+		/*FString TheFloatStr = FString::SanitizeFloat();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);*/
+	//}
+	if (TargetChar)
+	{
+		TargetChar->SetVisibleWorldWidget(true);
 	}
 }
 

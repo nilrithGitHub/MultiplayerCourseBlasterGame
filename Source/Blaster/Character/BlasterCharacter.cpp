@@ -28,6 +28,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/PlayerStart/TeamPlayerStart.h"
+#include "Components/WidgetComponent.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -47,6 +48,10 @@ ABlasterCharacter::ABlasterCharacter()
 
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(RootComponent);
+	
+	WorldWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorldWidget"));
+	WorldWidgetComp->SetupAttachment(RootComponent);
+	WorldWidgetComp->SetVisibility(false);
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
 	Combat->SetIsReplicated(true);
@@ -169,6 +174,7 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME(ABlasterCharacter, Health);
 	DOREPLIFETIME(ABlasterCharacter, Shield);
 	DOREPLIFETIME(ABlasterCharacter, bDisableGameplay);
+	DOREPLIFETIME(ABlasterCharacter, bIsVisibleWorldWidget);
 }
 
 void ABlasterCharacter::OnRep_ReplicatedMovement()
@@ -656,12 +662,19 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	UpdateHUDShield();
 	PlayHitReactMontage();
 
+	ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
+	if (AttackerController)
+	{
+		SetVisibleWorldWidget(true);
+		//AttackerController->OnTargetRecivedDamage(this);
+	}
+
 	if (Health == 0.f)
 	{
 		if (BlasterGameMode)
 		{
 			BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
-			ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
+			//ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
 			BlasterGameMode->PlayerEliminated(this, BlasterPlayerController, AttackerController);
 		}
 	}
@@ -994,6 +1007,14 @@ void ABlasterCharacter::OnRep_Health(float LastHealth)
 	}
 }
 
+void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
+{
+	if (WorldWidgetComp)
+	{
+		WorldWidgetComp->SetVisibility(bIsVisible);
+	}
+}
+
 void ABlasterCharacter::OnRep_Shield(float LastShield)
 {
 	UpdateHUDShield();
@@ -1093,6 +1114,11 @@ void ABlasterCharacter::StartDissolve()
 		DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
 		DissolveTimeline->Play();
 	}
+}
+
+void ABlasterCharacter::SetVisibleWorldWidget(bool bIsVisible)
+{
+	bIsVisibleWorldWidget = bIsVisible;
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
