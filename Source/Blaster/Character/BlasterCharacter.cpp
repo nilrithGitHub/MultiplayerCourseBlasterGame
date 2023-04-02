@@ -14,6 +14,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "BlasterAnimInstance.h"
 #include "Blaster/Blaster.h"
+#include "Blaster/HUD/WorldCharacterOverlay.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "TimerManager.h"
@@ -29,6 +30,7 @@
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/PlayerStart/TeamPlayerStart.h"
 #include "Components/WidgetComponent.h"
+#include "Components/ProgressBar.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -174,7 +176,8 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME(ABlasterCharacter, Health);
 	DOREPLIFETIME(ABlasterCharacter, Shield);
 	DOREPLIFETIME(ABlasterCharacter, bDisableGameplay);
-	DOREPLIFETIME(ABlasterCharacter, bIsVisibleWorldWidget);
+	DOREPLIFETIME_CONDITION(ABlasterCharacter, bIsVisibleWorldWidget, COND_SkipOwner);
+	//DOREPLIFETIME_CONDITION(ABlasterCharacter, bIsVisibleWorldWidget, COND_AutonomousOnly);
 }
 
 void ABlasterCharacter::OnRep_ReplicatedMovement()
@@ -661,20 +664,19 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	UpdateHUDHealth();
 	UpdateHUDShield();
 	PlayHitReactMontage();
-
-	ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
+	
+	/*ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
 	if (AttackerController)
 	{
-		SetVisibleWorldWidget(true);
-		//AttackerController->OnTargetRecivedDamage(this);
-	}
+		Server_SetVisibleWorldWidget(true);
+	}*/
 
 	if (Health == 0.f)
 	{
 		if (BlasterGameMode)
 		{
 			BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
-			//ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
+			ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
 			BlasterGameMode->PlayerEliminated(this, BlasterPlayerController, AttackerController);
 		}
 	}
@@ -1007,14 +1009,6 @@ void ABlasterCharacter::OnRep_Health(float LastHealth)
 	}
 }
 
-void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
-{
-	if (WorldWidgetComp)
-	{
-		WorldWidgetComp->SetVisibility(bIsVisible);
-	}
-}
-
 void ABlasterCharacter::OnRep_Shield(float LastShield)
 {
 	UpdateHUDShield();
@@ -1031,6 +1025,25 @@ void ABlasterCharacter::UpdateHUDHealth()
 	{
 		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
 	}
+
+	UWorldCharacterOverlay* WorldCharacterOverlay = Cast<UWorldCharacterOverlay>(WorldWidgetComp->GetWidget());
+	if (WorldCharacterOverlay)
+	{
+		//BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+		if (WorldCharacterOverlay->HealthBar)
+		{
+			const float HealthPercent = Health / MaxHealth;
+			WorldCharacterOverlay->HealthBar->SetPercent(HealthPercent);
+			/*FString HealthText = FString::Printf(TEXT("%d/%d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
+			WorldCharacterOverlay->HealthText->SetText(FText::FromString(HealthText));*/
+		}
+		/*else
+		{
+			bInitializeHealth = true;
+			HUDHealth = Health;
+			HUDMaxHealth = MaxHealth;
+		}*/
+	}
 }
 
 void ABlasterCharacter::UpdateHUDShield()
@@ -1039,6 +1052,25 @@ void ABlasterCharacter::UpdateHUDShield()
 	if (BlasterPlayerController)
 	{
 		BlasterPlayerController->SetHUDShield(Shield, MaxShield);
+	}
+
+	UWorldCharacterOverlay* WorldCharacterOverlay = Cast<UWorldCharacterOverlay>(WorldWidgetComp->GetWidget());
+	if (WorldCharacterOverlay)
+	{
+		//BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+		if (WorldCharacterOverlay->ShieldBar)
+		{
+			const float ShieldPercent = Shield / MaxShield;
+			WorldCharacterOverlay->ShieldBar->SetPercent(ShieldPercent);
+			/*FString HealthText = FString::Printf(TEXT("%d/%d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
+			WorldCharacterOverlay->HealthText->SetText(FText::FromString(HealthText));*/
+		}
+		/*else
+		{
+			bInitializeHealth = true;
+			HUDHealth = Health;
+			HUDMaxHealth = MaxHealth;
+		}*/
 	}
 }
 
@@ -1118,9 +1150,19 @@ void ABlasterCharacter::StartDissolve()
 
 void ABlasterCharacter::SetVisibleWorldWidget(bool bIsVisible)
 {
-	bIsVisibleWorldWidget = bIsVisible;
+	//bIsVisibleWorldWidget = bIsVisible;
+	if (WorldWidgetComp)
+	{
+		WorldWidgetComp->SetVisibility(bIsVisible);
+	}
 }
-
+void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
+{
+	if (WorldWidgetComp)
+	{
+		WorldWidgetComp->SetVisibility(bIsVisibleWorldWidget);
+	}
+}
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	if (OverlappingWeapon)

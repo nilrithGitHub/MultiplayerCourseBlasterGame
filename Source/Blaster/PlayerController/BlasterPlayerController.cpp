@@ -477,21 +477,6 @@ void ABlasterPlayerController::SetHUDGrenades(int32 Grenades)
 		HUDGrenades = Grenades;
 	}
 }
-
-void ABlasterPlayerController::OnTargetRecivedDamage(ABlasterCharacter* TargetChar)
-{
-	/*if (IsLocalPlayerController())
-	{*/
-		// Update Damage World UI
-		/*FString TheFloatStr = FString::SanitizeFloat();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);*/
-	//}
-	if (TargetChar)
-	{
-		TargetChar->SetVisibleWorldWidget(true);
-	}
-}
-
 void ABlasterPlayerController::SetHUDTime()
 {
 	float TimeLeft = 0.f;

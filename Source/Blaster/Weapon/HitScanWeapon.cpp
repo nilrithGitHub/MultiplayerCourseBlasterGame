@@ -63,6 +63,10 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 					);
 				}
 			}
+			if (OwnerPawn->IsLocallyControlled())
+			{
+				BlasterCharacter->SetVisibleWorldWidget(true);
+			}
 		}
 		if (ImpactParticles)
 		{

@@ -53,6 +53,8 @@ void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
 		if (OwnerController)
 		{
+			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
 
@@ -70,9 +72,13 @@ void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 				}
 				collisionbox->setcollisionenabled(ecollisionenabled::nocollision);
 				projectilemovementcomponent->stopmovementimmediately();*/
+				if (HitCharacter && OwnerCharacter->IsLocallyControlled())
+				{
+					HitCharacter->SetVisibleWorldWidget(true);
+				}
 				return;
 			}
-			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+			
 			if (bUseServerSideRewind && OwnerCharacter->GetLagCompensation() && OwnerCharacter->IsLocallyControlled() && HitCharacter)
 			{
 				OwnerCharacter->GetLagCompensation()->ProjectileServerScoreRequest(
@@ -81,6 +87,10 @@ void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 					InitialVelocity,
 					OwnerController->GetServerTime() - OwnerController->SingleTripTime
 				);
+			}
+			if (HitCharacter && OwnerCharacter->IsLocallyControlled())
+			{
+				HitCharacter->SetVisibleWorldWidget(true);
 			}
 		}
 	}
