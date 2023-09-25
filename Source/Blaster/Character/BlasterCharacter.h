@@ -21,55 +21,55 @@ class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCro
 public:
 	ABlasterCharacter();
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 
 	/**
 	* Play montages
 	*/
-	void PlayFireMontage(bool bAiming);
-	void PlayReloadMontage();
+	//void PlayFireMontage(bool bAiming);
+	//void PlayReloadMontage();
 	void PlayElimMontage();
-	void PlayThrowGrenadeMontage();
-	void PlaySwapMontage();
+	//void PlayThrowGrenadeMontage();
+	//void PlaySwapMontage();
 
 	virtual void OnRep_ReplicatedMovement() override;
-	void Elim(bool bPlayerLeftGame);
+	virtual void Elim(bool bPlayerLeftGame);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastElim(bool bPlayerLeftGame);
+	virtual void MulticastElim(bool bPlayerLeftGame);
 	virtual void Destroyed() override;
 
 	UPROPERTY(Replicated)
 	bool bDisableGameplay = false;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void ShowSniperScopeWidget(bool bShowScope);
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void ShowSniperScopeWidget(bool bShowScope);
 
 	void UpdateHUDHealth();
 	void UpdateHUDShield();
-	void UpdateHUDAmmo();
+	//void UpdateHUDAmmo();
 
-	void SpawDefaultWeapon();
+	//void SpawDefaultWeapon();
 
 	UPROPERTY()
 	TMap<FName, class UBoxComponent*> HitCollisionBoxes;
 
-	bool bFinishedSwapping = false;
+	//bool bFinishedSwapping = false;
 
 	UFUNCTION(Server, Reliable)
 	void ServerLeaveGame();
 
 	FOnLeftGame OnLeftGame;
 
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastGainedTheLead();
+	//UFUNCTION(NetMulticast, Reliable)
+	//void MulticastGainedTheLead();
 
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastLostTheLead();
+	//UFUNCTION(NetMulticast, Reliable)
+	//void MulticastLostTheLead();
 
-	void SetTeamColor(ETeam Team);
+	//void SetTeamColor(ETeam Team);
 
 protected:
 	virtual void BeginPlay() override;
@@ -78,30 +78,30 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
-	void EquipButtonPressed();
-	void SwitchButtonPressed();
-	void CrouchButtonPressed();
-	void ReloadButtonPressed();
-	void AimButtonPressed();
-	void AimButtonReleased();
-	void AimOffset(float DeltaTime);
+	//void EquipButtonPressed();
+	//void SwitchButtonPressed();
+	//void CrouchButtonPressed();
+	//void ReloadButtonPressed();
+	//void AimButtonPressed();
+	//void AimButtonReleased();
+	//void AimOffset(float DeltaTime);
 	void CalculateAO_Pitch();
 	void SimProxiesTurn();
 	virtual void Jump() override;
-	void FireButtonPressed();
-	void FireButtonReleased();
+	//void FireButtonPressed();
+	//void FireButtonReleased();
 	void PlayHitReactMontage();
-	void GrenadeButtonPressed();
-	void DropOrDestroyWeapon(AWeapon* Weapon);
-	void DropOrDestroyWeapons();
-	void SetSpawnPoint();
-	void OnPlayerStateInitialized();
+	//void GrenadeButtonPressed();
+	//void DropOrDestroyWeapon(AWeapon* Weapon);
+	//void DropOrDestroyWeapons();
+	virtual void SetSpawnPoint();
+	//void OnPlayerStateInitialized();
 
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 	// Poll for any relelvant classes and initialize our HUD
 	void PollInit();
-	void RotateInPlace(float DeltaTime);
+	virtual void RotateInPlace(float DeltaTime);
 
 	/**
 	* Hit boxes used for server-side rewind
@@ -197,42 +197,42 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
 		FName FootRName = "foot_r";
 
-private:
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class USpringArmComponent* CameraBoom;
+protected:
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class UCameraComponent* FollowCamera;
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class UCameraComponent* FollowCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* WorldWidgetComp;
 
-	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
-	class AWeapon* OverlappingWeapon;
+	/*UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+	class AWeapon* OverlappingWeapon;*/
 
 
-	UFUNCTION()
-	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+	//UFUNCTION()
+	//void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
 	/**
 	* Blaster components
 	*/
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UCombatComponent* Combat;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	//class UCombatComponent* Combat;
 
-	UPROPERTY(VisibleAnywhere)
-	class UBuffComponent* Buff;
+	//UPROPERTY(VisibleAnywhere)
+	//class UBuffComponent* Buff;
 
-	UPROPERTY(VisibleAnywhere)
-	class ULagCompensationComponent* LagCompensation;
+	//UPROPERTY(VisibleAnywhere)
+	//class ULagCompensationComponent* LagCompensation;
 
-	UFUNCTION(Server, Reliable)
-	void ServerEquipButtonPressed();
-	UFUNCTION(Server, Reliable)
-	void ServerSwitchButtonPressed();
+	//UFUNCTION(Server, Reliable)
+	//void ServerEquipButtonPressed();
+	//UFUNCTION(Server, Reliable)
+	//void ServerSwitchButtonPressed();
 
 	float AO_Yaw;
 	float InterpAO_Yaw;
@@ -246,13 +246,13 @@ private:
 	* Animation montages
 	*/
 
-	UPROPERTY(EditAnywhere, Category = Combat)
+	/*UPROPERTY(EditAnywhere, Category = Combat)
 	class UAnimMontage* FireWeaponMontage;
 	UPROPERTY(EditAnywhere, Category = Combat)
 		UAnimMontage* FireBowMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
-	UAnimMontage* ReloadMontage;
+	UAnimMontage* ReloadMontage;*/
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* HitReactMontage;
@@ -260,16 +260,16 @@ private:
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ElimMontage;
 
-	UPROPERTY(EditAnywhere, Category = Combat)
-	UAnimMontage* ThrowGrenadeMontage;
+	//UPROPERTY(EditAnywhere, Category = Combat)
+	//UAnimMontage* ThrowGrenadeMontage;
 
-	UPROPERTY(EditAnywhere, Category = Combat)
-	UAnimMontage* SwapMontage;
+	//UPROPERTY(EditAnywhere, Category = Combat)
+	//UAnimMontage* SwapMontage;
 
-	void HideCameraIfCharacterClose();
+	//void HideCameraIfCharacterClose();
 
-	UPROPERTY(EditAnywhere)
-	float CameraThreshold = 200.f;
+	//UPROPERTY(EditAnywhere)
+	//float CameraThreshold = 200.f;
 
 	bool bRotateRootBone;
 	float TurnThreshold = 0.5f;
@@ -315,8 +315,8 @@ private:
 	UFUNCTION()
 	void OnRep_Shield(float LastShield);
 
-	UPROPERTY()
-	class ABlasterPlayerController* BlasterPlayerController;
+	//UPROPERTY()
+	//class ABlasterPlayerController* BlasterPlayerController;
 
 	bool bElimmed = false;
 
@@ -356,17 +356,17 @@ private:
 	* Team colors
 	*/
 
-	UPROPERTY(EditAnywhere, Category = Elim)
-	UMaterialInstance* RedDissolveMatInst;
+	//UPROPERTY(EditAnywhere, Category = Elim)
+	//UMaterialInstance* RedDissolveMatInst;
 
-	UPROPERTY(EditAnywhere, Category = Elim)
-	UMaterialInstance* RedMaterial;
+	//UPROPERTY(EditAnywhere, Category = Elim)
+	//UMaterialInstance* RedMaterial;
 
-	UPROPERTY(EditAnywhere, Category = Elim)
-	UMaterialInstance* BlueDissolveMatInst;
+	//UPROPERTY(EditAnywhere, Category = Elim)
+	//UMaterialInstance* BlueDissolveMatInst;
 
-	UPROPERTY(EditAnywhere, Category = Elim)
-	UMaterialInstance* BlueMaterial;
+	//UPROPERTY(EditAnywhere, Category = Elim)
+	//UMaterialInstance* BlueMaterial;
 
 	UPROPERTY(EditAnywhere, Category = Elim)
 	UMaterialInstance* OriginalMaterial;
@@ -384,51 +384,46 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USoundCue* ElimBotSound;
 
-	UPROPERTY()
-	class ABlasterPlayerState* BlasterPlayerState;
+	//UPROPERTY()
+	//class ABlasterPlayerState* BlasterPlayerState;
 
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere)
 	class UNiagaraSystem* CrownSystem;
 
 	UPROPERTY()
-	class UNiagaraComponent* CrownComponent;
+	class UNiagaraComponent* CrownComponent;*/
 
 	/**
 	* Grenade
 	*/
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* AttachedGrenade;
+	//UPROPERTY(VisibleAnywhere)
+	//UStaticMeshComponent* AttachedGrenade;
 
 	/**
 	* Default weapon
 	*/
 
-	/*UPROPERTY(EditAnywhere)
-	TSubclassOf<AWeapon> DefaultWeaponClass;*/
-
-	UPROPERTY(EditAnywhere)
-	TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
-
-	UPROPERTY()
-	class ABlasterGameMode* BlasterGameMode;
-
 	//UPROPERTY(EditAnywhere)
-	//	//TArray<TSubclassOf<class APickup>> PickupClasses;
-	//TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
+	//TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
+
+	//UPROPERTY()
+	//class ABlasterGameMode* BlasterGameMode;
+
 
 public:
 	void SetVisibleWorldWidget(bool bIsVisible);
-	void SetOverlappingWeapon(AWeapon* Weapon);
-	bool IsWeaponEquipped();
+	//void SetOverlappingWeapon(AWeapon* Weapon);
+	/*bool IsWeaponEquipped();
 	bool IsAiming();
-	bool IsCharging();
+	bool IsCharging();*/
+
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FVector GetHitTarget() const;
-	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	//FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return bElimmed; }
 	FORCEINLINE float GetHealth() const { return Health; }
@@ -437,16 +432,16 @@ public:
 	FORCEINLINE float GetShield() const { return Shield; }
 	FORCEINLINE void SetShield(float Amount) { Shield = Amount; }
 	FORCEINLINE float GetMaxShield() const { return MaxShield; }
-	ECombatState GetCombatState() const;
-	FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
+	//ECombatState GetCombatState() const;
+	//FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
-	FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
+	/*FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
-	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
-	bool IsLocallyReloading();
-	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
+	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }*/
+	//bool IsLocallyReloading();
+	//FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	//FORCEINLINE bool IsHoldingTheFlag() const;
-	ETeam GetTeam();
+	/*ETeam GetTeam();*/
 	void SetHoldingTheFlag(bool bHolding);
 
 	// Interface
