@@ -164,14 +164,69 @@ void ABasePlayerCharacter::BeginPlay()
 
 void ABasePlayerCharacter::EquipButtonPressed()
 {
+	if (bDisableGameplay) return;
+	if (Combat)
+	{
+		if (Combat->bHoldingTheFlag) return;
+		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerEquipButtonPressed();
+	}
 }
 
 void ABasePlayerCharacter::SwitchButtonPressed()
 {
+	if (bDisableGameplay) return;
+	if (Combat)
+	{
+		if (Combat->bHoldingTheFlag) return;
+		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerSwitchButtonPressed();
+		bool bSwap = Combat->ShouldSwapWeapons() &&
+			!HasAuthority() &&
+			Combat->CombatState == ECombatState::ECS_Unoccupied &&
+			OverlappingWeapon == nullptr;
+
+		if (bSwap)
+		{
+			PlaySwapMontage();
+			Combat->CombatState = ECombatState::ECS_SwappingWeapons;
+			bFinishedSwapping = false;
+		}
+	}
+}
+
+void ABasePlayerCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if (Combat)
+	{
+		if (OverlappingWeapon)
+		{
+			Combat->EquipWeapon(OverlappingWeapon);
+		}
+	}
+}
+
+void ABasePlayerCharacter::ServerSwitchButtonPressed_Implementation()
+{
+	if (Combat)
+	{
+		if (Combat->ShouldSwapWeapons())
+		{
+			Combat->SwapWeapons();
+		}
+	}
 }
 
 void ABasePlayerCharacter::CrouchButtonPressed()
 {
+	if (Combat && Combat->bHoldingTheFlag) return;
+	if (bDisableGameplay) return;
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Crouch();
+	}
 }
 
 void ABasePlayerCharacter::ReloadButtonPressed()
@@ -200,6 +255,12 @@ void ABasePlayerCharacter::FireButtonReleased()
 
 void ABasePlayerCharacter::GrenadeButtonPressed()
 {
+	if (Combat)
+	{
+		if (Combat->bHoldingTheFlag) return;
+
+		Combat->ThrowGrenade();
+	}
 }
 
 void ABasePlayerCharacter::DropOrDestroyWeapon(AWeapon* Weapon)
@@ -313,7 +374,7 @@ void ABasePlayerCharacter::HideCameraIfCharacterClose()
 
 void ABasePlayerCharacter::PlayFireMontage(bool bAiming)
 {
-	if (Combat == nullptr || Combat->EquipWeapon == nullptr) return;
+	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance)
 	{
@@ -375,14 +436,17 @@ void ABasePlayerCharacter::PlayReloadMontage()
 void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 {
 	Super::MulticastElim_Implementation(bPlayerLeftGame);
+
 	if (BlasterPlayerController)
 	{
 		BlasterPlayerController->SetHUDWeaponAmmo(0);
 	}
+
 	if (Combat)
 	{
 		Combat->FireButtonPressed(false);
 	}
+
 	AttachedGrenade->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	bool bHideSniperScope = IsLocallyControlled() &&
@@ -390,6 +454,7 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 		Combat->bAiming &&
 		Combat->EquippedWeapon &&
 		Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle;
+
 	if (bHideSniperScope)
 	{
 		ShowSniperScopeWidget(false);
@@ -401,10 +466,20 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 }
 void ABasePlayerCharacter::PlayThrowGrenadeMontage()
 {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && ThrowGrenadeMontage)
+	{
+		AnimInstance->Montage_Play(ThrowGrenadeMontage);
+	}
 }
 
 void ABasePlayerCharacter::PlaySwapMontage()
 {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && SwapMontage)
+	{
+		AnimInstance->Montage_Play(SwapMontage);
+	}
 }
 
 void ABasePlayerCharacter::Elim(bool bPlayerLeftGame)

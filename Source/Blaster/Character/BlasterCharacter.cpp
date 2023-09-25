@@ -520,70 +520,71 @@ void ABlasterCharacter::PostInitializeComponents()
 	}
 }
 
-void ABlasterCharacter::PlayFireMontage(bool bAiming)
-{
-	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+//void ABlasterCharacter::PlayFireMontage(bool bAiming)
+//{
+//	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+//
+//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+//	if (AnimInstance)
+//	{
+//		switch (Combat->EquippedWeapon->FireType)
+//		{
+//		case EFireType::EFT_Charge:
+//			if (FireBowMontage)
+//			{
+//				AnimInstance->Montage_Play(FireBowMontage);
+//			}
+//		default:
+//			if (FireWeaponMontage)
+//			{
+//				AnimInstance->Montage_Play(FireWeaponMontage);
+//				FName SectionName;
+//				SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+//				AnimInstance->Montage_JumpToSection(SectionName);
+//			}
+//			break;
+//		}
+//	}
+//}
 
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance)
-	{
-		switch (Combat->EquippedWeapon->FireType)
-		{
-		case EFireType::EFT_Charge:
-			if (FireBowMontage)
-			{
-				AnimInstance->Montage_Play(FireBowMontage);
-			}
-		default:
-			if (FireWeaponMontage)
-			{
-				AnimInstance->Montage_Play(FireWeaponMontage);
-				FName SectionName;
-				SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
-				AnimInstance->Montage_JumpToSection(SectionName);
-			}
-			break;
-		}
-	}
-}
-void ABlasterCharacter::PlayReloadMontage()
-{
-	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && ReloadMontage)
-	{
-		AnimInstance->Montage_Play(ReloadMontage);
-		FName SectionName;
-
-		switch (Combat->EquippedWeapon->GetWeaponType())
-		{
-		case EWeaponType::EWT_AssaultRifle:
-			SectionName = FName("Rifle");
-			break;
-		case EWeaponType::EWT_RocketLauncher:
-			SectionName = FName("RocketLauncher");
-			break;
-		case EWeaponType::EWT_Pistol:
-			SectionName = FName("Pistol");
-			break;
-		case EWeaponType::EWT_SubmachineGun:
-			SectionName = FName("Pistol");
-			break;
-		case EWeaponType::EWT_Shotgun:
-			SectionName = FName("Shotgun");
-			break;
-		case EWeaponType::EWT_SniperRifle:
-			SectionName = FName("SniperRifle");
-			break;
-		case EWeaponType::EWT_GrenadeLauncher:
-			SectionName = FName("GrenadeLauncher");
-			break;
-		}
-
-		AnimInstance->Montage_JumpToSection(SectionName);
-	}
-}
+//void ABlasterCharacter::PlayReloadMontage()
+//{
+//	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+//
+//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+//	if (AnimInstance && ReloadMontage)
+//	{
+//		AnimInstance->Montage_Play(ReloadMontage);
+//		FName SectionName;
+//
+//		switch (Combat->EquippedWeapon->GetWeaponType())
+//		{
+//		case EWeaponType::EWT_AssaultRifle:
+//			SectionName = FName("Rifle");
+//			break;
+//		case EWeaponType::EWT_RocketLauncher:
+//			SectionName = FName("RocketLauncher");
+//			break;
+//		case EWeaponType::EWT_Pistol:
+//			SectionName = FName("Pistol");
+//			break;
+//		case EWeaponType::EWT_SubmachineGun:
+//			SectionName = FName("Pistol");
+//			break;
+//		case EWeaponType::EWT_Shotgun:
+//			SectionName = FName("Shotgun");
+//			break;
+//		case EWeaponType::EWT_SniperRifle:
+//			SectionName = FName("SniperRifle");
+//			break;
+//		case EWeaponType::EWT_GrenadeLauncher:
+//			SectionName = FName("GrenadeLauncher");
+//			break;
+//		}
+//
+//		AnimInstance->Montage_JumpToSection(SectionName);
+//	}
+//}
 
 void ABlasterCharacter::PlayElimMontage()
 {
@@ -594,27 +595,27 @@ void ABlasterCharacter::PlayElimMontage()
 	}
 }
 
-void ABlasterCharacter::PlayThrowGrenadeMontage()
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && ThrowGrenadeMontage)
-	{
-		AnimInstance->Montage_Play(ThrowGrenadeMontage);
-	}
-}
+//void ABlasterCharacter::PlayThrowGrenadeMontage()
+//{
+//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+//	if (AnimInstance && ThrowGrenadeMontage)
+//	{
+//		AnimInstance->Montage_Play(ThrowGrenadeMontage);
+//	}
+//}
 
-void ABlasterCharacter::PlaySwapMontage()
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && SwapMontage)
-	{
-		AnimInstance->Montage_Play(SwapMontage);
-	}
-}
+//void ABlasterCharacter::PlaySwapMontage()
+//{
+//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+//	if (AnimInstance && SwapMontage)
+//	{
+//		AnimInstance->Montage_Play(SwapMontage);
+//	}
+//}
 
 void ABlasterCharacter::PlayHitReactMontage()
 {
-	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+	//if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && HitReactMontage && !AnimInstance->IsAnyMontagePlaying())
@@ -625,15 +626,15 @@ void ABlasterCharacter::PlayHitReactMontage()
 	}
 }
 
-void ABlasterCharacter::GrenadeButtonPressed()
-{
-	if (Combat)
-	{
-		if (Combat->bHoldingTheFlag) return;
-
-		Combat->ThrowGrenade();
-	}
-}
+//void ABlasterCharacter::GrenadeButtonPressed()
+//{
+//	if (Combat)
+//	{
+//		if (Combat->bHoldingTheFlag) return;
+//
+//		Combat->ThrowGrenade();
+//	}
+//}
 
 void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
 {
@@ -711,91 +712,80 @@ void ABlasterCharacter::LookUp(float Value)
 	AddControllerPitchInput(IsAiming() ? Value * 0.8f : Value);
 }
 
-void ABlasterCharacter::EquipButtonPressed()
-{
-	if (bDisableGameplay) return;
-	if (Combat)
-	{
-		if (Combat->bHoldingTheFlag) return;
-		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerEquipButtonPressed();
-		/*bool bSwap = Combat->ShouldSwapWeapons() &&
-			!HasAuthority() &&
-			Combat->CombatState == ECombatState::ECS_Unoccupied &&
-			OverlappingWeapon == nullptr;
+//void ABlasterCharacter::EquipButtonPressed()
+//{
+//	if (bDisableGameplay) return;
+//	if (Combat)
+//	{
+//		if (Combat->bHoldingTheFlag) return;
+//		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerEquipButtonPressed();
+//	}
+//}
 
-		if (bSwap)
-		{
-			PlaySwapMontage();
-			Combat->CombatState = ECombatState::ECS_SwappingWeapons;
-			bFinishedSwapping = false;
-		}*/
-	}
-}
+//void ABlasterCharacter::SwitchButtonPressed()
+//{
+//	if (bDisableGameplay) return;
+//	if (Combat)
+//	{
+//		if (Combat->bHoldingTheFlag) return;
+//		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerSwitchButtonPressed();
+//		bool bSwap = Combat->ShouldSwapWeapons() &&
+//			!HasAuthority() &&
+//			Combat->CombatState == ECombatState::ECS_Unoccupied &&
+//			OverlappingWeapon == nullptr;
+//
+//		if (bSwap)
+//		{
+//			PlaySwapMontage();
+//			Combat->CombatState = ECombatState::ECS_SwappingWeapons;
+//			bFinishedSwapping = false;
+//		}
+//	}
+//}
 
-void ABlasterCharacter::SwitchButtonPressed()
-{
-	if (bDisableGameplay) return;
-	if (Combat)
-	{
-		if (Combat->bHoldingTheFlag) return;
-		if (Combat->CombatState == ECombatState::ECS_Unoccupied) ServerSwitchButtonPressed();
-		bool bSwap = Combat->ShouldSwapWeapons() &&
-			!HasAuthority() &&
-			Combat->CombatState == ECombatState::ECS_Unoccupied &&
-			OverlappingWeapon == nullptr;
+//void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
+//{
+//	if (Combat)
+//	{
+//		if (OverlappingWeapon)
+//		{
+//			Combat->EquipWeapon(OverlappingWeapon);
+//		}
+//		/*else if (Combat->ShouldSwapWeapons())
+//		{
+//			Combat->SwapWeapons();
+//		}*/
+//	}
+//}
+//
+//void ABlasterCharacter::ServerSwitchButtonPressed_Implementation()
+//{
+//	if (Combat)
+//	{
+//		/*if (OverlappingWeapon)
+//		{
+//			Combat->EquipWeapon(OverlappingWeapon);
+//		}*/
+//		if (Combat->ShouldSwapWeapons())
+//		{
+//			Combat->SwapWeapons();
+//		}
+//	}
+//}
 
-		if (bSwap)
-		{
-			PlaySwapMontage();
-			Combat->CombatState = ECombatState::ECS_SwappingWeapons;
-			bFinishedSwapping = false;
-		}
-	}
-}
-
-void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
-{
-	if (Combat)
-	{
-		if (OverlappingWeapon)
-		{
-			Combat->EquipWeapon(OverlappingWeapon);
-		}
-		/*else if (Combat->ShouldSwapWeapons())
-		{
-			Combat->SwapWeapons();
-		}*/
-	}
-}
-
-void ABlasterCharacter::ServerSwitchButtonPressed_Implementation()
-{
-	if (Combat)
-	{
-		/*if (OverlappingWeapon)
-		{
-			Combat->EquipWeapon(OverlappingWeapon);
-		}*/
-		if (Combat->ShouldSwapWeapons())
-		{
-			Combat->SwapWeapons();
-		}
-	}
-}
-
-void ABlasterCharacter::CrouchButtonPressed()
-{
-	if (Combat && Combat->bHoldingTheFlag) return;
-	if (bDisableGameplay) return;
-	if (bIsCrouched)
-	{
-		UnCrouch();
-	}
-	else
-	{
-		Crouch();
-	}
-}
+//void ABlasterCharacter::CrouchButtonPressed()
+//{
+//	if (Combat && Combat->bHoldingTheFlag) return;
+//	if (bDisableGameplay) return;
+//	if (bIsCrouched)
+//	{
+//		UnCrouch();
+//	}
+//	else
+//	{
+//		Crouch();
+//	}
+//}
 
 void ABlasterCharacter::ReloadButtonPressed()
 {
