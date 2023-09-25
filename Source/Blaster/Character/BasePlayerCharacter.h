@@ -4,14 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "BlasterCharacter.h"
-#include "BaseAICharacter.generated.h"
+#include "BasePlayerCharacter.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class BLASTER_API ABaseAICharacter : public ABlasterCharacter
+class BLASTER_API ABasePlayerCharacter : public ABlasterCharacter
 {
 	GENERATED_BODY()
-
+	
 public:
-	// Sets default values for this character's properties
-	ABaseAICharacter();
+	ABasePlayerCharacter();
 };

@@ -36,6 +36,7 @@ public:
 
 	virtual void OnRep_ReplicatedMovement() override;
 	void Elim(bool bPlayerLeftGame);
+
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim(bool bPlayerLeftGame);
 	virtual void Destroyed() override;

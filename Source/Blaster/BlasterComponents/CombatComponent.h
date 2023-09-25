@@ -31,12 +31,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void FinishSwapAttachWeapons();
-
 	void FireButtonPressed(bool bPressed);
 
 	UFUNCTION(BlueprintCallable)
 	void ShotgunShellReload();
-
 	void JumpToShotgunEnd();
 
 	UFUNCTION(BlueprintCallable)
