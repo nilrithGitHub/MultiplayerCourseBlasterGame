@@ -5,7 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 
 AFlag::AFlag()
 {
@@ -29,7 +29,7 @@ void AFlag::Dropped()
 
 void AFlag::ResetFlag()
 {
-	ABlasterCharacter* FlagBearer = Cast<ABlasterCharacter>(GetOwner());
+	ABasePlayerCharacter* FlagBearer = Cast<ABasePlayerCharacter>(GetOwner());
 	if (FlagBearer)
 	{
 		FlagBearer->SetHoldingTheFlag(false);

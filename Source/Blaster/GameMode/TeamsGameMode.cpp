@@ -97,7 +97,7 @@ float ATeamsGameMode::CalculateDamage(AController* Attacker, AController* Victim
 	return BaseDamage;
 }
 
-void ATeamsGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
+void ATeamsGameMode::PlayerEliminated(ABasePlayerCharacter* ElimmedCharacter, ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
 {
 	Super::PlayerEliminated(ElimmedCharacter, VictimController, AttackerController);
 

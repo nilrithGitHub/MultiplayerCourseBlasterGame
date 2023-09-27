@@ -7,7 +7,7 @@
 #include "Components/Slider.h"
 #include "MultiplayerSessionsSubsystem.h"
 #include "GameFramework/GameModeBase.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 
 void UReturnToMainMenu::MenuSetup()
 {
@@ -129,7 +129,8 @@ void UReturnToMainMenu::ReturnButtonClicked()
 		APlayerController* FirstPlayerController = World->GetFirstPlayerController();
 		if (FirstPlayerController)
 		{
-			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FirstPlayerController->GetPawn());
+			ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(FirstPlayerController->GetPawn());
+
 			if (BlasterCharacter)
 			{
 				BlasterCharacter->ServerLeaveGame();

@@ -6,7 +6,7 @@
 #include "Blaster/CaptureTheFlag/FlagZone.h"
 #include "Blaster/GameState/BlasterGameState.h"
 
-void ACaptureTheFlagGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
+void ACaptureTheFlagGameMode::PlayerEliminated(class ABasePlayerCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
 {
 	ABlasterGameMode::PlayerEliminated(ElimmedCharacter, VictimController, AttackerController);
 }

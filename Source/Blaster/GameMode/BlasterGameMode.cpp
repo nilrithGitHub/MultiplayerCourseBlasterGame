@@ -2,7 +2,7 @@
 
 
 #include "BlasterGameMode.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
@@ -89,7 +89,7 @@ float ABlasterGameMode::CalculateDamage(AController* Attacker, AController* Vict
 	return BaseDamage;
 }
 
-void ABlasterGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
+void ABlasterGameMode::PlayerEliminated(class ABasePlayerCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController)
 {
 	if (AttackerController == nullptr || AttackerController->PlayerState == nullptr) return;
 	if (VictimController == nullptr || VictimController->PlayerState == nullptr) return;
@@ -110,7 +110,7 @@ void ABlasterGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacte
 		BlasterGameState->UpdateTopScore(AttackerPlayerState);
 		if (BlasterGameState->TopScoringPlayers.Contains(AttackerPlayerState))
 		{
-			ABlasterCharacter* Leader = Cast<ABlasterCharacter>(AttackerPlayerState->GetPawn());
+			ABasePlayerCharacter* Leader = Cast<ABasePlayerCharacter>(AttackerPlayerState->GetPawn());
 			if (Leader)
 			{
 				Leader->MulticastGainedTheLead();
@@ -121,7 +121,7 @@ void ABlasterGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacte
 		{
 			if (!BlasterGameState->TopScoringPlayers.Contains(PlayersCurrentlyInTheLead[i]))
 			{
-				ABlasterCharacter* Loser = Cast<ABlasterCharacter>(PlayersCurrentlyInTheLead[i]->GetPawn());
+				ABasePlayerCharacter* Loser = Cast<ABasePlayerCharacter>(PlayersCurrentlyInTheLead[i]->GetPawn());
 				if (Loser)
 				{
 					Loser->MulticastLostTheLead();
@@ -144,7 +144,7 @@ void ABlasterGameMode::PlayerEliminated(class ABlasterCharacter* ElimmedCharacte
 		if (NumPickupClasses > 0)
 		{
 			int32 Selection = FMath::RandRange(0, NumPickupClasses - 1);
-			AActor* Spawned = GetWorld()->SpawnActor<AActor>(SpawnOnPlayerDeadClasses[Selection], FTransform(FRotator::ZeroRotator, ElimmedLocation));
+			AActor* Spawned = GetWorld()->SpawnActor<AActor>(SpawnOnPlayerDeadClasses[Selection], FTransform (FRotator::ZeroRotator, ElimmedLocation));
 
 			/*if (HasAuthority() && Spawned)
 			{

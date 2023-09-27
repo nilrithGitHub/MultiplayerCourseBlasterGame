@@ -3,7 +3,7 @@
 
 #include "Shotgun.h"
 #include "Engine/SkeletalMeshSocket.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/BlasterComponents/LagCompensationComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,14 +25,14 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 		const FVector Start = SocketTransform.GetLocation();
 
 		// Maps hit character to number of times hit
-		TMap<ABlasterCharacter*, uint32> HitMap;
-		TMap<ABlasterCharacter*, uint32> HeadShotHitMap;
+		TMap<ABasePlayerCharacter*, uint32> HitMap;
+		TMap<ABasePlayerCharacter*, uint32> HeadShotHitMap;
 		for (FVector_NetQuantize HitTarget : HitTargets)
 		{
 			FHitResult FireHit;
 			WeaponTraceHit(Start, HitTarget, FireHit);
 
-			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
+			ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(FireHit.GetActor());
 			if (BlasterCharacter)
 			{
 				const bool bHeadShot = FireHit.BoneName.ToString() == FString("head");
@@ -70,10 +70,11 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 				}
 			}
 		}
-		TArray<ABlasterCharacter*> HitCharacters;
+
+		TArray<ABasePlayerCharacter*> HitCharacters;
 
 		// Maps Character hit to total damage
-		TMap<ABlasterCharacter*, float> DamageMap;
+		TMap<ABasePlayerCharacter*, float> DamageMap;
 
 		// Calculate body shot damage by multiplying times hit x Damage - store in DamageMap
 		for (auto HitPair : HitMap)
@@ -123,7 +124,7 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 		}
 		if (!HasAuthority() && bUseServerSideRewind)
 		{
-			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(OwnerPawn) : BlasterOwnerCharacter;
+			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(OwnerPawn) : BlasterOwnerCharacter;
 			BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(InstigatorController) : BlasterOwnerController;
 			if (BlasterOwnerController && BlasterOwnerCharacter && BlasterOwnerCharacter->GetLagCompensation() && BlasterOwnerCharacter->IsLocallyControlled())
 			{

@@ -2,7 +2,7 @@
 
 
 #include "BlasterAnimInstance.h"
-#include "BlasterCharacter.h"
+#include "BasePlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Blaster/Weapon/Weapon.h"
@@ -12,7 +12,7 @@ void UBlasterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	BlasterCharacter = Cast<ABlasterCharacter>(TryGetPawnOwner());
+	BlasterCharacter = Cast<ABasePlayerCharacter>(TryGetPawnOwner());
 }
 
 void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
@@ -21,7 +21,7 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	if (BlasterCharacter == nullptr)
 	{
-		BlasterCharacter = Cast<ABlasterCharacter>(TryGetPawnOwner());
+		BlasterCharacter = Cast<ABasePlayerCharacter>(TryGetPawnOwner());
 	}
 	if (BlasterCharacter == nullptr) return;
 

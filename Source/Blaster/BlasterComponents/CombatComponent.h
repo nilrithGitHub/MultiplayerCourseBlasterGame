@@ -16,7 +16,7 @@ class BLASTER_API UCombatComponent : public UActorComponent
 
 public:	
 	UCombatComponent();
-	friend class ABlasterCharacter;
+	friend class ABasePlayerCharacter;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -118,7 +118,7 @@ protected:
 	void EquipSecondaryWeapon(AWeapon* WeaponToEquip);
 private:
 	UPROPERTY()
-	class ABlasterCharacter* Character;
+	class ABasePlayerCharacter* Character;
 	UPROPERTY()
 	class ABlasterPlayerController* Controller;
 	UPROPERTY()

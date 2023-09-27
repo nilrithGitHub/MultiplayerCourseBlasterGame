@@ -3,7 +3,7 @@
 
 #include "ArrowProjectile.h"
 #include "Kismet/GameplayStatics.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/BlasterComponents/LagCompensationComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -47,13 +47,13 @@ void AArrowProjectile::PostEditChangeProperty(FPropertyChangedEvent& Event)
 
 void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ABlasterCharacter* OwnerCharacter = Cast<ABlasterCharacter>(GetOwner());
+	ABasePlayerCharacter* OwnerCharacter = Cast<ABasePlayerCharacter>(GetOwner());
 	if (OwnerCharacter)
 	{
 		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
 		if (OwnerController)
 		{
-			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+			ABasePlayerCharacter* HitCharacter = Cast<ABasePlayerCharacter>(OtherActor);
 
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{

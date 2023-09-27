@@ -2,7 +2,7 @@
 
 
 #include "BlasterPlayerState.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Net/UnrealNetwork.h"
 
@@ -17,7 +17,7 @@ void ABlasterPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 void ABlasterPlayerState::AddToScore(float ScoreAmount)
 {
 	SetScore(GetScore() + ScoreAmount);
-	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	Character = Character == nullptr ? Cast<ABasePlayerCharacter>(GetPawn()) : Character;
 	if (Character)
 	{
 		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
@@ -32,7 +32,7 @@ void ABlasterPlayerState::OnRep_Score()
 {
 	Super::OnRep_Score();
 
-	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	Character = Character == nullptr ? Cast<ABasePlayerCharacter>(GetPawn()) : Character;
 	if (Character)
 	{
 		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
@@ -46,7 +46,7 @@ void ABlasterPlayerState::OnRep_Score()
 void ABlasterPlayerState::AddToDefeats(int32 DefeatsAmount)
 {
 	Defeats += DefeatsAmount;
-	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	Character = Character == nullptr ? Cast<ABasePlayerCharacter>(GetPawn()) : Character;
 	if (Character)
 	{
 		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
@@ -59,7 +59,7 @@ void ABlasterPlayerState::AddToDefeats(int32 DefeatsAmount)
 
 void ABlasterPlayerState::OnRep_Defeats()
 {
-	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	Character = Character == nullptr ? Cast<ABasePlayerCharacter>(GetPawn()) : Character;
 	if (Character)
 	{
 		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
@@ -74,7 +74,7 @@ void ABlasterPlayerState::SetTeam(ETeam TeamToSet)
 {
 	Team = TeamToSet;
 
-	ABlasterCharacter* BCharacter = Cast <ABlasterCharacter>(GetPawn());
+	ABasePlayerCharacter* BCharacter = Cast <ABasePlayerCharacter>(GetPawn());
 	if (BCharacter)
 	{
 		BCharacter->SetTeamColor(Team);
@@ -83,7 +83,7 @@ void ABlasterPlayerState::SetTeam(ETeam TeamToSet)
 
 void ABlasterPlayerState::OnRep_Team()
 {
-	ABlasterCharacter* BCharacter = Cast <ABlasterCharacter>(GetPawn());
+	ABasePlayerCharacter* BCharacter = Cast <ABasePlayerCharacter>(GetPawn());
 	if (BCharacter)
 	{
 		BCharacter->SetTeamColor(Team);

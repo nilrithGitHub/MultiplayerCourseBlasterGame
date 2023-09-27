@@ -28,6 +28,7 @@ public:
 	/**
 	* Play montages
 	*/
+
 	//void PlayFireMontage(bool bAiming);
 	//void PlayReloadMontage();
 	void PlayElimMontage();
@@ -38,7 +39,7 @@ public:
 	virtual void Elim(bool bPlayerLeftGame);
 
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastElim(bool bPlayerLeftGame);
+	virtual void MulticastElim (bool bPlayerLeftGame);
 	virtual void Destroyed() override;
 
 	UPROPERTY(Replicated)
@@ -47,10 +48,9 @@ public:
 	//UFUNCTION(BlueprintImplementableEvent)
 	//void ShowSniperScopeWidget(bool bShowScope);
 
-	void UpdateHUDHealth();
-	void UpdateHUDShield();
+	virtual void UpdateHUDHealth();
+	virtual void UpdateHUDShield();
 	//void UpdateHUDAmmo();
-
 	//void SpawDefaultWeapon();
 
 	UPROPERTY()
@@ -58,8 +58,8 @@ public:
 
 	//bool bFinishedSwapping = false;
 
-	UFUNCTION(Server, Reliable)
-	void ServerLeaveGame();
+	/*UFUNCTION(Server, Reliable)
+	void ServerLeaveGame();*/
 
 	FOnLeftGame OnLeftGame;
 
@@ -74,10 +74,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-	void Turn(float Value);
-	void LookUp(float Value);
+	//void MoveForward(float Value);
+	//void MoveRight(float Value);
+	//void Turn(float Value);
+	//void LookUp(float Value);
 	//void EquipButtonPressed();
 	//void SwitchButtonPressed();
 	//void CrouchButtonPressed();
@@ -86,7 +86,7 @@ protected:
 	//void AimButtonReleased();
 	//void AimOffset(float DeltaTime);
 	void CalculateAO_Pitch();
-	void SimProxiesTurn();
+	virtual void SimProxiesTurn();
 	virtual void Jump() override;
 	//void FireButtonPressed();
 	//void FireButtonReleased();
@@ -98,9 +98,9 @@ protected:
 	//void OnPlayerStateInitialized();
 
 	UFUNCTION()
-	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+	virtual void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 	// Poll for any relelvant classes and initialize our HUD
-	void PollInit();
+	virtual void PollInit();
 	virtual void RotateInPlace(float DeltaTime);
 
 	/**
@@ -223,8 +223,8 @@ protected:
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	//class UCombatComponent* Combat;
 
-	//UPROPERTY(VisibleAnywhere)
-	//class UBuffComponent* Buff;
+	UPROPERTY(VisibleAnywhere)
+	class UBuffComponent* Buff;
 
 	//UPROPERTY(VisibleAnywhere)
 	//class ULagCompensationComponent* LagCompensation;
@@ -325,7 +325,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float ElimDelay = 3.f;
 
-	void ElimTimerFinished();
+	virtual void ElimTimerFinished();
 
 	bool bLeftGame = false;
 
@@ -420,9 +420,9 @@ public:
 
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
-	AWeapon* GetEquippedWeapon();
+	//AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
-	FVector GetHitTarget() const;
+	//FVector GetHitTarget() const;
 	//FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return bElimmed; }
@@ -435,14 +435,14 @@ public:
 	//ECombatState GetCombatState() const;
 	//FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
-	/*FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
-	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
-	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }*/
+	//FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
+	//FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
+	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	//bool IsLocallyReloading();
 	//FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	//FORCEINLINE bool IsHoldingTheFlag() const;
 	/*ETeam GetTeam();*/
-	void SetHoldingTheFlag(bool bHolding);
+	/*void SetHoldingTheFlag(bool bHolding);*/
 
 	// Interface
 	void OnCrosshairesDetected_Implementation(bool bIsDetected);

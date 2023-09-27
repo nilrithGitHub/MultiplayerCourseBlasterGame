@@ -3,7 +3,7 @@
 
 #include "CombatComponent.h"
 #include "Blaster/Weapon/Weapon.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Components/SphereComponent.h"
 #include "Net/UnrealNetwork.h"

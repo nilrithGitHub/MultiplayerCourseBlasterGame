@@ -2,7 +2,7 @@
 
 
 #include "LagCompensationComponent.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "Components/BoxComponent.h"
 #include "Components/BoxComponent.h"
@@ -48,7 +48,7 @@ FFramePackage ULagCompensationComponent::InterpBetweenFrames(const FFramePackage
 	return InterpFramePackage;
 }
 
-FServerSideRewindResult ULagCompensationComponent::ConfirmHit(const FFramePackage& Package, ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation)
+FServerSideRewindResult ULagCompensationComponent::ConfirmHit(const FFramePackage& Package, ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation)
 {
 	if (HitCharacter == nullptr) return FServerSideRewindResult();
 
@@ -109,7 +109,7 @@ FServerSideRewindResult ULagCompensationComponent::ConfirmHit(const FFramePackag
 	return FServerSideRewindResult{ false, false };
 }
 
-FServerSideRewindResult ULagCompensationComponent::ProjectileConfirmHit(const FFramePackage& Package, ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
+FServerSideRewindResult ULagCompensationComponent::ProjectileConfirmHit(const FFramePackage& Package, ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
 {
 	FFramePackage CurrentFrame;
 	CacheBoxPositions(HitCharacter, CurrentFrame);
@@ -205,7 +205,7 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunConfirmHit(cons
 				TraceEnd,
 				ECC_HitBox
 			);
-			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(ConfirmHitResult.GetActor());
+			ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(ConfirmHitResult.GetActor());
 			if (BlasterCharacter)
 			{
 				if (ShotgunResult.HeadShots.Contains(BlasterCharacter))
@@ -248,7 +248,7 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunConfirmHit(cons
 				TraceEnd,
 				ECC_HitBox
 			);
-			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(ConfirmHitResult.GetActor());
+			ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(ConfirmHitResult.GetActor());
 			if (BlasterCharacter)
 			{
 				if (ShotgunResult.BodyShots.Contains(BlasterCharacter))
@@ -272,7 +272,7 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunConfirmHit(cons
 	return ShotgunResult;
 }
 
-void ULagCompensationComponent::CacheBoxPositions(ABlasterCharacter* HitCharacter, FFramePackage& OutFramePackage)
+void ULagCompensationComponent::CacheBoxPositions(ABasePlayerCharacter* HitCharacter, FFramePackage& OutFramePackage)
 {
 	if (HitCharacter == nullptr) return;
 	for (auto& HitBoxPair : HitCharacter->HitCollisionBoxes)
@@ -288,7 +288,7 @@ void ULagCompensationComponent::CacheBoxPositions(ABlasterCharacter* HitCharacte
 	}
 }
 
-void ULagCompensationComponent::MoveBoxes(ABlasterCharacter* HitCharacter, const FFramePackage& Package)
+void ULagCompensationComponent::MoveBoxes(ABasePlayerCharacter* HitCharacter, const FFramePackage& Package)
 {
 	if (HitCharacter == nullptr) return;
 	for (auto& HitBoxPair : HitCharacter->HitCollisionBoxes)
@@ -302,7 +302,7 @@ void ULagCompensationComponent::MoveBoxes(ABlasterCharacter* HitCharacter, const
 	}
 }
 
-void ULagCompensationComponent::ResetHitBoxes(ABlasterCharacter* HitCharacter, const FFramePackage& Package)
+void ULagCompensationComponent::ResetHitBoxes(ABasePlayerCharacter* HitCharacter, const FFramePackage& Package)
 {
 	if (HitCharacter == nullptr) return;
 	for (auto& HitBoxPair : HitCharacter->HitCollisionBoxes)
@@ -317,7 +317,7 @@ void ULagCompensationComponent::ResetHitBoxes(ABlasterCharacter* HitCharacter, c
 	}
 }
 
-void ULagCompensationComponent::EnableCharacterMeshCollision(ABlasterCharacter* HitCharacter, ECollisionEnabled::Type CollisionEnabled)
+void ULagCompensationComponent::EnableCharacterMeshCollision(ABasePlayerCharacter* HitCharacter, ECollisionEnabled::Type CollisionEnabled)
 {
 	if (HitCharacter && HitCharacter->GetMesh())
 	{
@@ -341,22 +341,22 @@ void ULagCompensationComponent::ShowFramePackage(const FFramePackage& Package, c
 	}
 }
 
-FServerSideRewindResult ULagCompensationComponent::ServerSideRewind(ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation, float HitTime)
+FServerSideRewindResult ULagCompensationComponent::ServerSideRewind(ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation, float HitTime)
 {
 	FFramePackage FrameToCheck = GetFrameToCheck(HitCharacter, HitTime);
 	return ConfirmHit(FrameToCheck, HitCharacter, TraceStart, HitLocation);
 }
 
-FServerSideRewindResult ULagCompensationComponent::ProjectileServerSideRewind(ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
+FServerSideRewindResult ULagCompensationComponent::ProjectileServerSideRewind(ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
 {
 	FFramePackage FrameToCheck = GetFrameToCheck(HitCharacter, HitTime);
 	return ProjectileConfirmHit(FrameToCheck, HitCharacter, TraceStart, InitialVelocity, HitTime);
 }
 
-FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunServerSideRewind(const TArray<ABlasterCharacter*>& HitCharacters, const FVector_NetQuantize& TraceStart, const TArray<FVector_NetQuantize>& HitLocations, float HitTime)
+FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunServerSideRewind(const TArray<ABasePlayerCharacter*>& HitCharacters, const FVector_NetQuantize& TraceStart, const TArray<FVector_NetQuantize>& HitLocations, float HitTime)
 {
 	TArray<FFramePackage> FramesToCheck;
-	for (ABlasterCharacter* HitCharacter : HitCharacters)
+	for (ABasePlayerCharacter* HitCharacter : HitCharacters)
 	{
 		FramesToCheck.Add(GetFrameToCheck(HitCharacter, HitTime));
 	}
@@ -364,7 +364,7 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunServerSideRewin
 	return ShotgunConfirmHit(FramesToCheck, TraceStart, HitLocations);
 }
 
-FFramePackage ULagCompensationComponent::GetFrameToCheck(ABlasterCharacter* HitCharacter, float HitTime)
+FFramePackage ULagCompensationComponent::GetFrameToCheck(ABasePlayerCharacter* HitCharacter, float HitTime)
 {
 	bool bReturn =
 		HitCharacter == nullptr ||
@@ -421,7 +421,7 @@ FFramePackage ULagCompensationComponent::GetFrameToCheck(ABlasterCharacter* HitC
 	return FrameToCheck;
 }
 
-void ULagCompensationComponent::ServerScoreRequest_Implementation(ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation, float HitTime)
+void ULagCompensationComponent::ServerScoreRequest_Implementation(ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize& HitLocation, float HitTime)
 {
 	FServerSideRewindResult Confirm = ServerSideRewind(HitCharacter, TraceStart, HitLocation, HitTime);
 
@@ -439,7 +439,7 @@ void ULagCompensationComponent::ServerScoreRequest_Implementation(ABlasterCharac
 	}
 }
 
-void ULagCompensationComponent::ProjectileServerScoreRequest_Implementation(ABlasterCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
+void ULagCompensationComponent::ProjectileServerScoreRequest_Implementation(ABasePlayerCharacter* HitCharacter, const FVector_NetQuantize& TraceStart, const FVector_NetQuantize100& InitialVelocity, float HitTime)
 {
 	FServerSideRewindResult Confirm = ProjectileServerSideRewind(HitCharacter, TraceStart, InitialVelocity, HitTime);
 
@@ -457,7 +457,7 @@ void ULagCompensationComponent::ProjectileServerScoreRequest_Implementation(ABla
 	}
 }
 
-void ULagCompensationComponent::ShotgunServerScoreRequest_Implementation(const TArray<ABlasterCharacter*>& HitCharacters, const FVector_NetQuantize& TraceStart, const TArray<FVector_NetQuantize>& HitLocations, float HitTime)
+void ULagCompensationComponent::ShotgunServerScoreRequest_Implementation(const TArray<ABasePlayerCharacter*>& HitCharacters, const FVector_NetQuantize& TraceStart, const TArray<FVector_NetQuantize>& HitLocations, float HitTime)
 {
 	FShotgunServerSideRewindResult Confirm = ShotgunServerSideRewind(HitCharacters, TraceStart, HitLocations, HitTime);
 
@@ -519,7 +519,7 @@ void ULagCompensationComponent::SaveFramePackage()
 
 void ULagCompensationComponent::SaveFramePackage(FFramePackage& Package)
 {
-	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : Character;
+	Character = Character == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : Character;
 	if (Character)
 	{
 		Package.Time = GetWorld()->GetTimeSeconds();

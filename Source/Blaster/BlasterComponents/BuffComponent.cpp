@@ -61,7 +61,6 @@ void UBuffComponent::ShieldRampUp(float DeltaTime)
 void UBuffComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void UBuffComponent::SetInitialSpeeds(float BaseSpeed, float CrouchSpeed)

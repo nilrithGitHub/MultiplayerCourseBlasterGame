@@ -32,17 +32,23 @@ public:
 	void PlaySwapMontage();
 
 	virtual void Elim(bool bPlayerLeftGame) override;
-	virtual void MulticastElim(bool bPlayerLeftGame) override;
+	void MulticastElim_Implementation(bool bPlayerLeftGame) override;
 	virtual void Destroyed() override;
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void ShowSniperScopeWidget(bool bShowScope);
+
+	virtual void UpdateHUDHealth() override;
+	virtual void UpdateHUDShield() override;
 
 	void UpdateHUDAmmo();
 
 	void SpawDefaultWeapon();
 
 	bool bFinishedSwapping = false;
+
+	UFUNCTION(Server, Reliable)
+		void ServerLeaveGame();
 
 	UFUNCTION(NetMulticast, Reliable)
 		void MulticastGainedTheLead();
@@ -51,9 +57,14 @@ public:
 		void MulticastLostTheLead();
 
 	void SetTeamColor(ETeam Team);
+
 protected:
 	virtual void BeginPlay() override;
 
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void Turn(float Value);
+	void LookUp(float Value);
 	void EquipButtonPressed();
 	void SwitchButtonPressed();
 	void CrouchButtonPressed();
@@ -61,6 +72,7 @@ protected:
 	void AimButtonPressed();
 	void AimButtonReleased();
 	void AimOffset(float DeltaTime);
+	virtual void SimProxiesTurn() override;
 
 	void FireButtonPressed();
 	void FireButtonReleased();
@@ -69,6 +81,9 @@ protected:
 	void DropOrDestroyWeapons();
 	virtual void SetSpawnPoint() override;
 	void OnPlayerStateInitialized();
+
+	virtual void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser) override;
+	virtual void PollInit() override;
 	virtual void RotateInPlace(float DeltaTime) override;
 
 private:
@@ -86,9 +101,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UCombatComponent* Combat;
-
-	UPROPERTY(VisibleAnywhere)
-		class UBuffComponent* Buff;
 
 	UPROPERTY(VisibleAnywhere)
 		class ULagCompensationComponent* LagCompensation;
@@ -123,6 +135,8 @@ private:
 
 	UPROPERTY()
 		class ABlasterPlayerController* BlasterPlayerController;
+
+	virtual void ElimTimerFinished() override;
 
 	/**
 	* Team colors
@@ -168,13 +182,16 @@ public:
 	bool IsAiming();
 	bool IsCharging();
 
+	AWeapon* GetEquippedWeapon();
+	FVector GetHitTarget() const;
+
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	ECombatState GetCombatState() const;
 	FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
-	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	bool IsLocallyReloading();
 	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	ETeam GetTeam();
+	void SetHoldingTheFlag(bool bHolding);
 };

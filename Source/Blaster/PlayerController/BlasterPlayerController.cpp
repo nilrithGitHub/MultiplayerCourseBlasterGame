@@ -6,7 +6,7 @@
 #include "Blaster/HUD/CharacterOverlay.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
@@ -292,7 +292,7 @@ void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMat
 void ABlasterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(InPawn);
+	ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(InPawn);
 	if (BlasterCharacter)
 	{
 		SetHUDHealth(BlasterCharacter->GetHealth(), BlasterCharacter->GetMaxHealth());
@@ -530,7 +530,7 @@ void ABlasterPlayerController::PollInit()
 				if (bInitializeCarriedAmmo) SetHUDCarriedAmmo(HUDCarriedAmmo);
 				if (bInitializeWeaponAmmo) SetHUDWeaponAmmo(HUDWeaponAmmo);
 
-				ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+				ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(GetPawn());
 				if (BlasterCharacter && BlasterCharacter->GetCombat())
 				{
 					if (bInitializeGrenades) SetHUDGrenades(BlasterCharacter->GetCombat()->GetGrenades());
@@ -654,7 +654,7 @@ void ABlasterPlayerController::HandleCooldown()
 			}
 		}
 	}
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+	ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(GetPawn());
 	if (BlasterCharacter && BlasterCharacter->GetCombat())
 	{
 		BlasterCharacter->bDisableGameplay = true;

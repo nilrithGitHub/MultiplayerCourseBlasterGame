@@ -80,6 +80,7 @@ public:
 	/** 
 	* Automatic fire
 	*/
+
 	UPROPERTY(EditAnywhere, Category = Combat)
 	float FireDelay = .15f;
 
@@ -94,6 +95,7 @@ public:
 	/** 
 	* Enable or disable custom depth
 	*/
+
 	void EnableCustomDepth(bool bEnable);
 
 	UPROPERTY(EditAnywhere)
@@ -157,7 +159,7 @@ protected:
 		float ChargeTimer;
 
 	UPROPERTY()
-	class ABlasterCharacter* BlasterOwnerCharacter;
+	class ABasePlayerCharacter* BlasterOwnerCharacter;
 	UPROPERTY()
 	class ABlasterPlayerController* BlasterOwnerController;
 

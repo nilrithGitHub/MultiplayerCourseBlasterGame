@@ -2,14 +2,14 @@
 
 
 #include "AmmoPickup.h"
-#include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/BlasterComponents/CombatComponent.h"
 
 void AAmmoPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnSphereOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
+	ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(OtherActor);
 	if (BlasterCharacter)
 	{
 		UCombatComponent* Combat = BlasterCharacter->GetCombat();
