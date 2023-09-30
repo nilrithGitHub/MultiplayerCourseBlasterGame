@@ -695,10 +695,6 @@ void ABasePlayerCharacter::Destroyed()
 	}
 }
 
-void ABasePlayerCharacter::ShowSniperScopeWidget(bool bShowScope)
-{
-}
-
 void ABasePlayerCharacter::UpdateHUDHealth()
 {
 	Super::UpdateHUDHealth();
