@@ -29,7 +29,7 @@ public:
 	void AddToDefeats(int32 DefeatsAmount);
 private:
 	UPROPERTY()
-	class ABlasterCharacter* Character;
+	class ABasePlayerCharacter* Character;
 	UPROPERTY()
 	class ABlasterPlayerController* Controller;
 
