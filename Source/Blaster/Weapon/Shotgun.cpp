@@ -25,6 +25,7 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 		const FVector Start = SocketTransform.GetLocation();
 
 		// Maps hit character to number of times hit
+		// Change Type from BlasterCharacter to BasePlayerCharacter
 		TMap<ABasePlayerCharacter*, uint32> HitMap;
 		TMap<ABasePlayerCharacter*, uint32> HeadShotHitMap;
 		for (FVector_NetQuantize HitTarget : HitTargets)
@@ -70,10 +71,11 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 				}
 			}
 		}
-
+		// Change Type from BlasterCharacter to BasePlayerCharacter
 		TArray<ABasePlayerCharacter*> HitCharacters;
 
 		// Maps Character hit to total damage
+		// Change Type from BlasterCharacter to BasePlayerCharacter
 		TMap<ABasePlayerCharacter*, float> DamageMap;
 
 		// Calculate body shot damage by multiplying times hit x Damage - store in DamageMap
@@ -124,6 +126,7 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 		}
 		if (!HasAuthority() && bUseServerSideRewind)
 		{
+			// Change from BlasterCharacter to BasePlayerCharacter
 			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(OwnerPawn) : BlasterOwnerCharacter;
 			BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(InstigatorController) : BlasterOwnerController;
 			if (BlasterOwnerController && BlasterOwnerCharacter && BlasterOwnerCharacter->GetLagCompensation() && BlasterOwnerCharacter->IsLocallyControlled())

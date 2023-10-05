@@ -46,9 +46,11 @@ ABlasterCharacter::ABlasterCharacter()
 	WorldWidgetComp->SetupAttachment(RootComponent);
 	WorldWidgetComp->SetVisibility(false);
 
+	// Move to BasePlayerCharacter
 	/*Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
 	Combat->SetIsReplicated(true);
 
+	// Move to BasePlayerCharacter
 	LagCompensation = CreateDefaultSubobject<ULagCompensationComponent>(TEXT("LagCompensation"));*/
 
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
@@ -64,6 +66,7 @@ ABlasterCharacter::ABlasterCharacter()
 
 	DissolveTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("DissolveTimelineComponent"));
 
+	// Move to BasePlayerCharacter
 	/*AttachedGrenade = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Attached Grenade"));
 	AttachedGrenade->SetupAttachment(GetMesh(), FName("GrenadeSocket"));
 	AttachedGrenade->SetCollisionEnabled(ECollisionEnabled::NoCollision);*/
@@ -160,6 +163,7 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	// Move to BasePlayerCharacter
 	//DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
 	DOREPLIFETIME(ABlasterCharacter, Health);
 	DOREPLIFETIME(ABlasterCharacter, Shield);
@@ -176,6 +180,7 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 
 void ABlasterCharacter::Elim(bool bPlayerLeftGame)
 {
+	// Move to BasePlayerCharacter
 	/*DropOrDestroyWeapons();*/
 	MulticastElim(bPlayerLeftGame);
 }
@@ -183,6 +188,7 @@ void ABlasterCharacter::Elim(bool bPlayerLeftGame)
 void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 {
 	bLeftGame = bPlayerLeftGame;
+	// Move to BasePlayerCharacter
 	/*if (BlasterPlayerController)
 	{
 		BlasterPlayerController->SetHUDWeaponAmmo(0);
@@ -202,6 +208,8 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 	// Disable character movement
 	bDisableGameplay = true;
 	GetCharacterMovement()->DisableMovement();
+
+	// Move to BasePlayerCharacter
 	//if (Combat)
 	//{
 	//	Combat->FireButtonPressed(false);
@@ -210,6 +218,7 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	// Move to BasePlayerCharacter
 	/*AttachedGrenade->SetCollisionEnabled(ECollisionEnabled::NoCollision);*/
 
 	// Spawn elim bot
@@ -232,15 +241,21 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 		);
 	}
 
+	// Move to BasePlayerCharacter
 	/*bool bHideSniperScope = IsLocallyControlled() &&
 		Combat &&
 		Combat->bAiming &&
 		Combat->EquippedWeapon &&
-		Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle;
-	if (bHideSniperScope)
+		Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle;*/
+
+	// Move to BasePlayerCharacter
+
+	/*if (bHideSniperScope)
 	{
 		ShowSniperScopeWidget(false);
 	}
+
+	// Move to BasePlayerCharacter
 	if (CrownComponent)
 	{
 		CrownComponent->DestroyComponent();
@@ -262,6 +277,7 @@ void ABlasterCharacter::ElimTimerFinished()
 	}
 }
 
+// Move To BasePlayerCharacter
 //void ABlasterCharacter::ServerLeaveGame_Implementation()
 //{
 //	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
@@ -272,8 +288,10 @@ void ABlasterCharacter::ElimTimerFinished()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::DropOrDestroyWeapon(AWeapon* Weapon)
 //{
+// Move to BasePlayerCharacter
 //	if (Weapon == nullptr) return;
 //	if (Weapon->bDestroyWeapon)
 //	{
@@ -285,18 +303,22 @@ void ABlasterCharacter::ElimTimerFinished()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::DropOrDestroyWeapons()
 //{
 //	if (Combat)
 //	{
+// Move to BasePlayerCharacter
 //		if (Combat->EquippedWeapon)
 //		{
 //			DropOrDestroyWeapon(Combat->EquippedWeapon);
 //		}
+// Move to BasePlayerCharacter
 //		if (Combat->SecondaryWeapon)
 //		{
 //			DropOrDestroyWeapon(Combat->SecondaryWeapon);
 //		}
+// Move to BasePlayerCharacter
 //		if (Combat->TheFlag)
 //		{
 //			Combat->TheFlag->Dropped();
@@ -304,6 +326,7 @@ void ABlasterCharacter::ElimTimerFinished()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::OnPlayerStateInitialized()
 //{
 //	BlasterPlayerState->AddToScore(0.f);
@@ -314,6 +337,7 @@ void ABlasterCharacter::ElimTimerFinished()
 
 void ABlasterCharacter::SetSpawnPoint()
 {
+	// Move to BasePlayerCharacter
 	/*if (HasAuthority() && BlasterPlayerState->GetTeam() != ETeam::ET_NoTeam)
 	{
 		TArray<AActor*> PlayerStarts;
@@ -347,6 +371,7 @@ void ABlasterCharacter::Destroyed()
 		ElimBotComponent->DestroyComponent();
 	}
 
+	// Move to BasePlayerCharacter
 	/*BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	bool bMatchNotInProgress = BlasterGameMode && BlasterGameMode->GetMatchState() != MatchState::InProgress;
 	if (Combat && Combat->EquippedWeapon && bMatchNotInProgress)
@@ -355,6 +380,7 @@ void ABlasterCharacter::Destroyed()
 	}*/
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::MulticastGainedTheLead_Implementation()
 //{
 //	if (CrownSystem == nullptr) return;
@@ -370,12 +396,14 @@ void ABlasterCharacter::Destroyed()
 //			false
 //		);
 //	}
+// Move to BasePlayerCharacter
 //	if (CrownComponent)
 //	{
 //		CrownComponent->Activate();
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::MulticastLostTheLead_Implementation()
 //{
 //	if (CrownComponent)
@@ -384,6 +412,7 @@ void ABlasterCharacter::Destroyed()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SetTeamColor(ETeam Team)
 //{
 //	if (GetMesh() == nullptr || OriginalMaterial == nullptr) return;
@@ -393,10 +422,12 @@ void ABlasterCharacter::Destroyed()
 //		GetMesh()->SetMaterial(0, OriginalMaterial);
 //		DissolveMaterialInstance = BlueDissolveMatInst;
 //		break;
+// Move to BasePlayerCharacter
 //	case ETeam::ET_BlueTeam:
 //		GetMesh()->SetMaterial(0, BlueMaterial);
 //		DissolveMaterialInstance = BlueDissolveMatInst;
 //		break;
+// Move to BasePlayerCharacter
 //	case ETeam::ET_RedTeam:
 //		GetMesh()->SetMaterial(0, RedMaterial);
 //		DissolveMaterialInstance = RedDissolveMatInst;
@@ -412,6 +443,7 @@ void ABlasterCharacter::BeginPlay()
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
+	// Move to BasePlayerCharacter
 	/*if (AttachedGrenade)
 	{
 		AttachedGrenade->SetVisibility(false);
@@ -423,12 +455,14 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	RotateInPlace(DeltaTime);
+	// Move to BasePlayerCharacter
 	//HideCameraIfCharacterClose();
 	PollInit();
 }
 
 void ABlasterCharacter::RotateInPlace(float DeltaTime)
 {
+	// Move to BasePlayerCharacter
 	/*if (Combat && Combat->bHoldingTheFlag)
 	{
 		bUseControllerRotationYaw = false;
@@ -436,6 +470,7 @@ void ABlasterCharacter::RotateInPlace(float DeltaTime)
 		TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 		return;
 	}
+	// Move to BasePlayerCharacter
 	if (Combat && Combat->EquippedWeapon) GetCharacterMovement()->bOrientRotationToMovement = false;
 	if (Combat && Combat->EquippedWeapon) bUseControllerRotationYaw = true;*/
 	/*if (bDisableGameplay)
@@ -450,6 +485,7 @@ void ABlasterCharacter::RotateInPlace(float DeltaTime)
 	}
 	else
 	{
+	// Move to BasePlayerCharacter
 		TimeSinceLastMovementReplication += DeltaTime;
 		if (TimeSinceLastMovementReplication > 0.25f)
 		{
@@ -459,6 +495,7 @@ void ABlasterCharacter::RotateInPlace(float DeltaTime)
 	}*/
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 //{
 //	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -484,6 +521,7 @@ void ABlasterCharacter::RotateInPlace(float DeltaTime)
 void ABlasterCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	// Move to BasePlayerCharacter
 	//if (Combat)
 	//{
 	//	Combat->Character = this;
@@ -497,6 +535,7 @@ void ABlasterCharacter::PostInitializeComponents()
 		);
 		Buff->SetInitialJumpVelocity(GetCharacterMovement()->JumpZVelocity);
 	}
+	// Move to BasePlayerCharacter
 	//if (LagCompensation)
 	//{
 	//	LagCompensation->Character = this;
@@ -507,6 +546,7 @@ void ABlasterCharacter::PostInitializeComponents()
 	//}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::PlayFireMontage(bool bAiming)
 //{
 //	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
@@ -516,12 +556,14 @@ void ABlasterCharacter::PostInitializeComponents()
 //	{
 //		switch (Combat->EquippedWeapon->FireType)
 //		{
+// Move to BasePlayerCharacter
 //		case EFireType::EFT_Charge:
 //			if (FireBowMontage)
 //			{
 //				AnimInstance->Montage_Play(FireBowMontage);
 //			}
 //		default:
+// Move to BasePlayerCharacter
 //			if (FireWeaponMontage)
 //			{
 //				AnimInstance->Montage_Play(FireWeaponMontage);
@@ -534,36 +576,47 @@ void ABlasterCharacter::PostInitializeComponents()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::PlayReloadMontage()
 //{
 //	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
-//
+// 
+// 
+// Move to BasePlayerCharacter
 //	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 //	if (AnimInstance && ReloadMontage)
 //	{
+// Move to BasePlayerCharacter
 //		AnimInstance->Montage_Play(ReloadMontage);
 //		FName SectionName;
 //
 //		switch (Combat->EquippedWeapon->GetWeaponType())
 //		{
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_AssaultRifle:
 //			SectionName = FName("Rifle");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_RocketLauncher:
 //			SectionName = FName("RocketLauncher");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_Pistol:
 //			SectionName = FName("Pistol");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_SubmachineGun:
 //			SectionName = FName("Pistol");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_Shotgun:
 //			SectionName = FName("Shotgun");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_SniperRifle:
 //			SectionName = FName("SniperRifle");
 //			break;
+// Move to BasePlayerCharacter
 //		case EWeaponType::EWT_GrenadeLauncher:
 //			SectionName = FName("GrenadeLauncher");
 //			break;
@@ -582,6 +635,7 @@ void ABlasterCharacter::PlayElimMontage()
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::PlayThrowGrenadeMontage()
 //{
 //	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -591,6 +645,7 @@ void ABlasterCharacter::PlayElimMontage()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::PlaySwapMontage()
 //{
 //	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -602,6 +657,7 @@ void ABlasterCharacter::PlayElimMontage()
 
 void ABlasterCharacter::PlayHitReactMontage()
 {
+	// Move to BasePlayerCharacter
 	//if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -613,6 +669,7 @@ void ABlasterCharacter::PlayHitReactMontage()
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::GrenadeButtonPressed()
 //{
 //	if (Combat)
@@ -625,7 +682,11 @@ void ABlasterCharacter::PlayHitReactMontage()
 
 void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
 {
+	// Move to BasePlayerCharacter
 	/*BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
+	* 
+	* Move to BasePlayerCharacter
+	* 
 	if (bElimmed || BlasterGameMode == nullptr) return;
 	Damage = BlasterGameMode->CalculateDamage(InstigatorController, Controller, Damage);*/
 
@@ -650,6 +711,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	UpdateHUDShield();
 	PlayHitReactMontage();
 
+	// Move to BasePlayerCharacter
 	/*if (Health == 0.f)
 	{
 		if (BlasterGameMode)
@@ -661,6 +723,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	}*/
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::MoveForward(float Value)
 //{
 //	if (bDisableGameplay) return;
@@ -671,7 +734,8 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //		AddMovementInput(Direction, Value);
 //	}
 //}
-//
+
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::MoveRight(float Value)
 //{
 //	if (bDisableGameplay) return;
@@ -682,7 +746,8 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //		AddMovementInput(Direction, Value);
 //	}
 //}
-//
+
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::Turn(float Value)
 //{
 //	AddControllerYawInput(IsAiming() ? Value * 0.8f : Value);
@@ -693,6 +758,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	AddControllerPitchInput(IsAiming() ? Value * 0.8f : Value);
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::EquipButtonPressed()
 //{
 //	if (bDisableGameplay) return;
@@ -703,6 +769,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SwitchButtonPressed()
 //{
 //	if (bDisableGameplay) return;
@@ -724,6 +791,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
 //{
 //	if (Combat)
@@ -738,7 +806,8 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //		}*/
 //	}
 //}
-//
+
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::ServerSwitchButtonPressed_Implementation()
 //{
 //	if (Combat)
@@ -754,6 +823,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::CrouchButtonPressed()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
@@ -768,6 +838,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::ReloadButtonPressed()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
@@ -778,6 +849,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::AimButtonPressed()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
@@ -788,6 +860,7 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::AimButtonReleased()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
@@ -805,6 +878,7 @@ float ABlasterCharacter::CalculateSpeed()
 	return Velocity.Size();
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::AimOffset(float DeltaTime)
 //{
 //	if (Combat && Combat->EquippedWeapon == nullptr) return;
@@ -824,6 +898,7 @@ float ABlasterCharacter::CalculateSpeed()
 //		bUseControllerRotationYaw = true;
 //		TurnInPlace(DeltaTime);
 //	}
+// Move to BasePlayerCharacter
 //	if (Speed > 0.f || bIsInAir) // running, or jumping
 //	{
 //		bRotateRootBone = false;
@@ -850,6 +925,7 @@ void ABlasterCharacter::CalculateAO_Pitch()
 
 void ABlasterCharacter::SimProxiesTurn()
 {
+	// Move to BasePlayerCharacter
 	/*if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;*/
 	bRotateRootBone = false;
 	float Speed = CalculateSpeed();
@@ -897,6 +973,7 @@ void ABlasterCharacter::Jump()
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::FireButtonPressed()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
@@ -907,10 +984,14 @@ void ABlasterCharacter::Jump()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::FireButtonReleased()
 //{
 //	if (Combat && Combat->bHoldingTheFlag) return;
 //	if (bDisableGameplay) return;
+// 
+// Move to BasePlayerCharacter
+// 
 //	if (Combat)
 //	{
 //		Combat->FireButtonPressed(false);
@@ -919,6 +1000,9 @@ void ABlasterCharacter::Jump()
 
 void ABlasterCharacter::TurnInPlace(float DeltaTime)
 {
+
+	// Move to BasePlayerCharacter soon
+
 	if (AO_Yaw > 90.f)
 	{
 		TurningInPlace = ETurningInPlace::ETIP_Right;
@@ -939,6 +1023,7 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::HideCameraIfCharacterClose()
 //{
 //	if (!IsLocallyControlled()) return;
@@ -954,6 +1039,9 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 //			Combat->SecondaryWeapon->GetWeaponMesh()->bOwnerNoSee = true;
 //		}
 //	}
+// 
+// Move to BasePlayerCharacter
+// 
 //	else
 //	{
 //		GetMesh()->SetVisibility(true);
@@ -988,6 +1076,7 @@ void ABlasterCharacter::OnRep_Shield(float LastShield)
 
 void ABlasterCharacter::UpdateHUDHealth()
 {
+	// Move to BasePlayerCharacter
 	/*BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
 	if (BlasterPlayerController)
 	{
@@ -1007,6 +1096,7 @@ void ABlasterCharacter::UpdateHUDHealth()
 
 void ABlasterCharacter::UpdateHUDShield()
 {
+	// Move to BasePlayerCharacter
 	/*BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
 	if (BlasterPlayerController)
 	{
@@ -1016,14 +1106,17 @@ void ABlasterCharacter::UpdateHUDShield()
 	UWorldCharacterOverlay* WorldCharacterOverlay = Cast<UWorldCharacterOverlay>(WorldWidgetComp->GetWidget());
 	if (WorldCharacterOverlay)
 	{
+		// Move to BasePlayerCharacter
 		//BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
 		if (WorldCharacterOverlay->ShieldBar)
 		{
 			const float ShieldPercent = Shield / MaxShield;
 			WorldCharacterOverlay->ShieldBar->SetPercent(ShieldPercent);
+			// Move to BasePlayerCharacter
 			/*FString HealthText = FString::Printf(TEXT("%d/%d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
 			WorldCharacterOverlay->HealthText->SetText(FText::FromString(HealthText));*/
 		}
+		// Move to BasePlayerCharacter
 		/*else
 		{
 			bInitializeHealth = true;
@@ -1033,6 +1126,7 @@ void ABlasterCharacter::UpdateHUDShield()
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::UpdateHUDAmmo()
 //{
 //	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
@@ -1043,10 +1137,14 @@ void ABlasterCharacter::UpdateHUDShield()
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SpawDefaultWeapon()
 //{
 //	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 //	UWorld* World = GetWorld();
+// 
+// Move to BasePlayerCharacter
+// 
 //	if (BlasterGameMode && World && !bElimmed && DefaultWeaponClassList.Num() > 0)
 //	{
 //		int32 RanIndex = FMath::RandRange(0, DefaultWeaponClassList.Num() - 1);
@@ -1061,6 +1159,7 @@ void ABlasterCharacter::UpdateHUDShield()
 
 void ABlasterCharacter::PollInit()
 {
+	// Move to BasePlayerCharacter
 	/*if (BlasterPlayerState == nullptr)
 	{
 		BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
@@ -1076,6 +1175,8 @@ void ABlasterCharacter::PollInit()
 			}
 		}
 	}
+
+	// Move to BasePlayerCharacter
 	if (BlasterPlayerController == nullptr)
 	{
 		BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
@@ -1109,6 +1210,7 @@ void ABlasterCharacter::StartDissolve()
 
 void ABlasterCharacter::SetVisibleWorldWidget(bool bIsVisible)
 {
+	// Move to BasePlayerCharacter
 	//bIsVisibleWorldWidget = bIsVisible;
 	if (WorldWidgetComp)
 	{
@@ -1123,6 +1225,7 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 	}
 }
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 //{
 //	if (OverlappingWeapon)
@@ -1139,6 +1242,7 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 //{
 //	if (OverlappingWeapon)
@@ -1151,45 +1255,53 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 //	}
 //}
 
+// Move to BasePlayerCharacter
 //bool ABlasterCharacter::IsWeaponEquipped()
 //{
 //	return (Combat && Combat->EquippedWeapon);
 //}
 
+// Move to BasePlayerCharacter
 //bool ABlasterCharacter::IsAiming()
 //{
 //	return (Combat && Combat->bAiming);
 //}
 
+// Move to BasePlayerCharacter
 //bool ABlasterCharacter::IsCharging()
 //{
 //	return (Combat && Combat->bCharging);
 //}
 
+// Move to BasePlayerCharacter
 //AWeapon* ABlasterCharacter::GetEquippedWeapon()
 //{
 //	if (Combat == nullptr) return nullptr;
 //	return Combat->EquippedWeapon;
 //}
 
+// Move to BasePlayerCharacter
 //FVector ABlasterCharacter::GetHitTarget() const
 //{
 //	if (Combat == nullptr) return FVector();
 //	return Combat->HitTarget;
 //}
 
+// Move to BasePlayerCharacter
 //ECombatState ABlasterCharacter::GetCombatState() const
 //{
 //	if (Combat == nullptr) return ECombatState::ECS_MAX;
 //	return Combat->CombatState;
 //}
 
+// Move to BasePlayerCharacter
 //bool ABlasterCharacter::IsLocallyReloading()
 //{
 //	if (Combat == nullptr) return false;
 //	return Combat->bLocallyReloading;
 //}
 
+// Move to BasePlayerCharacter
 //bool ABlasterCharacter::IsHoldingTheFlag() const
 //{
 //	/*if (Combat == nullptr) return false;
@@ -1197,6 +1309,7 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 //	return false;
 //}
 
+// Move to BasePlayerCharacter
 //ETeam ABlasterCharacter::GetTeam()
 //{
 //	BlasterPlayerState = BlasterPlayerState == nullptr ? GetPlayerState<ABlasterPlayerState>() : BlasterPlayerState;
@@ -1204,6 +1317,7 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 //	return BlasterPlayerState->GetTeam();
 //}
 
+// Move to BasePlayerCharacter
 //void ABlasterCharacter::SetHoldingTheFlag(bool bHolding)
 //{
 //	if (Combat == nullptr) return;

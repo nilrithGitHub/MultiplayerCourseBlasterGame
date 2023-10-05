@@ -21,6 +21,7 @@ class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCro
 public:
 	ABlasterCharacter();
 	virtual void Tick(float DeltaTime) override;
+	// Move to BasePlayerCharacter
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
@@ -29,9 +30,12 @@ public:
 	* Play montages
 	*/
 
+	// Move to BasePlayerCharacter
 	//void PlayFireMontage(bool bAiming);
 	//void PlayReloadMontage();
 	void PlayElimMontage();
+
+	// Move to BasePlayerCharacter
 	//void PlayThrowGrenadeMontage();
 	//void PlaySwapMontage();
 
@@ -45,17 +49,22 @@ public:
 	UPROPERTY(Replicated)
 	bool bDisableGameplay = false;
 
+	// Move to BasePlayerCharacter
 	//UFUNCTION(BlueprintImplementableEvent)
 	//void ShowSniperScopeWidget(bool bShowScope);
 
 	virtual void UpdateHUDHealth();
 	virtual void UpdateHUDShield();
+
+	// Move to BasePlayerCharacter
 	//void UpdateHUDAmmo();
 	//void SpawDefaultWeapon();
 
 	UPROPERTY()
 	TMap<FName, class UBoxComponent*> HitCollisionBoxes;
 
+
+	// Move to BasePlayerCharacter
 	//bool bFinishedSwapping = false;
 
 	/*UFUNCTION(Server, Reliable)
@@ -63,9 +72,11 @@ public:
 
 	FOnLeftGame OnLeftGame;
 
+	// Move to BasePlayerCharacter
 	//UFUNCTION(NetMulticast, Reliable)
 	//void MulticastGainedTheLead();
 
+	// Move to BasePlayerCharacter
 	//UFUNCTION(NetMulticast, Reliable)
 	//void MulticastLostTheLead();
 
@@ -74,6 +85,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	// Move to BasePlayerCharacter
 	//void MoveForward(float Value);
 	//void MoveRight(float Value);
 	//void Turn(float Value);
@@ -198,9 +210,12 @@ protected:
 		FName FootRName = "foot_r";
 
 protected:
+	
+	// Move to BasePlayerCharacter
 	//UPROPERTY(VisibleAnywhere, Category = Camera)
 	//class USpringArmComponent* CameraBoom;
 
+	// Move to BasePlayerCharacter
 	//UPROPERTY(VisibleAnywhere, Category = Camera)
 	//class UCameraComponent* FollowCamera;
 
@@ -209,10 +224,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* WorldWidgetComp;
 
+	// Move to BasePlayerCharacter
 	/*UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	class AWeapon* OverlappingWeapon;*/
 
-
+	// Move to BasePlayerCharacter
 	//UFUNCTION()
 	//void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
@@ -226,9 +242,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UBuffComponent* Buff;
 
+	// Move to BasePlayerCharacter
 	//UPROPERTY(VisibleAnywhere)
 	//class ULagCompensationComponent* LagCompensation;
 
+	// Move to BasePlayerCharacter
 	//UFUNCTION(Server, Reliable)
 	//void ServerEquipButtonPressed();
 	//UFUNCTION(Server, Reliable)
@@ -356,6 +374,8 @@ protected:
 	* Team colors
 	*/
 
+
+	// Move to BasePlayerCharacter
 	//UPROPERTY(EditAnywhere, Category = Elim)
 	//UMaterialInstance* RedDissolveMatInst;
 
@@ -413,6 +433,7 @@ protected:
 
 public:
 	void SetVisibleWorldWidget(bool bIsVisible);
+	// Move to BasePlayerCharacter
 	//void SetOverlappingWeapon(AWeapon* Weapon);
 	/*bool IsWeaponEquipped();
 	bool IsAiming();
@@ -422,6 +443,7 @@ public:
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	//AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
+	// Move to BasePlayerCharacter
 	//FVector GetHitTarget() const;
 	//FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
@@ -432,12 +454,15 @@ public:
 	FORCEINLINE float GetShield() const { return Shield; }
 	FORCEINLINE void SetShield(float Amount) { Shield = Amount; }
 	FORCEINLINE float GetMaxShield() const { return MaxShield; }
+	// Move to BasePlayerCharacter
 	//ECombatState GetCombatState() const;
 	//FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
+	// Move to BasePlayerCharacter
 	//FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	//FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
+	// Move to BasePlayerCharacter
 	//bool IsLocallyReloading();
 	//FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	//FORCEINLINE bool IsHoldingTheFlag() const;
