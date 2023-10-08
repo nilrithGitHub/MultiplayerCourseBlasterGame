@@ -114,10 +114,13 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 						UDamageType::StaticClass()
 					);
 				}
+
+				if (OwnerPawn->IsLocallyControlled())
+				{
+					DamagePair.Key->SetVisibleWorldWidget(true);
+				}
 			}
 		}
-
-
 		if (!HasAuthority() && bUseServerSideRewind)
 		{
 			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(OwnerPawn) : BlasterOwnerCharacter;

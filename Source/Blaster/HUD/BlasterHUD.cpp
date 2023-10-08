@@ -15,7 +15,7 @@ void ABlasterHUD::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
+void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim, FString Weapon)
 {
 	OwningPlayer = OwningPlayer == nullptr ? GetOwningPlayerController() : OwningPlayer;
 	if (OwningPlayer && ElimAnnouncementClass)
@@ -23,7 +23,7 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
 		UElimAnnouncement* ElimAnnouncementWidget = CreateWidget<UElimAnnouncement>(OwningPlayer, ElimAnnouncementClass);
 		if (ElimAnnouncementWidget)
 		{
-			ElimAnnouncementWidget->SetElimAnnouncementText(Attacker, Victim);
+			ElimAnnouncementWidget->SetElimAnnouncementText(Attacker, Victim, Weapon);
 			ElimAnnouncementWidget->AddToViewport();
 
 			for (UElimAnnouncement* Msg : ElimMessages)

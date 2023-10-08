@@ -4,6 +4,7 @@
 #include "ReturnToMainMenu.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/Button.h"
+#include "Components/Slider.h"
 #include "MultiplayerSessionsSubsystem.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blaster/Character/BlasterCharacter.h"
@@ -29,6 +30,14 @@ void UReturnToMainMenu::MenuSetup()
 	if (ReturnButton && !ReturnButton->OnClicked.IsBound())
 	{
 		ReturnButton->OnClicked.AddDynamic(this, &UReturnToMainMenu::ReturnButtonClicked);
+	}
+	if (Slider_MouseSen && !Slider_MouseSen->OnValueChanged.IsBound())
+	{
+		Slider_MouseSen->OnValueChanged.AddDynamic(this, &UReturnToMainMenu::OnSliderMouseSenChanged);
+	}
+	if (Slider_MouseZoomSen && !Slider_MouseZoomSen->OnValueChanged.IsBound())
+	{
+		Slider_MouseSen->OnValueChanged.AddDynamic(this, &UReturnToMainMenu::OnSliderMouseZoomSenChanged);
 	}
 	UGameInstance* GameInstance = GetGameInstance();
 	if (GameInstance)
@@ -96,6 +105,14 @@ void UReturnToMainMenu::MenuTearDown()
 	{
 		ReturnButton->OnClicked.RemoveDynamic(this, &UReturnToMainMenu::ReturnButtonClicked);
 	}
+	if (Slider_MouseSen && Slider_MouseSen->OnValueChanged.IsBound())
+	{
+		Slider_MouseSen->OnValueChanged.RemoveDynamic(this, &UReturnToMainMenu::OnSliderMouseSenChanged);
+	}
+	if (Slider_MouseZoomSen && Slider_MouseZoomSen->OnValueChanged.IsBound())
+	{
+		Slider_MouseSen->OnValueChanged.RemoveDynamic(this, &UReturnToMainMenu::OnSliderMouseZoomSenChanged);
+	}
 	if (MultiplayerSessionsSubsystem && MultiplayerSessionsSubsystem->MultiplayerOnDestroySessionComplete.IsBound())
 	{
 		MultiplayerSessionsSubsystem->MultiplayerOnDestroySessionComplete.RemoveDynamic(this, &UReturnToMainMenu::OnDestroySession);
@@ -124,8 +141,14 @@ void UReturnToMainMenu::ReturnButtonClicked()
 			}
 		}
 	}
+}
 
+void UReturnToMainMenu::OnSliderMouseSenChanged(float Value)
+{
+}
 
+void UReturnToMainMenu::OnSliderMouseZoomSenChanged(float Value)
+{
 }
 
 void UReturnToMainMenu::OnPlayerLeftGame()

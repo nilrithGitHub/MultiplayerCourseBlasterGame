@@ -4,6 +4,7 @@
 #include "ProjectileWeapon.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Projectile.h"
+#include "ArrowProjectile.h"
 
 void AProjectileWeapon::Fire(const FVector& HitTarget)
 {
@@ -12,7 +13,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 	APawn* InstigatorPawn = Cast<APawn>(GetOwner());
 	const USkeletalMeshSocket* MuzzleFlashSocket = GetWeaponMesh()->GetSocketByName(FName("MuzzleFlash"));
 	UWorld* World = GetWorld();
-	if (MuzzleFlashSocket && World)
+	if (MuzzleFlashSocket && World && InstigatorPawn)
 	{
 		FTransform SocketTransform = MuzzleFlashSocket->GetSocketTransform(GetWeaponMesh());
 		// From muzzle flash socket to hit location from TraceUnderCrosshairs
@@ -59,12 +60,35 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 		}
 		else // weapon not using SSR
 		{
-			if (InstigatorPawn->HasAuthority())
+			if (FireType == EFireType::EFT_Charge)
 			{
-				SpawnedProjectile = World->SpawnActor<AProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
-				SpawnedProjectile->bUseServerSideRewind = false;
-				SpawnedProjectile->Damage = Damage;
-				SpawnedProjectile->HeadShotDamage = HeadShotDamage;
+				if (InstigatorPawn->HasAuthority())
+				{
+					AArrowProjectile* SpawnedArrow = World->SpawnActor<AArrowProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
+					SpawnedArrow->bUseServerSideRewind = false;
+
+					// [0, ChargeMaxTimer] -> [0, ChargeMaxPower]
+					FVector2D TimerRage(0.f, ChargeMaxTimer);
+					FVector2D PowerRange(0.f, ChargeMaxPower);
+					float Power = FMath::GetMappedRangeValueClamped(TimerRage, PowerRange, ChargeTimer);
+
+					SpawnedArrow->Damage = Damage * Power / ChargeMaxPower;
+					SpawnedArrow->HeadShotDamage = HeadShotDamage * Power / ChargeMaxPower;
+					SpawnedArrow->MulticastSetChargePower(Power);
+
+					/*FString TheFloatStr = FString::SanitizeFloat(Power);
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, *TheFloatStr);*/
+				}
+			}
+			else
+			{
+				if (InstigatorPawn->HasAuthority())
+				{
+					SpawnedProjectile = World->SpawnActor<AProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
+					SpawnedProjectile->bUseServerSideRewind = false;
+					SpawnedProjectile->Damage = Damage;
+					SpawnedProjectile->HeadShotDamage = HeadShotDamage;
+				}
 			}
 		}
 	}

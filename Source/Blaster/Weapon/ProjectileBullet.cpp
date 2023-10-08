@@ -42,6 +42,7 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
 		if (OwnerController)
 		{
+			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
 
@@ -49,9 +50,14 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 				UGameplayStatics::ApplyDamage(OtherActor, DamageToCause, OwnerController, this, UDamageType::StaticClass());
 				Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+
+				if (HitCharacter && OwnerCharacter->IsLocallyControlled())
+				{
+					HitCharacter->SetVisibleWorldWidget(true);
+				}
 				return;
 			}
-			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+			//ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
 			if (bUseServerSideRewind && OwnerCharacter->GetLagCompensation() && OwnerCharacter->IsLocallyControlled() && HitCharacter)
 			{
 				OwnerCharacter->GetLagCompensation()->ProjectileServerScoreRequest(
@@ -60,6 +66,11 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 					InitialVelocity,
 					OwnerController->GetServerTime() - OwnerController->SingleTripTime
 				);
+			}
+
+			if (HitCharacter && OwnerCharacter->IsLocallyControlled())
+			{
+				HitCharacter->SetVisibleWorldWidget(true);
 			}
 		}
 	}

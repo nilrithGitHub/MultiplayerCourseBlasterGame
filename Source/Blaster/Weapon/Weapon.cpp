@@ -84,8 +84,8 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 	if (BlasterCharacter)
 	{
-		if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
-		if (BlasterCharacter->IsHoldingTheFlag()) return;
+		//if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
+		//if (BlasterCharacter->IsHoldingTheFlag()) return;
 		BlasterCharacter->SetOverlappingWeapon(this);
 	}
 }
@@ -95,8 +95,8 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
 	if (BlasterCharacter)
 	{
-		if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
-		if (BlasterCharacter->IsHoldingTheFlag()) return;
+		//if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
+		//if (BlasterCharacter->IsHoldingTheFlag()) return;
 		BlasterCharacter->SetOverlappingWeapon(nullptr);
 	}
 }
@@ -178,6 +178,14 @@ void AWeapon::SetWeaponState(EWeaponState State)
 {
 	WeaponState = State;
 	OnWeaponStateSet();
+}
+
+float AWeapon::GetChargePercent() const
+{
+	// [0, ChargeMaxTimer] -> [0, ChargeMaxPower]
+	FVector2D TimerRage(0.f, ChargeMaxTimer);
+	FVector2D PercentRange(0.f, 1.0f);
+	return FMath::GetMappedRangeValueClamped(TimerRage, PercentRange, GetWorld()->GetTime().GetWorldTimeSeconds() - ChargeStartTime);
 }
 
 void AWeapon::OnWeaponStateSet()
@@ -322,6 +330,23 @@ void AWeapon::Fire(const FVector& HitTarget)
 		}
 	}
 	SpendRound();
+}
+
+void AWeapon::ChargeStart()
+{
+	if (ChargeAnimation)
+	{
+		WeaponMesh->PlayAnimation(ChargeAnimation, false);
+	}
+	bCharging = true;
+	ChargeStartTime = GetWorld()->GetTime().GetWorldTimeSeconds();
+	ChargeTimer = 0;
+}
+
+void AWeapon::ChargeEnd()
+{
+	bCharging = false;
+	ChargeTimer = GetWorld()->GetTime().GetWorldTimeSeconds() - ChargeStartTime;
 }
 
 void AWeapon::Dropped()

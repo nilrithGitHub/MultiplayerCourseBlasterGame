@@ -78,6 +78,7 @@ protected:
 	void Turn(float Value);
 	void LookUp(float Value);
 	void EquipButtonPressed();
+	void SwitchButtonPressed();
 	void CrouchButtonPressed();
 	void ReloadButtonPressed();
 	void AimButtonPressed();
@@ -107,57 +108,93 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* head;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HeadName = "head";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* pelvis;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName PelvisName = "pelvis";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* spine_02;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName Spine02Name = "spine_02";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* spine_03;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName Spine03Name = "spine_03";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* upperarm_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName UpperarmLName = "upperarm_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* upperarm_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName UpperarmRName = "upperarm_r";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* lowerarm_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName LowerarmLName = "lowerarm_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* lowerarm_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName LowerarmRName = "lowerarm_r";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* hand_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HandLName = "hand_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* hand_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HandRName = "hand_r";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* backpack;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName BackpackName = "backpack";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* blanket;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName BlanketName = "blanket";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* thigh_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName ThighRName = "thigh_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* thigh_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName ThighLName = "thigh_r";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* calf_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName CalfLName = "calf_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* calf_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName CalfRName = "calf_r";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* foot_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName FootLName = "foot_l";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* foot_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName FootRName = "foot_r";
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
@@ -168,9 +205,12 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* WorldWidgetComp;
 
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	class AWeapon* OverlappingWeapon;
+
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
@@ -190,6 +230,8 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();
+	UFUNCTION(Server, Reliable)
+	void ServerSwitchButtonPressed();
 
 	float AO_Yaw;
 	float InterpAO_Yaw;
@@ -205,6 +247,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	class UAnimMontage* FireWeaponMontage;
+	UPROPERTY(EditAnywhere, Category = Combat)
+		UAnimMontage* FireBowMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ReloadMontage;
@@ -246,6 +290,16 @@ private:
 
 	UFUNCTION()
 	void OnRep_Health(float LastHealth);
+
+	/**
+	* World Widget Visisble
+	*/
+
+	UPROPERTY(ReplicatedUsing = OnRep_IsVisibleWorldWidget, VisibleAnywhere, Category = "Player Stats")
+	bool bIsVisibleWorldWidget = false;
+
+	UFUNCTION()
+	void OnRep_IsVisibleWorldWidget(bool bIsVisible);
 
 	/**
 	* Player shield
@@ -349,16 +403,25 @@ private:
 	* Default weapon
 	*/
 
+	/*UPROPERTY(EditAnywhere)
+	TSubclassOf<AWeapon> DefaultWeaponClass;*/
+
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AWeapon> DefaultWeaponClass;
+	TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
 
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
 
+	//UPROPERTY(EditAnywhere)
+	//	//TArray<TSubclassOf<class APickup>> PickupClasses;
+	//TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
+
 public:
+	void SetVisibleWorldWidget(bool bIsVisible);
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();
+	bool IsCharging();
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	AWeapon* GetEquippedWeapon();
@@ -381,7 +444,10 @@ public:
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	bool IsLocallyReloading();
 	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
-	FORCEINLINE bool IsHoldingTheFlag() const;
+	//FORCEINLINE bool IsHoldingTheFlag() const;
 	ETeam GetTeam();
 	void SetHoldingTheFlag(bool bHolding);
+
+	// Interface
+	void OnCrosshairesDetected_Implementation(bool bIsDetected);
 };

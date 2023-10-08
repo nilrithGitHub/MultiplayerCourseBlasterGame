@@ -33,25 +33,25 @@ void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerStat
 		{
 			if (Attacker == Self && Victim != Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName());
+				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName(), "Delete");
 				return;
 			}
 			if (Victim == Self && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you", "Delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker == Self)
 			{
-				BlasterHUD->AddElimAnnouncement("You", "yourself");
+				BlasterHUD->AddElimAnnouncement("You", "yourself", "Delete");
 				return;
 			}
 			if (Attacker == Victim && Attacker != Self)
 			{
-				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves");
+				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves", "Delete");
 				return;
 			}
-			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName());
+			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName(), "Delete");
 		}
 	}
 }
@@ -477,7 +477,6 @@ void ABlasterPlayerController::SetHUDGrenades(int32 Grenades)
 		HUDGrenades = Grenades;
 	}
 }
-
 void ABlasterPlayerController::SetHUDTime()
 {
 	float TimeLeft = 0.f;

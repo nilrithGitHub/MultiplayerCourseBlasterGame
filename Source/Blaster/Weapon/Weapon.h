@@ -25,6 +25,7 @@ enum class EFireType : uint8
 	EFT_HitScan UMETA(DisplayName = "Hit Scan Weapon"),
 	EFT_Projectile UMETA(DisplayName = "Projectile Weapon"),
 	EFT_Shotgun UMETA(DisplayName = "Shotgun Weapon"),
+	EFT_Charge UMETA(DisplayName = "Charge Weapon"),
 
 	EFT_MAX UMETA(DisplayName = "DefaultMAX")
 };
@@ -42,6 +43,8 @@ public:
 	void SetHUDAmmo();
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
+	virtual void ChargeStart();
+	virtual void ChargeEnd();
 	virtual void Dropped();
 	void AddAmmo(int32 AmmoToAdd);
 	FVector TraceEndWithScatter(const FVector& HitTarget);
@@ -82,6 +85,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	bool bAutomatic = true;
+	UPROPERTY(EditAnywhere, Category = Combat)
+	bool bReloadable = true;
 
 	UPROPERTY(EditAnywhere)
 	class USoundCue* EquipSound;
@@ -91,7 +96,13 @@ public:
 	*/
 	void EnableCustomDepth(bool bEnable);
 
+	UPROPERTY(EditAnywhere)
 	bool bDestroyWeapon = false;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Charge")
+	float ChargeMaxTimer = 0.85f;
+	UPROPERTY(EditAnywhere, Category = "Weapon Charge")
+	float ChargeMaxPower = 10.f;
 
 	UPROPERTY(EditAnywhere)
 	EFireType FireType;
@@ -142,6 +153,9 @@ protected:
 	UPROPERTY(Replicated, EditAnywhere)
 	bool bUseServerSideRewind = false;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon Properties")
+		float ChargeTimer;
+
 	UPROPERTY()
 	class ABlasterCharacter* BlasterOwnerCharacter;
 	UPROPERTY()
@@ -167,12 +181,17 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	class UAnimationAsset* FireAnimation;
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	class UAnimationAsset* ChargeAnimation;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ACasing> CasingClass;
 
 	UPROPERTY(EditAnywhere)
 	int32 Ammo;
+
+	float ChargeStartTime;
+	bool bCharging;
 
 	UFUNCTION(Client, Reliable)
 	void ClientUpdateAmmo(int32 ServerAmmo);
@@ -197,6 +216,7 @@ private:
 
 public:	
 	void SetWeaponState(EWeaponState State);
+	float GetChargePercent() const;
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const { return PickupWidget; }

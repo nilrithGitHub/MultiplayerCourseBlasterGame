@@ -42,6 +42,9 @@ protected:
 	virtual void OnMatchStateSet() override;
 
 private:
+	UPROPERTY(EditAnywhere)
+	//TArray<TSubclassOf<class APickup>> PickupClasses;
+	TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
 	float CountdownTime = 0.f;
 public:
 	FORCEINLINE float GetCountdownTime() const { return CountdownTime; }

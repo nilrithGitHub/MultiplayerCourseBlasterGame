@@ -1,0 +1,6 @@
+/Game/Maps/Lobby
+/Game/Maps/GameStartupMap
+/Game/Maps/TransitionMap
+/Game/Maps/BlasterMap
+/Game/Maps/Teams
+/Game/Maps/CaptureTheFlag

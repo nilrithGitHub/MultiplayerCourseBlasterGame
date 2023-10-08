@@ -13,7 +13,10 @@ APickupSpawnPoint::APickupSpawnPoint()
 void APickupSpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	StartSpawnPickupTimer((AActor*)nullptr);
+	if (!bDisableSpawn)
+	{
+		StartSpawnPickupTimer((AActor*)nullptr);
+	}
 }
 
 void APickupSpawnPoint::SpawnPickup()
@@ -22,7 +25,7 @@ void APickupSpawnPoint::SpawnPickup()
 	if (NumPickupClasses > 0)
 	{
 		int32 Selection = FMath::RandRange(0, NumPickupClasses - 1);
-		SpawnedPickup = GetWorld()->SpawnActor<APickup>(PickupClasses[Selection], GetActorTransform());
+		SpawnedPickup = GetWorld()->SpawnActor<AActor>(PickupClasses[Selection], GetActorTransform());
 
 		if (HasAuthority() && SpawnedPickup)
 		{
@@ -53,6 +56,5 @@ void APickupSpawnPoint::StartSpawnPickupTimer(AActor* DestroyedActor)
 void APickupSpawnPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

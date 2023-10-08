@@ -95,6 +95,11 @@ void AProjectile::ExplodeDamage()
 	}
 }
 
+//void AProjectile::SetInitialSpeed(float NewSpeed)
+//{
+//	InitialSpeed = NewSpeed;
+//}
+
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -114,6 +119,7 @@ void AProjectile::StartDestroyTimer()
 void AProjectile::DestroyTimerFinished()
 {
 	Destroy();
+
 }
 
 void AProjectile::Destroyed()

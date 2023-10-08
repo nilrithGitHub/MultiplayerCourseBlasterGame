@@ -17,12 +17,15 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
 	UPROPERTY(EditAnywhere)
-	TArray<TSubclassOf<class APickup>> PickupClasses;
+		bool bDisableSpawn;
+	UPROPERTY(EditAnywhere)
+	//TArray<TSubclassOf<class APickup>> PickupClasses;
+	TArray<TSubclassOf<class AActor>> PickupClasses;
 
 	UPROPERTY()
-	APickup* SpawnedPickup;
+	//APickup* SpawnedPickup;
+	AActor* SpawnedPickup;
 
 	void SpawnPickup();
 	void SpawnPickupTimerFinished();

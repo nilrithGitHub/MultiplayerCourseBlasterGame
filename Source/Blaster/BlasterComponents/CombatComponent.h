@@ -53,9 +53,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
+	void SetCharging(bool bIsCharging);
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetCharging(bool bIsCharging);
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
@@ -67,6 +71,7 @@ protected:
 	void FireProjectileWeapon();
 	void FireHitScanWeapon();
 	void FireShotgun();
+	void FireChargeWeapon();
 	void LocalFire(const FVector_NetQuantize& TraceHitTarget);
 	void ShotgunLocalFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
 
@@ -104,7 +109,9 @@ protected:
 	void AttachActorToRightHand(AActor* ActorToAttach);
 	void AttachActorToLeftHand(AActor* ActorToAttach);
 	void AttachFlagToLeftHand(AWeapon* Flag);
+	void AttachBowToLeftHand(AWeapon* Bow);
 	void AttachActorToBackpack(AActor* ActorToAttach);
+	void AttachWeaponToHand(AWeapon* Weapon);
 	void UpdateCarriedAmmo();
 	void PlayEquipWeaponSound(AWeapon* WeaponToEquip);
 	void ReloadEmptyWeapon();
@@ -118,6 +125,8 @@ private:
 	class ABlasterPlayerController* Controller;
 	UPROPERTY()
 	class ABlasterHUD* HUD;
+	UPROPERTY()
+	class AActor* LastInteractCrosshairsActor;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* EquippedWeapon;
@@ -127,11 +136,16 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Aiming)
 	bool bAiming = false;
+	UPROPERTY(ReplicatedUsing = OnRep_Charging)
+	bool bCharging = false;
 
 	bool bAimButtonPressed = false;
+	bool bChargingButtonPressed = false;
 
 	UFUNCTION()
 	void OnRep_Aiming();
+	UFUNCTION()
+	void OnRep_Charging();
 
 	UPROPERTY(EditAnywhere)
 	float BaseWalkSpeed;
