@@ -14,4 +14,9 @@ class BLASTER_API ABaseAICharacter : public ABlasterCharacter
 public:
 	// Sets default values for this character's properties
 	ABaseAICharacter();
+
+protected:
+	virtual void BeginPlay() override;
+
+
 };

@@ -87,6 +87,96 @@ protected:
 	virtual void RotateInPlace(float DeltaTime) override;
 
 private:
+	UPROPERTY(EditAnywhere)
+		class UBoxComponent* head;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HeadName = "head";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* pelvis;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName PelvisName = "pelvis";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* spine_02;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName Spine02Name = "spine_02";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* spine_03;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName Spine03Name = "spine_03";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* upperarm_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName UpperarmLName = "upperarm_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* upperarm_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName UpperarmRName = "upperarm_r";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* lowerarm_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName LowerarmLName = "lowerarm_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* lowerarm_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName LowerarmRName = "lowerarm_r";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* hand_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HandLName = "hand_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* hand_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName HandRName = "hand_r";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* backpack;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName BackpackName = "backpack";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* blanket;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName BlanketName = "blanket_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* thigh_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName ThighRName = "thigh_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* thigh_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName ThighLName = "thigh_r";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* calf_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName CalfLName = "calf_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* calf_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName CalfRName = "calf_r";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* foot_l;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName FootLName = "foot_l";
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* foot_r;
+	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+		FName FootRName = "foot_r";
+
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 		class USpringArmComponent* CameraBoom;
 

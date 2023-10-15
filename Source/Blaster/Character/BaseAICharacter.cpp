@@ -2,8 +2,19 @@
 
 
 #include "BaseAICharacter.h"
+#include "Blaster/Blaster.h"
+#include "Components/BoxComponent.h"
 
 ABaseAICharacter::ABaseAICharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+void ABaseAICharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	//if (HasAuthority())
+	//{
+		OnTakeAnyDamage.AddDynamic(this, &ABaseAICharacter::ReceiveDamage);
+	//}
 }

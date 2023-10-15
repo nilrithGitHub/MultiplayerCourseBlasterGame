@@ -21,7 +21,7 @@
 #include "Particles/ParticleSystemComponent.h"
 //#include "Blaster/PlayerState/BlasterPlayerState.h"
 //#include "Blaster/Weapon/WeaponTypes.h"
-#include "Components/BoxComponent.h"
+//#include "Components/BoxComponent.h"
 //#include "Blaster/BlasterComponents/LagCompensationComponent.h"
 //#include "NiagaraComponent.h"
 //#include "NiagaraFunctionLibrary.h"
@@ -75,15 +75,15 @@ ABlasterCharacter::ABlasterCharacter()
 	* Hit boxes for server-side rewind
 	*/
 
-	head = CreateDefaultSubobject<UBoxComponent>(TEXT("head"));
-	head->SetupAttachment(GetMesh(), HeadName);
-	HitCollisionBoxes.Add(HeadName, head);
+	//head = CreateDefaultSubobject<UBoxComponent>(TEXT("head"));
+	//head->SetupAttachment(GetMesh(), HeadName);
+	//HitCollisionBoxes.Add(HeadName, head);
 
-	pelvis = CreateDefaultSubobject<UBoxComponent>(TEXT("pelvis"));
-	pelvis->SetupAttachment(GetMesh(), PelvisName);
-	HitCollisionBoxes.Add(PelvisName, pelvis);
+	//pelvis = CreateDefaultSubobject<UBoxComponent>(TEXT("pelvis"));
+	//pelvis->SetupAttachment(GetMesh(), PelvisName);
+	//HitCollisionBoxes.Add(PelvisName, pelvis);
 
-	spine_02 = CreateDefaultSubobject<UBoxComponent>(TEXT("spine_02"));
+	/*spine_02 = CreateDefaultSubobject<UBoxComponent>(TEXT("spine_02"));
 	spine_02->SetupAttachment(GetMesh(), Spine02Name);
 	HitCollisionBoxes.Add(Spine02Name, spine_02);
 
@@ -145,9 +145,9 @@ ABlasterCharacter::ABlasterCharacter()
 
 	foot_r = CreateDefaultSubobject<UBoxComponent>(TEXT("foot_r"));
 	foot_r->SetupAttachment(GetMesh(), FootRName);
-	HitCollisionBoxes.Add(FootRName, foot_r);
+	HitCollisionBoxes.Add(FootRName, foot_r);*/
 
-	for (auto Box : HitCollisionBoxes)
+	/*for (auto Box : HitCollisionBoxes)
 	{
 		if (Box.Value)
 		{
@@ -156,7 +156,7 @@ ABlasterCharacter::ABlasterCharacter()
 			Box.Value->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
 			Box.Value->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
-	}
+	}*/
 }
 
 void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
