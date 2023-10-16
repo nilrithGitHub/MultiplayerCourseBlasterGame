@@ -43,7 +43,8 @@ public:
 
 	void UpdateHUDAmmo();
 
-	void SpawDefaultWeapon();
+	UFUNCTION (BlueprintCallable)
+	void SpawnDefaultWeapon();
 
 	bool bFinishedSwapping = false;
 
@@ -192,8 +193,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UCombatComponent* Combat;
 
-	UPROPERTY(VisibleAnywhere)
-		class ULagCompensationComponent* LagCompensation;
+	/*UPROPERTY(VisibleAnywhere)
+		class ULagCompensationComponent* LagCompensation;*/
 
 	UFUNCTION(Server, Reliable)
 		void ServerEquipButtonPressed();
@@ -263,8 +264,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
 
-	UPROPERTY()
-		class ABlasterGameMode* BlasterGameMode;
+	/*UPROPERTY()
+		class ABlasterGameMode* BlasterGameMode;*/
 
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
@@ -272,7 +273,7 @@ public:
 	bool IsAiming();
 	bool IsCharging();
 
-	AWeapon* GetEquippedWeapon();
+	virtual AWeapon* GetEquippedWeapon() override;
 	FVector GetHitTarget() const;
 
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
@@ -281,7 +282,10 @@ public:
 	FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
 	bool IsLocallyReloading();
-	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
+	//FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	ETeam GetTeam();
 	void SetHoldingTheFlag(bool bHolding);
+
+	virtual UBoxComponent* GetHeadBox() override;
+	virtual void JumpToShotgunEnd() override;
 };

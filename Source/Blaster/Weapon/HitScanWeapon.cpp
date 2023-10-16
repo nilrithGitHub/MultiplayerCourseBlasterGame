@@ -3,7 +3,8 @@
 
 #include "HitScanWeapon.h"
 #include "Engine/SkeletalMeshSocket.h"
-#include "Blaster/Character/BasePlayerCharacter.h"
+#include "Blaster/Character/BlasterCharacter.h"
+//#include "Blaster/Character/BasePlayerCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "particles/ParticleSystemComponent.h"
@@ -33,7 +34,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			if (HitComp->ComponentHasTag("IgnoreDamage"))
 				return;
 		}
-		ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(FireHit.GetActor());
+		ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
 		if (BlasterCharacter && InstigatorController)
 		{
 			bool bCauseAuthDamage = !bUseServerSideRewind || OwnerPawn->IsLocallyControlled();
@@ -51,7 +52,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			}
 			if (!HasAuthority() && bUseServerSideRewind)
 			{
-				BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(OwnerPawn) : BlasterOwnerCharacter;
+				BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(OwnerPawn) : BlasterOwnerCharacter;
 				BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(InstigatorController) : BlasterOwnerController;
 				if (BlasterOwnerController && BlasterOwnerCharacter && BlasterOwnerCharacter->GetLagCompensation() && BlasterOwnerCharacter->IsLocallyControlled())
 				{

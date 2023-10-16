@@ -18,7 +18,6 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/BoxComponent.h"
-#include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/PlayerStart/TeamPlayerStart.h"
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/Blaster.h"
@@ -123,7 +122,7 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	//Buff = CreateDefaultSubobject<UBuffComponent>(TEXT("BuffComponent"));
 	//Buff->SetIsReplicated(true);
 
-	LagCompensation = CreateDefaultSubobject<ULagCompensationComponent>(TEXT("LagCompensation"));
+	//LagCompensation = CreateDefaultSubobject<ULagCompensationComponent>(TEXT("LagCompensation"));
 
 	AttachedGrenade = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Attached Grenade"));
 	AttachedGrenade->SetupAttachment(GetMesh(), FName("GrenadeSocket"));
@@ -171,14 +170,7 @@ void ABasePlayerCharacter::PostInitializeComponents()
 	{
 		Combat->Character = this;
 	}
-	if (LagCompensation)
-	{
-		LagCompensation->Character = this;
-		if (Controller)
-		{
-			LagCompensation->Controller = Cast<ABlasterPlayerController>(Controller);
-		}
-	}
+	
 }
 
 void ABasePlayerCharacter::MulticastGainedTheLead_Implementation()
@@ -510,9 +502,9 @@ void ABasePlayerCharacter::OnPlayerStateInitialized()
 
 void ABasePlayerCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
 {
-	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
+	/*BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	if (bElimmed || BlasterGameMode == nullptr) return;
-	Damage = BlasterGameMode->CalculateDamage(InstigatorController, Controller, Damage);
+	Damage = BlasterGameMode->CalculateDamage(InstigatorController, Controller, Damage);*/
 
 	Super::ReceiveDamage(DamagedActor, Damage, DamageType, InstigatorController, DamageCauser);
 
@@ -529,6 +521,8 @@ void ABasePlayerCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, con
 
 void ABasePlayerCharacter::PollInit()
 {
+	Super::PollInit();
+
 	if (BlasterPlayerState == nullptr)
 	{
 		BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
@@ -549,7 +543,7 @@ void ABasePlayerCharacter::PollInit()
 		BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
 		if (BlasterPlayerController)
 		{
-			SpawDefaultWeapon();
+			SpawnDefaultWeapon();
 			UpdateHUDAmmo();
 			UpdateHUDHealth();
 			UpdateHUDShield();
@@ -813,7 +807,7 @@ void ABasePlayerCharacter::UpdateHUDAmmo()
 	}
 }
 
-void ABasePlayerCharacter::SpawDefaultWeapon()
+void ABasePlayerCharacter::SpawnDefaultWeapon()
 {
 	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	UWorld* World = GetWorld();
@@ -895,4 +889,18 @@ void ABasePlayerCharacter::SetHoldingTheFlag(bool bHolding)
 {
 	if (Combat == nullptr) return;
 	Combat->bHoldingTheFlag = bHolding;
+}
+
+UBoxComponent* ABasePlayerCharacter::GetHeadBox()
+{
+	return HitCollisionBoxes[HeadName];
+}
+
+void ABasePlayerCharacter::JumpToShotgunEnd()
+{
+	Super::JumpToShotgunEnd();
+	if (Combat)
+	{
+		Combat->JumpToShotgunEnd();
+	}
 }

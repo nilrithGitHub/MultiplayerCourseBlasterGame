@@ -26,8 +26,6 @@ protected:
 	USoundCue* HitSound;
 private:
 
-
-
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* BeamParticles;
 

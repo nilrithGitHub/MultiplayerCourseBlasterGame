@@ -6,15 +6,13 @@
 #include "BaseAICharacter.h"
 #include "Pret01AICharacter.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class BLASTER_API APret01AICharacter : public ABaseAICharacter
 {
 	GENERATED_BODY()
 public:
 	APret01AICharacter();
+
 private:
 	UPROPERTY(EditAnywhere)
 		class UBoxComponent* head;
@@ -95,4 +93,7 @@ private:
 		UBoxComponent* foot_r;
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
 		FName FootRName = "Ankle_R";
+
+public:
+	virtual UBoxComponent* GetHeadBox() override;
 };

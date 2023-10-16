@@ -159,7 +159,7 @@ protected:
 		float ChargeTimer;
 
 	UPROPERTY()
-	class ABasePlayerCharacter* BlasterOwnerCharacter;
+	class ABlasterCharacter* BlasterOwnerCharacter;
 	UPROPERTY()
 	class ABlasterPlayerController* BlasterOwnerController;
 

@@ -242,9 +242,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UBuffComponent* Buff;
 
-	// Move to BasePlayerCharacter
-	//UPROPERTY(VisibleAnywhere)
-	//class ULagCompensationComponent* LagCompensation;
+	UPROPERTY(VisibleAnywhere)
+	class ULagCompensationComponent* LagCompensation;
 
 	// Move to BasePlayerCharacter
 	//UFUNCTION(Server, Reliable)
@@ -427,13 +426,13 @@ protected:
 	//UPROPERTY(EditAnywhere)
 	//TArray<TSubclassOf<AWeapon>> DefaultWeaponClassList;
 
-	//UPROPERTY()
-	//class ABlasterGameMode* BlasterGameMode;
+	UPROPERTY()
+	class ABlasterGameMode* BlasterGameMode;
 
 
 public:
 	void SetVisibleWorldWidget(bool bIsVisible);
-	// Move to BasePlayerCharacter
+
 	//void SetOverlappingWeapon(AWeapon* Weapon);
 	/*bool IsWeaponEquipped();
 	bool IsAiming();
@@ -441,9 +440,9 @@ public:
 
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
-	//AWeapon* GetEquippedWeapon();
+	virtual class AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
-	// Move to BasePlayerCharacter
+
 	//FVector GetHitTarget() const;
 	//FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
@@ -454,20 +453,24 @@ public:
 	FORCEINLINE float GetShield() const { return Shield; }
 	FORCEINLINE void SetShield(float Amount) { Shield = Amount; }
 	FORCEINLINE float GetMaxShield() const { return MaxShield; }
-	// Move to BasePlayerCharacter
+
 	//ECombatState GetCombatState() const;
 	//FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
-	// Move to BasePlayerCharacter
+
 	//FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	//FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
-	// Move to BasePlayerCharacter
+
 	//bool IsLocallyReloading();
-	//FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
+	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
+	UFUNCTION()
+	virtual UBoxComponent* GetHeadBox();
 	//FORCEINLINE bool IsHoldingTheFlag() const;
 	/*ETeam GetTeam();*/
 	/*void SetHoldingTheFlag(bool bHolding);*/
+
+	virtual void JumpToShotgunEnd();
 
 	// Interface
 	void OnCrosshairesDetected_Implementation(bool bIsDetected);

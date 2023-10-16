@@ -33,7 +33,7 @@ struct FFramePackage
 	TMap<FName, FBoxInformation> HitBoxInfo;
 
 	UPROPERTY()
-	ABasePlayerCharacter* Character;
+		ABlasterCharacter* Character;
 };
 
 USTRUCT(BlueprintType)
@@ -54,10 +54,10 @@ struct FShotgunServerSideRewindResult
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TMap<ABasePlayerCharacter*, uint32> HeadShots;
+	TMap<ABlasterCharacter*, uint32> HeadShots;
 
 	UPROPERTY()
-	TMap<ABasePlayerCharacter*, uint32> BodyShots;
+	TMap<ABlasterCharacter*, uint32> BodyShots;
 
 };
 
@@ -68,7 +68,7 @@ class BLASTER_API ULagCompensationComponent : public UActorComponent
 
 public:	
 	ULagCompensationComponent();
-	friend class ABasePlayerCharacter;
+	friend class ABlasterCharacter;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void ShowFramePackage(const FFramePackage& Package, const FColor& Color);
 
@@ -76,7 +76,7 @@ public:
 	* Hitscan
 	*/
 	FServerSideRewindResult ServerSideRewind(
-		class ABasePlayerCharacter* HitCharacter,
+		class ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart, 
 		const FVector_NetQuantize& HitLocation, 
 		float HitTime);
@@ -85,7 +85,7 @@ public:
 	* Projectile
 	*/
 	FServerSideRewindResult ProjectileServerSideRewind(
-		ABasePlayerCharacter* HitCharacter,
+		ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart,
 		const FVector_NetQuantize100& InitialVelocity,
 		float HitTime
@@ -95,14 +95,14 @@ public:
 	* Shotgun
 	*/
 	FShotgunServerSideRewindResult ShotgunServerSideRewind(
-		const TArray<ABasePlayerCharacter*>& HitCharacters,
+		const TArray<ABlasterCharacter*>& HitCharacters,
 		const FVector_NetQuantize& TraceStart,
 		const TArray<FVector_NetQuantize>& HitLocations,
 		float HitTime);
 
 	UFUNCTION(Server, Reliable)
 	void ServerScoreRequest(
-		ABasePlayerCharacter* HitCharacter,
+		ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart,
 		const FVector_NetQuantize& HitLocation,
 		float HitTime
@@ -110,7 +110,7 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void ProjectileServerScoreRequest(
-		ABasePlayerCharacter* HitCharacter,
+		ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart,
 		const FVector_NetQuantize100& InitialVelocity,
 		float HitTime
@@ -118,7 +118,7 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void ShotgunServerScoreRequest(
-		const TArray<ABasePlayerCharacter*>& HitCharacters,
+		const TArray<ABlasterCharacter*>& HitCharacters,
 		const FVector_NetQuantize& TraceStart,
 		const TArray<FVector_NetQuantize>& HitLocations,
 		float HitTime
@@ -128,19 +128,19 @@ protected:
 	virtual void BeginPlay() override;
 	void SaveFramePackage(FFramePackage& Package);
 	FFramePackage InterpBetweenFrames(const FFramePackage& OlderFrame, const FFramePackage& YoungerFrame, float HitTime);
-	void CacheBoxPositions(ABasePlayerCharacter* HitCharacter, FFramePackage& OutFramePackage);
-	void MoveBoxes(ABasePlayerCharacter* HitCharacter, const FFramePackage& Package);
-	void ResetHitBoxes(ABasePlayerCharacter* HitCharacter, const FFramePackage& Package);
-	void EnableCharacterMeshCollision(ABasePlayerCharacter* HitCharacter, ECollisionEnabled::Type CollisionEnabled);
+	void CacheBoxPositions(ABlasterCharacter* HitCharacter, FFramePackage& OutFramePackage);
+	void MoveBoxes(ABlasterCharacter* HitCharacter, const FFramePackage& Package);
+	void ResetHitBoxes(ABlasterCharacter* HitCharacter, const FFramePackage& Package);
+	void EnableCharacterMeshCollision(ABlasterCharacter* HitCharacter, ECollisionEnabled::Type CollisionEnabled);
 	void SaveFramePackage();
-	FFramePackage GetFrameToCheck(ABasePlayerCharacter* HitCharacter, float HitTime);
+	FFramePackage GetFrameToCheck(ABlasterCharacter* HitCharacter, float HitTime);
 
 	/** 
 	* Hitscan
 	*/
 	FServerSideRewindResult ConfirmHit(
 		const FFramePackage& Package,
-		ABasePlayerCharacter* HitCharacter,
+		ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart,
 		const FVector_NetQuantize& HitLocation);
 
@@ -149,7 +149,7 @@ protected:
 	*/
 	FServerSideRewindResult ProjectileConfirmHit(
 		const FFramePackage& Package,
-		ABasePlayerCharacter* HitCharacter,
+		ABlasterCharacter* HitCharacter,
 		const FVector_NetQuantize& TraceStart,
 		const FVector_NetQuantize100& InitialVelocity,
 		float HitTime
@@ -168,7 +168,7 @@ protected:
 private:
 
 	UPROPERTY()
-		ABasePlayerCharacter* Character;
+		ABlasterCharacter* Character;
 
 	UPROPERTY()
 	class ABlasterPlayerController* Controller;

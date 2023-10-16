@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Blaster/Character/BasePlayerCharacter.h"
+#include "Blaster/Character/BlasterCharacter.h"
 #include "Net/UnrealNetwork.h"
 #include "Animation/AnimationAsset.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -80,30 +81,31 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(OtherActor);
+	ABasePlayerCharacter* OtherPlayerCharacter = Cast<ABasePlayerCharacter>(OtherActor);
 
-	if (BlasterCharacter)
+	if (OtherPlayerCharacter)
 	{
 		//if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
 		//if (BlasterCharacter->IsHoldingTheFlag()) return;
-		BlasterCharacter->SetOverlappingWeapon(this);
+		OtherPlayerCharacter->SetOverlappingWeapon(this);
 	}
 }
 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(OtherActor);
-	if (BlasterCharacter)
+	ABasePlayerCharacter* OtherPlayerCharacter = Cast<ABasePlayerCharacter>(OtherActor);
+
+	if (OtherPlayerCharacter)
 	{
 		//if (WeaponType == EWeaponType::EWT_Flag && BlasterCharacter->GetTeam() == Team) return;
 		//if (BlasterCharacter->IsHoldingTheFlag()) return;
-		BlasterCharacter->SetOverlappingWeapon(nullptr);
+		OtherPlayerCharacter->SetOverlappingWeapon(nullptr);
 	}
 }
 
 void AWeapon::SetHUDAmmo()
 {
-	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : BlasterOwnerCharacter;
+	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
 	if (BlasterOwnerCharacter)
 	{
 		BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(BlasterOwnerCharacter->Controller) : BlasterOwnerController;
@@ -148,10 +150,12 @@ void AWeapon::ClientAddAmmo_Implementation(int32 AmmoToAdd)
 {
 	if (HasAuthority()) return;
 	Ammo = FMath::Clamp(Ammo + AmmoToAdd, 0, MagCapacity);
-	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : BlasterOwnerCharacter;
-	if (BlasterOwnerCharacter && BlasterOwnerCharacter->GetCombat() && IsFull())
+	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
+	//if (BlasterOwnerCharacter && BlasterOwnerCharacter->GetCombat() && IsFull())
+	if (BlasterOwnerCharacter && IsFull())
 	{
-		BlasterOwnerCharacter->GetCombat()->JumpToShotgunEnd();
+		//BlasterOwnerCharacter->GetCombat()->JumpToShotgunEnd();
+		BlasterOwnerCharacter->JumpToShotgunEnd();
 	}
 	SetHUDAmmo();
 }
@@ -166,7 +170,7 @@ void AWeapon::OnRep_Owner()
 	}
 	else
 	{
-		BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(Owner) : BlasterOwnerCharacter;
+		BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(Owner) : BlasterOwnerCharacter;
 		if (BlasterOwnerCharacter && BlasterOwnerCharacter->GetEquippedWeapon() && BlasterOwnerCharacter->GetEquippedWeapon() == this)
 		{
 			SetHUDAmmo();
@@ -229,7 +233,7 @@ void AWeapon::OnEquipped()
 	}
 	EnableCustomDepth(false);
 
-	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : BlasterOwnerCharacter;
+	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
 	if (BlasterOwnerCharacter && bUseServerSideRewind)
 	{
 		BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(BlasterOwnerCharacter->Controller) : BlasterOwnerController;
@@ -257,7 +261,7 @@ void AWeapon::OnDropped()
 	WeaponMesh->MarkRenderStateDirty();
 	EnableCustomDepth(true);
 
-	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : BlasterOwnerCharacter;
+	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
 	if (BlasterOwnerCharacter)
 	{
 		BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(BlasterOwnerCharacter->Controller) : BlasterOwnerController;
@@ -286,7 +290,7 @@ void AWeapon::OnEquippedSecondary()
 		WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_TAN);
 		WeaponMesh->MarkRenderStateDirty();
 	}
-	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(GetOwner()) : BlasterOwnerCharacter;
+	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
 	if (BlasterOwnerCharacter)
 	{
 		BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(BlasterOwnerCharacter->Controller) : BlasterOwnerController;

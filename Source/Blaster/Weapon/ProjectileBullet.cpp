@@ -36,13 +36,13 @@ void AProjectileBullet::PostEditChangeProperty(FPropertyChangedEvent& Event)
 
 void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ABasePlayerCharacter* OwnerCharacter = Cast<ABasePlayerCharacter>(GetOwner());
+	ABlasterCharacter* OwnerCharacter = Cast<ABlasterCharacter>(GetOwner());
 	if (OwnerCharacter)
 	{
 		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
 		if (OwnerController)
 		{
-			ABasePlayerCharacter* HitCharacter = Cast<ABasePlayerCharacter>(OtherActor);
+			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
 

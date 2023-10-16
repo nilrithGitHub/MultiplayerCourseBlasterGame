@@ -26,14 +26,14 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 
 		// Maps hit character to number of times hit
 		// Change Type from BlasterCharacter to BasePlayerCharacter
-		TMap<ABasePlayerCharacter*, uint32> HitMap;
-		TMap<ABasePlayerCharacter*, uint32> HeadShotHitMap;
+		TMap<ABlasterCharacter*, uint32> HitMap;
+		TMap<ABlasterCharacter*, uint32> HeadShotHitMap;
 		for (FVector_NetQuantize HitTarget : HitTargets)
 		{
 			FHitResult FireHit;
 			WeaponTraceHit(Start, HitTarget, FireHit);
 
-			ABasePlayerCharacter* BlasterCharacter = Cast<ABasePlayerCharacter>(FireHit.GetActor());
+			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
 			if (BlasterCharacter)
 			{
 				const bool bHeadShot = FireHit.BoneName.ToString() == FString("head");
@@ -71,12 +71,10 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 				}
 			}
 		}
-		// Change Type from BlasterCharacter to BasePlayerCharacter
-		TArray<ABasePlayerCharacter*> HitCharacters;
+		TArray<ABlasterCharacter*> HitCharacters;
 
 		// Maps Character hit to total damage
-		// Change Type from BlasterCharacter to BasePlayerCharacter
-		TMap<ABasePlayerCharacter*, float> DamageMap;
+		TMap<ABlasterCharacter*, float> DamageMap;
 
 		// Calculate body shot damage by multiplying times hit x Damage - store in DamageMap
 		for (auto HitPair : HitMap)
@@ -127,7 +125,7 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 		if (!HasAuthority() && bUseServerSideRewind)
 		{
 			// Change from BlasterCharacter to BasePlayerCharacter
-			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABasePlayerCharacter>(OwnerPawn) : BlasterOwnerCharacter;
+			BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(OwnerPawn) : BlasterOwnerCharacter;
 			BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(InstigatorController) : BlasterOwnerController;
 			if (BlasterOwnerController && BlasterOwnerCharacter && BlasterOwnerCharacter->GetLagCompensation() && BlasterOwnerCharacter->IsLocallyControlled())
 			{

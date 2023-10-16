@@ -163,6 +163,11 @@ void ABlasterGameMode::PlayerEliminated(class ABasePlayerCharacter* ElimmedChara
 	}
 }
 
+void ABlasterGameMode::AIEliminated(ABaseAICharacter* ElimmedCharacter, AController* VictimController, AController* AttackerController)
+{
+
+}
+
 void ABlasterGameMode::RequestRespawn(ACharacter* ElimmedCharacter, AController* ElimmedController)
 {
 	if (ElimmedCharacter)

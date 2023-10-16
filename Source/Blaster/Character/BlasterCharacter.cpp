@@ -13,8 +13,8 @@
 #include "BlasterAnimInstance.h"
 #include "Blaster/Blaster.h"
 #include "Blaster/HUD/WorldCharacterOverlay.h"
-//#include "Blaster/PlayerController/BlasterPlayerController.h"
-//#include "Blaster/GameMode/BlasterGameMode.h"
+#include "Blaster/PlayerController/BlasterPlayerController.h"
+#include "Blaster/GameMode/BlasterGameMode.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
@@ -22,7 +22,7 @@
 //#include "Blaster/PlayerState/BlasterPlayerState.h"
 //#include "Blaster/Weapon/WeaponTypes.h"
 //#include "Components/BoxComponent.h"
-//#include "Blaster/BlasterComponents/LagCompensationComponent.h"
+#include "Blaster/BlasterComponents/LagCompensationComponent.h"
 //#include "NiagaraComponent.h"
 //#include "NiagaraFunctionLibrary.h"
 //#include "Blaster/GameState/BlasterGameState.h"
@@ -46,12 +46,10 @@ ABlasterCharacter::ABlasterCharacter()
 	WorldWidgetComp->SetupAttachment(RootComponent);
 	WorldWidgetComp->SetVisibility(false);
 
-	// Move to BasePlayerCharacter
 	/*Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
-	Combat->SetIsReplicated(true);
+	Combat->SetIsReplicated(true);*/
 
-	// Move to BasePlayerCharacter
-	LagCompensation = CreateDefaultSubobject<ULagCompensationComponent>(TEXT("LagCompensation"));*/
+	LagCompensation = CreateDefaultSubobject<ULagCompensationComponent>(TEXT("LagCompensation"));
 
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -66,7 +64,6 @@ ABlasterCharacter::ABlasterCharacter()
 
 	DissolveTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("DissolveTimelineComponent"));
 
-	// Move to BasePlayerCharacter
 	/*AttachedGrenade = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Attached Grenade"));
 	AttachedGrenade->SetupAttachment(GetMesh(), FName("GrenadeSocket"));
 	AttachedGrenade->SetCollisionEnabled(ECollisionEnabled::NoCollision);*/
@@ -526,6 +523,9 @@ void ABlasterCharacter::PostInitializeComponents()
 	//{
 	//	Combat->Character = this;
 	//}
+
+	Health = MaxHealth;
+
 	if (Buff)
 	{
 		Buff->Character = this;
@@ -535,15 +535,15 @@ void ABlasterCharacter::PostInitializeComponents()
 		);
 		Buff->SetInitialJumpVelocity(GetCharacterMovement()->JumpZVelocity);
 	}
-	// Move to BasePlayerCharacter
-	//if (LagCompensation)
-	//{
-	//	LagCompensation->Character = this;
-	//	if (Controller)
-	//	{
-	//		LagCompensation->Controller = Cast<ABlasterPlayerController>(Controller);
-	//	}
-	//}
+
+	if (LagCompensation)
+	{
+		LagCompensation->Character = this;
+		if (Controller)
+		{
+			LagCompensation->Controller = Cast<ABlasterPlayerController>(Controller);
+		}
+	}
 }
 
 // Move to BasePlayerCharacter
@@ -682,13 +682,9 @@ void ABlasterCharacter::PlayHitReactMontage()
 
 void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
 {
-	// Move to BasePlayerCharacter
-	/*BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
-	* 
-	* Move to BasePlayerCharacter
-	* 
+	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	if (bElimmed || BlasterGameMode == nullptr) return;
-	Damage = BlasterGameMode->CalculateDamage(InstigatorController, Controller, Damage);*/
+	Damage = BlasterGameMode->CalculateDamage(InstigatorController, Controller, Damage);
 
 	float DamageToHealth = Damage;
 	if (Shield > 0.f)
@@ -1106,17 +1102,15 @@ void ABlasterCharacter::UpdateHUDShield()
 	UWorldCharacterOverlay* WorldCharacterOverlay = Cast<UWorldCharacterOverlay>(WorldWidgetComp->GetWidget());
 	if (WorldCharacterOverlay)
 	{
-		// Move to BasePlayerCharacter
 		//BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
 		if (WorldCharacterOverlay->ShieldBar)
 		{
 			const float ShieldPercent = Shield / MaxShield;
 			WorldCharacterOverlay->ShieldBar->SetPercent(ShieldPercent);
-			// Move to BasePlayerCharacter
+
 			/*FString HealthText = FString::Printf(TEXT("%d/%d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
 			WorldCharacterOverlay->HealthText->SetText(FText::FromString(HealthText));*/
 		}
-		// Move to BasePlayerCharacter
 		/*else
 		{
 			bInitializeHealth = true;
@@ -1216,6 +1210,10 @@ void ABlasterCharacter::SetVisibleWorldWidget(bool bIsVisible)
 	{
 		WorldWidgetComp->SetVisibility(bIsVisible);
 	}
+}
+AWeapon* ABlasterCharacter::GetEquippedWeapon()
+{
+	return nullptr;
 }
 void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 {
@@ -1323,6 +1321,15 @@ void ABlasterCharacter::OnRep_IsVisibleWorldWidget(bool bIsVisible)
 //	if (Combat == nullptr) return;
 //	Combat->bHoldingTheFlag = bHolding;
 //}
+
+UBoxComponent* ABlasterCharacter::GetHeadBox()
+{
+	return HitCollisionBoxes[FName("head")];
+}
+
+void ABlasterCharacter::JumpToShotgunEnd()
+{
+}
 
 void ABlasterCharacter::OnCrosshairesDetected_Implementation(bool bIsDetected)
 {

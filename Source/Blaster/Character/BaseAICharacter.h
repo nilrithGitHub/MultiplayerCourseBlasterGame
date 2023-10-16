@@ -12,11 +12,9 @@ class BLASTER_API ABaseAICharacter : public ABlasterCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ABaseAICharacter();
 
 protected:
 	virtual void BeginPlay() override;
-
-
+	virtual void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser) override;
 };
