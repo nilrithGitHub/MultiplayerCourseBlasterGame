@@ -177,7 +177,6 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 
 void ABlasterCharacter::Elim(bool bPlayerLeftGame)
 {
-	// Move to BasePlayerCharacter
 	/*DropOrDestroyWeapons();*/
 	MulticastElim(bPlayerLeftGame);
 }
@@ -185,7 +184,6 @@ void ABlasterCharacter::Elim(bool bPlayerLeftGame)
 void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 {
 	bLeftGame = bPlayerLeftGame;
-	// Move to BasePlayerCharacter
 	/*if (BlasterPlayerController)
 	{
 		BlasterPlayerController->SetHUDWeaponAmmo(0);
@@ -206,7 +204,6 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 	bDisableGameplay = true;
 	GetCharacterMovement()->DisableMovement();
 
-	// Move to BasePlayerCharacter
 	//if (Combat)
 	//{
 	//	Combat->FireButtonPressed(false);
@@ -215,7 +212,6 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	// Move to BasePlayerCharacter
 	/*AttachedGrenade->SetCollisionEnabled(ECollisionEnabled::NoCollision);*/
 
 	// Spawn elim bot
@@ -238,21 +234,17 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 		);
 	}
 
-	// Move to BasePlayerCharacter
 	/*bool bHideSniperScope = IsLocallyControlled() &&
 		Combat &&
 		Combat->bAiming &&
 		Combat->EquippedWeapon &&
 		Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle;*/
 
-	// Move to BasePlayerCharacter
-
 	/*if (bHideSniperScope)
 	{
 		ShowSniperScopeWidget(false);
 	}
 
-	// Move to BasePlayerCharacter
 	if (CrownComponent)
 	{
 		CrownComponent->DestroyComponent();
@@ -268,10 +260,6 @@ void ABlasterCharacter::MulticastElim_Implementation(bool bPlayerLeftGame)
 
 void ABlasterCharacter::ElimTimerFinished()
 {
-	if (bLeftGame && IsLocallyControlled())
-	{
-		OnLeftGame.Broadcast();
-	}
 }
 
 // Move To BasePlayerCharacter
@@ -440,7 +428,6 @@ void ABlasterCharacter::BeginPlay()
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
-	// Move to BasePlayerCharacter
 	/*if (AttachedGrenade)
 	{
 		AttachedGrenade->SetVisibility(false);

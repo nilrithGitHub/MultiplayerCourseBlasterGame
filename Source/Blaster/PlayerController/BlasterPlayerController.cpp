@@ -16,11 +16,17 @@
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Components/Image.h"
 #include "Blaster/HUD/ReturnToMainMenu.h"
+#include "Blaster/Character/BaseAICharacter.h"
 #include "Blaster/BlasterTypes/Announcement.h"
 
 void ABlasterPlayerController::BroadcastElim(APlayerState* Attacker, APlayerState* Victim)
 {
 	ClientElimAnnouncement(Attacker, Victim);
+}
+
+void ABlasterPlayerController::BroadcastElim(APlayerState* Attacker, ABaseAICharacter* AIVictim)
+{
+	ClientAIElimAnnouncement(Attacker, AIVictim);
 }
 
 void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerState* Attacker, APlayerState* Victim)
@@ -55,6 +61,20 @@ void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerStat
 		}
 	}
 }
+
+void ABlasterPlayerController::ClientAIElimAnnouncement_Implementation(APlayerState* Attacker, ABaseAICharacter* AIVictim)
+{
+	APlayerState* Self = GetPlayerState<APlayerState>();
+	if (Attacker && AIVictim && Self)
+	{
+		BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+		if (BlasterHUD)
+		{
+			BlasterHUD->AddElimAnnouncement("You", "AI", "Delete");
+		}
+	}
+}
+
 
 void ABlasterPlayerController::BeginPlay()
 {

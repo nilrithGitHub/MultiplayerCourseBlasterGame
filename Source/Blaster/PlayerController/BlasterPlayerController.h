@@ -44,6 +44,7 @@ public:
 	FHighPingDelegate HighPingDelegate;
 
 	void BroadcastElim(APlayerState* Attacker, APlayerState* Victim);
+	void BroadcastElim(APlayerState* Attacker, class ABaseAICharacter* AIVictim);
 protected:
 	virtual void BeginPlay() override;
 	void SetHUDTime();
@@ -83,6 +84,9 @@ protected:
 
 	UFUNCTION(Client, Reliable)
 	void ClientElimAnnouncement(APlayerState* Attacker, APlayerState* Victim);
+
+	UFUNCTION(Client, Reliable)
+	void ClientAIElimAnnouncement(APlayerState* Attacker, ABaseAICharacter* AIVictim);
 
 	UPROPERTY(ReplicatedUsing = OnRep_ShowTeamScores)
 	bool bShowTeamScores = false;

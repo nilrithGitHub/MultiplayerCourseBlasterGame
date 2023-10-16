@@ -24,6 +24,7 @@ public:
 	virtual void PlayerEliminated(class ABasePlayerCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController);
 	virtual void AIEliminated(class ABaseAICharacter* ElimmedCharacter, class AController* VictimController, AController* AttackerController);
 	virtual void RequestRespawn(ACharacter* ElimmedCharacter, AController* ElimmedController);
+	virtual void RequestAIRespawn(ACharacter* ElimmedCharacter, AController* ElimmedController);
 	void PlayerLeftGame(class ABlasterPlayerState* PlayerLeaving);
 	virtual float CalculateDamage(AController* Attacker, AController* Victim, float BaseDamage);
 	UPROPERTY(EditDefaultsOnly)
@@ -46,6 +47,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	//TArray<TSubclassOf<class APickup>> PickupClasses;
 	TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<AActor>> EnemiesToSpawn;
 	float CountdownTime = 0.f;
 public:
 	FORCEINLINE float GetCountdownTime() const { return CountdownTime; }

@@ -226,10 +226,6 @@ void ABasePlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HasAuthority())
-	{
-		OnTakeAnyDamage.AddDynamic(this, &ABasePlayerCharacter::ReceiveDamage);
-	}
 	if (AttachedGrenade)
 	{
 		AttachedGrenade->SetVisibility(false);
@@ -508,6 +504,8 @@ void ABasePlayerCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, con
 
 	Super::ReceiveDamage(DamagedActor, Damage, DamageType, InstigatorController, DamageCauser);
 
+	if (bElimmed || BlasterGameMode == nullptr) return;
+
 	if (Health == 0.f)
 	{
 		if (BlasterGameMode)
@@ -631,12 +629,16 @@ void ABasePlayerCharacter::HideCameraIfCharacterClose()
 
 void ABasePlayerCharacter::ElimTimerFinished()
 {
+	Super::ElimTimerFinished();
 	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
 	if (BlasterGameMode && !bLeftGame)
 	{
 		BlasterGameMode->RequestRespawn(this, Controller);
 	}
-	Super::ElimTimerFinished();
+	if (bLeftGame && IsLocallyControlled())
+	{
+		OnLeftGame.Broadcast();
+	}
 }
 
 void ABasePlayerCharacter::ServerLeaveGame_Implementation()
