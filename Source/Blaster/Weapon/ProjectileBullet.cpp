@@ -42,6 +42,7 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
 		if (OwnerController)
 		{
+			// Calculate character damage on hit.
 			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
@@ -67,7 +68,7 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 					OwnerController->GetServerTime() - OwnerController->SingleTripTime
 				);
 			}
-
+			// Show health and Shild bar for local player only
 			if (HitCharacter && OwnerCharacter->IsLocallyControlled())
 			{
 				HitCharacter->SetVisibleWorldWidget(true);

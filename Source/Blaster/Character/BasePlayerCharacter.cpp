@@ -649,10 +649,14 @@ void ABasePlayerCharacter::ServerLeaveGame_Implementation()
 	{
 		BlasterGameMode->PlayerLeftGame(BlasterPlayerState);
 	}
+	// Set compose to plyer character
+	// Move controller to player manager
+	// Set play style to character
 }
 
 void ABasePlayerCharacter::PlayFireMontage(bool bAiming)
 {
+	// Character movement move to character class
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance)

@@ -14,6 +14,7 @@ UBuffComponent::UBuffComponent()
 
 void UBuffComponent::Heal(float HealAmount, float HealingTime)
 {
+	// Heal player by HealAmount with HealingTime for update (slowly updating)
 	bHealing = true;
 	HealingRate = HealAmount / HealingTime;
 	AmountToHeal += HealAmount;
@@ -28,6 +29,7 @@ void UBuffComponent::ReplenishShield(float ShieldAmount, float ReplenishTime)
 
 void UBuffComponent::HealRampUp(float DeltaTime)
 {
+	// Heal for climp with deltaTime
 	if (!bHealing || Character == nullptr || Character->IsElimmed()) return;
 
 	const float HealThisFrame = HealingRate * DeltaTime;
@@ -44,6 +46,7 @@ void UBuffComponent::HealRampUp(float DeltaTime)
 
 void UBuffComponent::ShieldRampUp(float DeltaTime)
 {
+	// Update Shield for overtime
 	if (!bReplenishingShield || Character == nullptr || Character->IsElimmed()) return;
 
 	const float ReplenishThisFrame = ShieldReplenishRate * DeltaTime;
@@ -65,17 +68,20 @@ void UBuffComponent::BeginPlay()
 
 void UBuffComponent::SetInitialSpeeds(float BaseSpeed, float CrouchSpeed)
 {
+	// init BaseSpeed and CrouchSpeed.
 	InitialBaseSpeed = BaseSpeed;
 	InitialCrouchSpeed = CrouchSpeed;
 }
 
 void UBuffComponent::SetInitialJumpVelocity(float Velocity)
 {
+	// int JumpVelocity by Velocity
 	InitialJumpVelocity = Velocity;
 }
 
 void UBuffComponent::BuffSpeed(float BuffBaseSpeed, float BuffCrouchSpeed, float BuffTime)
 {
+	// Buff Speed by BaseSpeed and CrouchSpeed with BuffTime for slowly Update.
 	if (Character == nullptr) return;
 
 	Character->GetWorldTimerManager().SetTimer(
@@ -95,6 +101,7 @@ void UBuffComponent::BuffSpeed(float BuffBaseSpeed, float BuffCrouchSpeed, float
 
 void UBuffComponent::ResetSpeeds()
 {
+	// Restore speed to normal
 	if (Character == nullptr || Character->GetCharacterMovement() == nullptr) return;
 
 	Character->GetCharacterMovement()->MaxWalkSpeed = InitialBaseSpeed;
@@ -104,6 +111,7 @@ void UBuffComponent::ResetSpeeds()
 
 void UBuffComponent::MulticastSpeedBuff_Implementation(float BaseSpeed, float CrouchSpeed)
 {
+	// Restor speed to normal with Multicast.
 	if (Character && Character->GetCharacterMovement())
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
@@ -113,6 +121,7 @@ void UBuffComponent::MulticastSpeedBuff_Implementation(float BaseSpeed, float Cr
 
 void UBuffComponent::BuffJump(float BuffJumpVelocity, float BuffTime)
 {
+	// Set buff jump base on Buff Time for slowly update
 	if (Character == nullptr) return;
 
 	Character->GetWorldTimerManager().SetTimer(
@@ -122,6 +131,7 @@ void UBuffComponent::BuffJump(float BuffJumpVelocity, float BuffTime)
 		BuffTime
 	);
 
+	// Move character if movement is not a null pointer
 	if (Character->GetCharacterMovement())
 	{
 		Character->GetCharacterMovement()->JumpZVelocity = BuffJumpVelocity;
@@ -131,6 +141,7 @@ void UBuffComponent::BuffJump(float BuffJumpVelocity, float BuffTime)
 
 void UBuffComponent::MulticastJumpBuff_Implementation(float JumpVelocity)
 {
+	// Set time to prove update
 	if (Character && Character->GetCharacterMovement())
 	{
 		Character->GetCharacterMovement()->JumpZVelocity = JumpVelocity;
@@ -139,6 +150,7 @@ void UBuffComponent::MulticastJumpBuff_Implementation(float JumpVelocity)
 
 void UBuffComponent::ResetJump()
 {
+	// set jump velocity if Movement Comp is not a null pointer
 	if (Character->GetCharacterMovement())
 	{
 		Character->GetCharacterMovement()->JumpZVelocity = InitialJumpVelocity;

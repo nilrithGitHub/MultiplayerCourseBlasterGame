@@ -81,6 +81,8 @@ APret04AICharacter::APret04AICharacter()
 			Box.Value->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 	}
+
+	// Move to Character
 }
 
 UBoxComponent* APret04AICharacter::GetHeadBox()
