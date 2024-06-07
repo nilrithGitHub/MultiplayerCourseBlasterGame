@@ -13,7 +13,7 @@ ABaseAICharacter::ABaseAICharacter()
 
 void ABaseAICharacter::BeginPlay()
 {
-	Super::BeginPlay();
+	Super::BeginPlay(); // set begin game play section on start
 }
 
 void ABaseAICharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
@@ -24,11 +24,11 @@ void ABaseAICharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const U
 
 	if (Health == 0.f)
 	{
-		if (BlasterGameMode)
+		if (BlasterGameMode)	// check if blaster game mode is not a null pointer.
 		{
 			//BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
 			//ABlasterPlayerController* AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
-			BlasterGameMode->AIEliminated(this, Controller, InstigatorController);
+			BlasterGameMode->AIEliminated(this, Controller, InstigatorController);	// ai eliminated in blaster game mode with param this, controller and instigator controller.
 		}
 	}
 }
@@ -37,10 +37,10 @@ void ABaseAICharacter::ElimTimerFinished()
 {
 	Super::ElimTimerFinished();
 
-	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode;
-	if (BlasterGameMode && !bLeftGame)
+	BlasterGameMode = BlasterGameMode == nullptr ? GetWorld()->GetAuthGameMode<ABlasterGameMode>() : BlasterGameMode; // Check if blaster game mode is null or not.
+	if (BlasterGameMode && !bLeftGame)	// check if blaster game mode is not null pointer and not left game already.
 	{
-		BlasterGameMode->RequestAIRespawn(this, Controller);
+		BlasterGameMode->RequestAIRespawn(this, Controller); // request ai respawn in blaster game mode by at param this and controller as second param
 	}
 	//if (bLeftGame && IsLocallyControlled())
 	//{

@@ -24,12 +24,12 @@
 
 ABasePlayerCharacter::ABasePlayerCharacter()
 {
-	head = CreateDefaultSubobject<UBoxComponent>(TEXT("head"));
-	head->SetupAttachment(GetMesh(), HeadName);
-	HitCollisionBoxes.Add(HeadName, head);
+	head = CreateDefaultSubobject<UBoxComponent>(TEXT("head")); // create default subobject type of u box component with text head and assign to head variable
+	head->SetupAttachment(GetMesh(), HeadName); // setup head attachment with param get mesh and head name
+	HitCollisionBoxes.Add(HeadName, head); // add head to hit collistion box with head name
 
-	pelvis = CreateDefaultSubobject<UBoxComponent>(TEXT("pelvis"));
-	pelvis->SetupAttachment(GetMesh(), PelvisName);
+	pelvis = CreateDefaultSubobject<UBoxComponent>(TEXT("pelvis")); // create default subobject type of u box component with text pelvis and assign to pelvis variable
+	pelvis->SetupAttachment(GetMesh(), PelvisName); 
 	HitCollisionBoxes.Add(PelvisName, pelvis);
 
 	spine_02 = CreateDefaultSubobject<UBoxComponent>(TEXT("spine_02"));
