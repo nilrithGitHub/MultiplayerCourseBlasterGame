@@ -39,7 +39,7 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	spine_03 = CreateDefaultSubobject<UBoxComponent>(TEXT("spine_03"));
 	spine_03->SetupAttachment(GetMesh(), Spine03Name);
 	HitCollisionBoxes.Add(Spine03Name, spine_03);
-
+	
 	upperarm_l = CreateDefaultSubobject<UBoxComponent>(TEXT("upperarm_l"));
 	upperarm_l->SetupAttachment(GetMesh(), UpperarmLName);
 	HitCollisionBoxes.Add(UpperarmLName, upperarm_l);

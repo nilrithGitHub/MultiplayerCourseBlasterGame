@@ -263,7 +263,7 @@ void ABlasterGameMode::RequestAIRespawn(ACharacter* ElimmedCharacter, AControlle
 		ElimmedCharacter->Reset();
 		ElimmedCharacter->Destroy();
 	}
-	if (ElimmedController)
+	/*if (ElimmedController)
 	{
 		TArray<AActor*> PlayerStarts;
 		UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), PlayerStarts);
@@ -275,7 +275,7 @@ void ABlasterGameMode::RequestAIRespawn(ACharacter* ElimmedCharacter, AControlle
 			int32 EnemySelection = FMath::RandRange(0, NumEnemies - 1);
 			AActor* Spawned = GetWorld()->SpawnActor<AActor>(EnemiesToSpawn[EnemySelection], FTransform(FRotator::ZeroRotator, PlayerStarts[LocationSelection]->GetActorLocation()));
 		}
-	}
+	}*/
 }
 
 void ABlasterGameMode::PlayerLeftGame(ABlasterPlayerState* PlayerLeaving)

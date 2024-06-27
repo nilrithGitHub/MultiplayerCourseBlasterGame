@@ -50,6 +50,7 @@ void UCombatComponent::ShotgunShellReload()
 
 void UCombatComponent::PickupAmmo(EWeaponType WeaponType, int32 AmmoAmount)
 {
+	// Check if carried ammo map 
 	if (CarriedAmmoMap.Contains(WeaponType))
 	{
 		CarriedAmmoMap[WeaponType] = FMath::Clamp(CarriedAmmoMap[WeaponType] + AmmoAmount, 0, MaxCarriedAmmo);

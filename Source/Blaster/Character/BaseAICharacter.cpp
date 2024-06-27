@@ -42,8 +42,4 @@ void ABaseAICharacter::ElimTimerFinished()
 	{
 		BlasterGameMode->RequestAIRespawn(this, Controller); // request ai respawn in blaster game mode by at param this and controller as second param
 	}
-	//if (bLeftGame && IsLocallyControlled())
-	//{
-	//	OnLeftGame.Broadcast();
-	//}
 }

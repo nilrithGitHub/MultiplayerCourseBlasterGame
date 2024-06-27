@@ -43,7 +43,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
 
-private:
+protected:
 	UPROPERTY(EditAnywhere)
 	//TArray<TSubclassOf<class APickup>> PickupClasses;
 	TArray<TSubclassOf<class AActor>> SpawnOnPlayerDeadClasses;

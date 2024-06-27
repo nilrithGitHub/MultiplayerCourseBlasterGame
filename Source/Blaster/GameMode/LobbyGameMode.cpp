@@ -60,6 +60,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	int32 NumberOfPlayers = GameState.Get()->PlayerArray.Num();
 
 	UGameInstance* GameInstance = GetGameInstance();
+
 	if (GameInstance)
 	{
 		UMultiplayerSessionsSubsystem* Subsystem = GameInstance->GetSubsystem<UMultiplayerSessionsSubsystem>();
