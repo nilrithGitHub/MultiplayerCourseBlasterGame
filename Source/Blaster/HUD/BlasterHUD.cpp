@@ -43,8 +43,6 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim, FString 
 				}
 			}
 
-
-
 			ElimMessages.Add(ElimAnnouncementWidget);
 
 			FTimerHandle ElimMsgTimer;
@@ -60,7 +58,7 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim, FString 
 	}
 }
 
-void ABlasterHUD::ElimAnnouncementTimerFinished(UElimAnnouncement* MsgToRemove)
+void ABlasterHUD::ElimAnnouncementTimerFinished (UElimAnnouncement* MsgToRemove)
 {
 	if (MsgToRemove)
 	{
@@ -150,3 +148,4 @@ void ABlasterHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, F
 		CrosshairColor
 	);
 }
+

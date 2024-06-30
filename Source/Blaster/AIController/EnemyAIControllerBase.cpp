@@ -72,12 +72,12 @@ void AEnemyAIControllerBase::OnPossess(APawn* InPawn)
 		if (EnemySpawnManager)
 		{
 			FVector TargetLocation = EnemySpawnManager->GetTargetLocation();
-			/*UBlackboardComponent* BlackboardComp = GetBlackboardComponent();
+			UBlackboardComponent* BlackboardComp = GetBlackboardComponent();
 			if (BlackboardComp)
 			{
 				BlackboardComp->SetValueAsVector("TargetLocation", TargetLocation);
-			}*/
-			GetBlackboardComponent()->SetValueAsVector("TargetLocation", TargetLocation);
+			}
+			//GetBlackboardComponent()->SetValueAsVector("TargetLocation", TargetLocation);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Pret04AICharacter.h"
+#include "Pret06AICharacter.h"
 #include "Components/BoxComponent.h"
 #include "Blaster/Blaster.h"
 
-APret04AICharacter::APret04AICharacter()
+APret06AICharacter::APret06AICharacter()
 {
 	head = CreateDefaultSubobject<UBoxComponent>(TEXT("head"));
 	head->SetupAttachment(GetMesh(), HeadName);
@@ -83,7 +83,7 @@ APret04AICharacter::APret04AICharacter()
 	}
 }
 
-UBoxComponent* APret04AICharacter::GetHeadBox()
+UBoxComponent* APret06AICharacter::GetHeadBox()
 {
 	return HitCollisionBoxes[HeadName];
 }

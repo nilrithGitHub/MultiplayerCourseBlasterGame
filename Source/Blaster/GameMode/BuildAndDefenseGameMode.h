@@ -6,32 +6,40 @@
 #include "BlasterGameMode.h"
 #include "BuildAndDefenseGameMode.generated.h"
 
-/**
- * 
- */
+class ABaseAICharacter;
+class ABasePlayerCharacter;
+class AEnemySpawnManager;
+class UCurveFloat;
+
 UCLASS()
 class BLASTER_API ABuildAndDefenseGameMode : public ABlasterGameMode
 {
 	GENERATED_BODY()
 public:
 	ABuildAndDefenseGameMode();
-private:
-	FTimerHandle SpawnTimerHandle;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
-	float WaveStartDelay;
+		float WaveStartDelay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
-	float SpawnInSec;
+		float SpawnInSec;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
-	TArray<TSubclassOf<class ABaseAICharacter>> EnemiesWaveToSpawn;
+		int32 MaxEnemyCount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
+		UCurveFloat* DifficultyCurve;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
+		TArray<TSubclassOf<ABaseAICharacter>> EnemiesWaveToSpawn;
 	UPROPERTY()
-	class AEnemySpawnManager* EnemySpawnManager;
+		AEnemySpawnManager* EnemySpawnManager;
+
+	FTimerHandle SpawnTimerHandle;
+	int32 EnemyAliveCount;
 public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual float CalculateDamage(AController* Attacker, AController* Victim, float BaseDamage) override;
-	virtual void PlayerEliminated(class ABasePlayerCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController) override;
-	virtual void AIEliminated(class ABaseAICharacter* ElimmedCharacter, class AController* VictimController, AController* AttackerController) override;
+	virtual void PlayerEliminated(ABasePlayerCharacter* ElimmedCharacter, ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController) override;
+	virtual void AIEliminated(ABaseAICharacter* ElimmedCharacter, AController* VictimController, AController* AttackerController) override;
 protected:
 	virtual void HandleMatchHasStarted() override;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

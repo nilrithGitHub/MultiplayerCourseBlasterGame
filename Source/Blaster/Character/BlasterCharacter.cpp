@@ -340,8 +340,8 @@ void ABlasterCharacter::PlayHitReactMontage()
 	if (AnimInstance && HitReactMontage && !AnimInstance->IsAnyMontagePlaying())
 	{
 		AnimInstance->Montage_Play(HitReactMontage);
-		FName SectionName("FromFront");
-		AnimInstance->Montage_JumpToSection(SectionName);
+		/*FName SectionName("FromFront");
+		AnimInstance->Montage_JumpToSection(SectionName);*/
 	}
 }
 

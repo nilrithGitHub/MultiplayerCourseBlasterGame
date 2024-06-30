@@ -14,6 +14,8 @@ ABuildAndDefenseGameMode::ABuildAndDefenseGameMode()
 {
 	SpawnInSec = 5.0f;
 	WaveStartDelay = 5.0f;
+	MaxEnemyCount = 15;
+	EnemyAliveCount = 0;
 }
 
 void ABuildAndDefenseGameMode::PostLogin(APlayerController* NewPlayer)

@@ -69,12 +69,12 @@ private:
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* thigh_l;
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-		FName ThighRName = "Hip_L";
+		FName ThighRName = "Hip_R";
 
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* thigh_r;
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-		FName ThighLName = "Hip_R";
+		FName ThighLName = "Hip_L";
 
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* calf_l;
