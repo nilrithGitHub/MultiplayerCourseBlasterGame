@@ -29,6 +29,13 @@
 //#include "Blaster/PlayerStart/TeamPlayerStart.h"
 #include "Components/ProgressBar.h"
 
+bool ABlasterCharacter::IsBoneHead(FString BoneName)
+{
+	return BoneName == FString("Head_M") ||
+		BoneName == FString("Head") ||
+		BoneName == FString("head");
+}
+
 ABlasterCharacter::ABlasterCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,9 +48,13 @@ ABlasterCharacter::ABlasterCharacter()
 
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(RootComponent);
+	OverheadWidget->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	OverheadWidget->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	
 	WorldWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorldWidget"));
 	WorldWidgetComp->SetupAttachment(RootComponent);
+	WorldWidgetComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WorldWidgetComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	WorldWidgetComp->SetVisibility(false);
 	WorldWidgetComp->SetIsReplicated(true);
 

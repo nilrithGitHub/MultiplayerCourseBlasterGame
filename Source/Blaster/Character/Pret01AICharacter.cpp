@@ -81,7 +81,6 @@ APret01AICharacter::APret01AICharacter()
 		}
 	}
 }
-
 UBoxComponent* APret01AICharacter::GetHeadBox()
 {
 	return HitCollisionBoxes[HeadName];

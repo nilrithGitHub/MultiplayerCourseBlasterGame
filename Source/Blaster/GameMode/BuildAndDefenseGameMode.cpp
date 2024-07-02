@@ -4,7 +4,7 @@
 #include "BuildAndDefenseGameMode.h"
 #include "Blaster/GameState/BlasterGameState.h"
 //#include "Blaster/Character/BasePlayerCharacter.h"
-//#include "Blaster/Character/BaseAICharacter.h"
+#include "Blaster/Character/BaseAICharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Blaster/BuildAndDefense/EnemySpawnManager.h"
@@ -73,6 +73,12 @@ void ABuildAndDefenseGameMode::PlayerEliminated(ABasePlayerCharacter* ElimmedCha
 void ABuildAndDefenseGameMode::AIEliminated(ABaseAICharacter* ElimmedCharacter, AController* VictimController, AController* AttackerController)
 {
 	Super::AIEliminated(ElimmedCharacter, VictimController, AttackerController);
+
+	EnemyAliveCount--;
+	if (EnemyAliveCount < 0)
+	{
+		EnemyAliveCount = 0;
+	}
 }
 
 void ABuildAndDefenseGameMode::HandleMatchHasStarted()
@@ -100,8 +106,20 @@ void ABuildAndDefenseGameMode::SpawnRandomEnemy()
 {
 	if (EnemySpawnManager)
 	{
-		int32 Selection = FMath::RandRange(0, EnemiesWaveToSpawn.Num() - 1);
-		AActor* Spawned = GetWorld()->SpawnActor<AActor>(EnemiesWaveToSpawn[Selection], EnemySpawnManager->GetRandomSpawnTransform());
+		if (DifficultyCurve)
+		{
+			MaxEnemyCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+		}
+
+		bool SpawnCondition = EnemyAliveCount <= MaxEnemyCount;
+		if (SpawnCondition)
+		{
+			int32 Selection = FMath::RandRange(0, EnemiesWaveToSpawn.Num() - 1);
+			ABaseAICharacter* Spawned = GetWorld()->SpawnActor<ABaseAICharacter>(EnemiesWaveToSpawn[Selection], EnemySpawnManager->GetRandomSpawnTransform());
+			//Spawned->AIControllerClass = EnemyControllerClass;
+
+			EnemyAliveCount++;
+		}
 	}
 }
 

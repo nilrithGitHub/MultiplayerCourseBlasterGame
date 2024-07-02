@@ -57,8 +57,13 @@ void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
+				const float DamageToCause = ABlasterCharacter::IsBoneHead(Hit.BoneName.ToString()) ? HeadShotDamage : Damage;
 
-				const float DamageToCause = Hit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
+
+				FString LogMessage = FString::Printf(TEXT("Hit: %s = %f"), *Hit.BoneName.ToString(), DamageToCause);
+				//FString LogMessage = FString::Printf(TEXT("HitComp: %s"), *HitComp->GetFName().ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
+
 
 				UGameplayStatics::ApplyDamage(OtherActor, DamageToCause, OwnerController, this, UDamageType::StaticClass());
 				Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);

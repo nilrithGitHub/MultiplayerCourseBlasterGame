@@ -11,6 +11,7 @@
 #include "Sound/SoundCue.h"
 #include "WeaponTypes.h"
 #include "Blaster/BlasterComponents/LagCompensationComponent.h"
+#include "Engine/Engine.h"
 
 void AHitScanWeapon::Fire(const FVector& HitTarget)
 {
@@ -40,7 +41,14 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			bool bCauseAuthDamage = !bUseServerSideRewind || OwnerPawn->IsLocallyControlled();
 			if (HasAuthority() && bCauseAuthDamage)
 			{
-				const float DamageToCause = FireHit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
+				//const float DamageToCause = FireHit.BoneName.ToString() == FString("Head_M") ? HeadShotDamage : Damage;
+				const float DamageToCause = ABlasterCharacter::IsBoneHead(FireHit.BoneName.ToString()) ? HeadShotDamage : Damage;
+
+
+				FString LogMessage = FString::Printf(TEXT("Hit: %s = %f"), *FireHit.BoneName.ToString(), DamageToCause);
+				//FString LogMessage = FString::Printf(TEXT("HitComp: %s"), *HitComp->GetFName().ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
+
 
 				UGameplayStatics::ApplyDamage(
 					BlasterCharacter,

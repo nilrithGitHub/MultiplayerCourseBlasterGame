@@ -5,11 +5,15 @@
 #include "Blaster/Blaster.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Components/BoxComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABaseAICharacter::ABaseAICharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+	bUseControllerRotationYaw = true;
 }
 
 void ABaseAICharacter::BeginPlay()

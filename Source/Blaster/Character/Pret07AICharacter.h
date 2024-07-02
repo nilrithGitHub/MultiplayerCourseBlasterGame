@@ -36,65 +36,65 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
 	FName Spine03Name = "Chest_M";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* upperarm_l;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName UpperarmLName = "Shoulder_L";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* upperarm_l;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName UpperarmLName = "Shoulder_L";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* upperarm_r;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName UpperarmRName = "Shoulder_R";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* upperarm_r;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName UpperarmRName = "Shoulder_R";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* lowerarm_l;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName LowerarmLName = "Elbow_L";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* lowerarm_l;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName LowerarmLName = "Elbow_L";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* lowerarm_r;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName LowerarmRName = "Elbow_R";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* lowerarm_r;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName LowerarmRName = "Elbow_R";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* hand_l;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName HandLName = "Wrist_L";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* hand_l;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName HandLName = "Wrist_L";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* hand_r;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName HandRName = "Wrist_R";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* hand_r;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName HandRName = "Wrist_R";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* thigh_l;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName ThighRName = "Hip_R";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* thigh_l;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName ThighRName = "Hip_R";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* thigh_r;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName ThighLName = "Hip_L";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* thigh_r;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName ThighLName = "Hip_L";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* calf_l;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName CalfLName = "Knee_L";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* calf_l;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName CalfLName = "Knee_L";
 
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* calf_r;
-	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName CalfRName = "Knee_R";
+	//UPROPERTY(EditAnywhere)
+	//UBoxComponent* calf_r;
+	//UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
+	//FName CalfRName = "Knee_R";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* foot_l;
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName FootLName = "Ankle_L";
+	FName FootLName = "L_Leg";
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* foot_r;
 	UPROPERTY(EditAnywhere, Category = "Hitbox Bone")
-	FName FootRName = "Ankle_R";
+	FName FootRName = "R_Leg";
 public:
 	virtual UBoxComponent* GetHeadBox() override;
 };

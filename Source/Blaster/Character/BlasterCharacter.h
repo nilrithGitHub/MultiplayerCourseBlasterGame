@@ -17,6 +17,10 @@ UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairsInterface
 {
 	GENERATED_BODY()
+public:
+	// Declare a static function
+	UFUNCTION(BlueprintCallable, Category = "YourCategory")
+	static bool IsBoneHead(FString BoneName);
 
 public:
 	ABlasterCharacter();
@@ -97,6 +101,7 @@ protected:
 	//void AimButtonPressed();
 	//void AimButtonReleased();
 	//void AimOffset(float DeltaTime);
+
 	void CalculateAO_Pitch();
 	virtual void SimProxiesTurn();
 	virtual void Jump() override;

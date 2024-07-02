@@ -10,6 +10,7 @@ class ABaseAICharacter;
 class ABasePlayerCharacter;
 class AEnemySpawnManager;
 class UCurveFloat;
+class AEnemyAIControllerBase;
 
 UCLASS()
 class BLASTER_API ABuildAndDefenseGameMode : public ABlasterGameMode
@@ -27,6 +28,8 @@ protected:
 		int32 MaxEnemyCount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
 		UCurveFloat* DifficultyCurve;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
+	TSubclassOf<AEnemyAIControllerBase> EnemyControllerClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Wave")
 		TArray<TSubclassOf<ABaseAICharacter>> EnemiesWaveToSpawn;
 	UPROPERTY()

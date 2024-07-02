@@ -523,13 +523,16 @@ void ULagCompensationComponent::SaveFramePackage(FFramePackage& Package)
 	{
 		Package.Time = GetWorld()->GetTimeSeconds();
 		Package.Character = Character;
-		for (auto& BoxPair : Character->HitCollisionBoxes)
+		if (Character->HitCollisionBoxes.Num() > 0)
 		{
-			FBoxInformation BoxInformation;
-			BoxInformation.Location = BoxPair.Value->GetComponentLocation();
-			BoxInformation.Rotation = BoxPair.Value->GetComponentRotation();
-			BoxInformation.BoxExtent = BoxPair.Value->GetScaledBoxExtent();
-			Package.HitBoxInfo.Add(BoxPair.Key, BoxInformation);
+			for (auto& BoxPair : Character->HitCollisionBoxes)
+			{
+				FBoxInformation BoxInformation;
+				BoxInformation.Location = BoxPair.Value->GetComponentLocation();
+				BoxInformation.Rotation = BoxPair.Value->GetComponentRotation();
+				BoxInformation.BoxExtent = BoxPair.Value->GetScaledBoxExtent();
+				Package.HitBoxInfo.Add(BoxPair.Key, BoxInformation);
+			}
 		}
 	}
 }

@@ -37,7 +37,7 @@ void AMeleeWeapon::Fire(const FVector& HitTarget)
 			bool bCauseAuthDamage = !bUseServerSideRewind || OwnerPawn->IsLocallyControlled();
 			if (HasAuthority() && bCauseAuthDamage)
 			{
-				const float DamageToCause = FireHit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
+				const float DamageToCause = ABlasterCharacter::IsBoneHead(FireHit.BoneName.ToString()) ? HeadShotDamage : Damage;
 
 				UGameplayStatics::ApplyDamage(
 					BlasterCharacter,
