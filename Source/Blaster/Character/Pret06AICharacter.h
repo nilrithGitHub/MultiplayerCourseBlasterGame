@@ -98,4 +98,5 @@ private:
 
 public:
 	virtual UBoxComponent* GetHeadBox() override;
+	virtual void SetAILevel(int Level) override;
 };

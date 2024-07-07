@@ -18,4 +18,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser) override;
 	virtual void ElimTimerFinished() override;
+public:
+	virtual void SetAILevel(int Level);
 };

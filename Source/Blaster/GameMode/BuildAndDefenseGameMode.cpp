@@ -12,10 +12,10 @@
 
 ABuildAndDefenseGameMode::ABuildAndDefenseGameMode()
 {
-	SpawnInSec = 5.0f;
+	WaveTickSec = 0.5f;
 	WaveStartDelay = 5.0f;
-	MaxEnemyCount = 15;
 	EnemyAliveCount = 0;
+	CurrentDifficulty = 1.0f;
 }
 
 void ABuildAndDefenseGameMode::PostLogin(APlayerController* NewPlayer)
@@ -106,21 +106,66 @@ void ABuildAndDefenseGameMode::SpawnRandomEnemy()
 {
 	if (EnemySpawnManager)
 	{
-		if (DifficultyCurve)
-		{
-			MaxEnemyCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
-		}
-
+		int MaxEnemyCount = GetMaxEnemyCount_Difficulty();
 		bool SpawnCondition = EnemyAliveCount <= MaxEnemyCount;
 		if (SpawnCondition)
 		{
-			int32 Selection = FMath::RandRange(0, EnemiesWaveToSpawn.Num() - 1);
-			ABaseAICharacter* Spawned = GetWorld()->SpawnActor<ABaseAICharacter>(EnemiesWaveToSpawn[Selection], EnemySpawnManager->GetRandomSpawnTransform());
-			//Spawned->AIControllerClass = EnemyControllerClass;
+			// Spawn Test Enemy
+			if (TestEnemyWaveToSpawn)
+			{
+				ABaseAICharacter* Spawned = GetWorld()->SpawnActor<ABaseAICharacter>(TestEnemyWaveToSpawn, EnemySpawnManager->GetRandomSpawnTransform());
+			}
+			else
+			{
+				int32 AILevel = GetAILevel_Difficulty();
+				int32 Selection = FMath::RandRange(0, EnemiesWaveToSpawn.Num() - 1);
+
+				ABaseAICharacter* Spawned = GetWorld()->SpawnActor<ABaseAICharacter>(EnemiesWaveToSpawn[Selection], EnemySpawnManager->GetRandomSpawnTransform());
+				//Spawned->AIControllerClass = EnemyControllerClass;
+				if (Spawned)
+				{
+					Spawned->SetAILevel(AILevel);
+				}
+				else
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Enemy is Null");
+				}
+			}
 
 			EnemyAliveCount++;
 		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Enemy is Max. not spawn anymore");
+		}
 	}
+}
+
+void ABuildAndDefenseGameMode::WaveTick()
+{
+	if (DifficultyCurve)
+	{
+		int32 LDifficulty = DifficultyCurve->GetFloatValue (GetWorld()->TimeSeconds);
+		int32 Int_CurrentDifficulty = CurrentDifficulty;
+		if (LDifficulty > Int_CurrentDifficulty)
+		{
+			UpdateCurrentDifficulty(LDifficulty);
+		}
+	}
+}
+
+void ABuildAndDefenseGameMode::UpdateCurrentDifficulty(float DifficultyToUpdate)
+{
+	// Here is where the current difficulty updated.
+	float OldDifficulty = CurrentDifficulty;
+	CurrentDifficulty = DifficultyToUpdate;
+
+	OnWaveDifficultyUpdated.Broadcast(CurrentDifficulty, OldDifficulty);
+
+	float SpawnTick = GetSpawnTick_Difficulty();
+
+	GetWorld()->GetTimerManager().ClearTimer(SpawnEnemyTimerHandle);
+	GetWorld()->GetTimerManager().SetTimer(SpawnEnemyTimerHandle, this, &ABuildAndDefenseGameMode::SpawnRandomEnemy, SpawnTick, true, 0.25f);
 }
 
 void ABuildAndDefenseGameMode::StartEnemyWave_Implementation()
@@ -138,7 +183,10 @@ void ABuildAndDefenseGameMode::StartEnemyWave_Implementation()
 			EnemySpawnManager = Cast<AEnemySpawnManager> (EnemySpawnManagerActor); // cast to AEnemySpawnManager
 			if (EnemySpawnManager)
 			{
-				GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &ABuildAndDefenseGameMode::SpawnRandomEnemy, SpawnInSec, true, WaveStartDelay);
+				GetWorld()->GetTimerManager().ClearTimer(WaveTimerHandle);
+				GetWorld()->GetTimerManager().SetTimer(WaveTimerHandle, this, &ABuildAndDefenseGameMode::WaveTick, WaveTickSec, true, WaveStartDelay);
+
+				UpdateCurrentDifficulty(1);
 			}
 		}
 	}

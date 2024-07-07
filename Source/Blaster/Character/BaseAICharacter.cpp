@@ -48,3 +48,8 @@ void ABaseAICharacter::ElimTimerFinished()
 		BlasterGameMode->RequestAIRespawn(this, Controller);
 	}
 }
+
+void ABaseAICharacter::SetAILevel(int Level)
+{
+	
+}

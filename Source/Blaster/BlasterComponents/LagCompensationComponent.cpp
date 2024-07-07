@@ -58,8 +58,11 @@ FServerSideRewindResult ULagCompensationComponent::ConfirmHit(const FFramePackag
 
 	// Enable collision for the head first
 	UBoxComponent* HeadBox = HitCharacter->GetHeadBox();
-	HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+	if (HeadBox)
+	{
+		HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+	}
 
 	FHitResult ConfirmHitResult;
 	const FVector TraceEnd = TraceStart + (HitLocation - TraceStart) * 1.25f;
@@ -117,8 +120,11 @@ FServerSideRewindResult ULagCompensationComponent::ProjectileConfirmHit(const FF
 
 	// Enable collision for the head first
 	UBoxComponent* HeadBox = HitCharacter->GetHeadBox();
-	HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+	if (HeadBox)
+	{
+		HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+	}
 
 	FPredictProjectilePathParams PathParams;
 	PathParams.bTraceWithCollision = true;
@@ -186,8 +192,11 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunConfirmHit(cons
 	{
 		// Enable collision for the head first
 		UBoxComponent* HeadBox = Frame.Character->GetHeadBox();
-		HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+		if (HeadBox)
+		{
+			HeadBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			HeadBox->SetCollisionResponseToChannel(ECC_HitBox, ECollisionResponse::ECR_Block);
+		}
 	}
 
 	UWorld* World = GetWorld();
@@ -231,7 +240,10 @@ FShotgunServerSideRewindResult ULagCompensationComponent::ShotgunConfirmHit(cons
 			}
 		}
 		UBoxComponent* HeadBox = Frame.Character->GetHeadBox();
-		HeadBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (HeadBox)
+		{
+			HeadBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
 	}
 
 	// check for body shots
@@ -527,11 +539,15 @@ void ULagCompensationComponent::SaveFramePackage(FFramePackage& Package)
 		{
 			for (auto& BoxPair : Character->HitCollisionBoxes)
 			{
-				FBoxInformation BoxInformation;
-				BoxInformation.Location = BoxPair.Value->GetComponentLocation();
-				BoxInformation.Rotation = BoxPair.Value->GetComponentRotation();
-				BoxInformation.BoxExtent = BoxPair.Value->GetScaledBoxExtent();
-				Package.HitBoxInfo.Add(BoxPair.Key, BoxInformation);
+				if (BoxPair.Value) // Check for Head hit box if it not a null pointer.
+				{
+					FBoxInformation BoxInformation; // create local boxInformation
+					BoxInformation.Location = BoxPair.Value->GetComponentLocation(); // save head box location
+					BoxInformation.Rotation = BoxPair.Value->GetComponentRotation(); // save head box rotation
+					BoxInformation.BoxExtent = BoxPair.Value->GetScaledBoxExtent(); // save head box extent (size)
+					
+					Package.HitBoxInfo.Add(BoxPair.Key, BoxInformation); // add hitbox info to package with key and inforamtion
+				}
 			}
 		}
 	}

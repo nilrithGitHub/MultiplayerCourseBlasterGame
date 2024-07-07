@@ -6,9 +6,6 @@
 #include "BaseAICharacter.h"
 #include "Pret07AICharacter.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class BLASTER_API APret07AICharacter : public ABaseAICharacter
 {
@@ -97,4 +94,5 @@ private:
 	FName FootRName = "R_Leg";
 public:
 	virtual UBoxComponent* GetHeadBox() override;
+	virtual void SetAILevel(int Level) override;
 };

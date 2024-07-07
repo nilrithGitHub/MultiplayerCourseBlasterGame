@@ -3,6 +3,7 @@
 
 #include "Pret04AICharacter.h"
 #include "Components/BoxComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Blaster/Blaster.h"
 
 APret04AICharacter::APret04AICharacter()
@@ -86,4 +87,28 @@ APret04AICharacter::APret04AICharacter()
 UBoxComponent* APret04AICharacter::GetHeadBox()
 {
 	return HitCollisionBoxes[HeadName];
+}
+
+void APret04AICharacter::SetAILevel(int Level)
+{
+	Super::SetAILevel(Level);
+
+	float MaxSpeed = 150;
+
+	switch (Level)
+	{
+	case 1: MaxSpeed = 100; break;
+	case 2: MaxSpeed = 125; break;
+	case 3: MaxSpeed = 150; break; // default speed
+	case 4: MaxSpeed = 175; break;
+	case 5: MaxSpeed = 200; break;
+	case 6: MaxSpeed = 225; break;
+	case 7: MaxSpeed = 250; break;
+	case 8: MaxSpeed = 275; break;
+	case 9: MaxSpeed = 300; break;
+	default:
+		break;
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
 }
