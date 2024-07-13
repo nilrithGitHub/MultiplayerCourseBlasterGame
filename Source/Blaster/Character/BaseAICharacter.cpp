@@ -51,5 +51,14 @@ void ABaseAICharacter::ElimTimerFinished()
 
 void ABaseAICharacter::SetAILevel(int Level)
 {
+
+}
+
+void ABaseAICharacter::SetAISpawnData(FAISpawnData SpawnData)
+{
+	MaxHealth = SpawnData.MaxHealh;
+	MaxShield = SpawnData.MaxShield;
+	GetCharacterMovement()->MaxWalkSpeed = SpawnData.MaxWalkSpeed;
+	GetCharacterMovement()->MaxAcceleration = SpawnData.
 	
 }

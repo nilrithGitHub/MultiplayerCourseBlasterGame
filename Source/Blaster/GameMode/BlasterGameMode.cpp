@@ -164,7 +164,7 @@ void ABlasterGameMode::PlayerEliminated(class ABasePlayerCharacter* ElimmedChara
 	}
 }
 
-void ABlasterGameMode::AIEliminated(ABaseAICharacter* ElimmedCharacter, AController* VictimController, AController* AttackerController)
+void ABlasterGameMode::AIEliminated (ABaseAICharacter* ElimmedCharacter, AController* VictimController, AController* AttackerController)
 {
 	if (AttackerController == nullptr || AttackerController->PlayerState == nullptr) return;
 	if (VictimController == nullptr) return;
@@ -204,6 +204,7 @@ void ABlasterGameMode::AIEliminated(ABaseAICharacter* ElimmedCharacter, AControl
 			}
 		}
 	}
+
 	/*if (VictimPlayerState)
 	{
 		VictimPlayerState->AddToDefeats(1);
@@ -247,7 +248,6 @@ void ABlasterGameMode::RequestRespawn(ACharacter* ElimmedCharacter, AController*
 	}
 	if (ElimmedController)
 	{
-		
 		TArray<AActor*> PlayerStarts;
 		UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), PlayerStarts);
 		int32 Selection = FMath::RandRange(0, PlayerStarts.Num() - 1);

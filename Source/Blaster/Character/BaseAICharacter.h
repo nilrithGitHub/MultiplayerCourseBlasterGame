@@ -6,6 +6,21 @@
 #include "BlasterCharacter.h"
 #include "BaseAICharacter.generated.h"
 
+
+USTRUCT (BlueprintType)
+struct FAISpawnData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnData")
+	float MaxWalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnData")
+	float MaxHealh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnData")
+	float MaxShield;
+};
+
+
 UCLASS()
 class BLASTER_API ABaseAICharacter : public ABlasterCharacter
 {
@@ -20,4 +35,5 @@ protected:
 	virtual void ElimTimerFinished() override;
 public:
 	virtual void SetAILevel(int Level);
+	virtual void SetAISpawnData(FAISpawnData SpawnData);
 };

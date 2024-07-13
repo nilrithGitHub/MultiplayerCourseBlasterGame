@@ -98,7 +98,7 @@ void ABuildAndDefenseGameMode::HandleMatchHasStarted()
 			}
 		}
 	}
-
+	// Set Start Enemy Wave;
 	StartEnemyWave();
 }
 
@@ -129,6 +129,7 @@ void ABuildAndDefenseGameMode::SpawnRandomEnemy()
 				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Enemy is Null");
+					return;
 				}
 			}
 
@@ -186,7 +187,10 @@ void ABuildAndDefenseGameMode::StartEnemyWave_Implementation()
 				GetWorld()->GetTimerManager().ClearTimer(WaveTimerHandle);
 				GetWorld()->GetTimerManager().SetTimer(WaveTimerHandle, this, &ABuildAndDefenseGameMode::WaveTick, WaveTickSec, true, WaveStartDelay);
 
+				// Update Current Difficulty To one on start
 				UpdateCurrentDifficulty(1);
+				
+				
 			}
 		}
 	}
