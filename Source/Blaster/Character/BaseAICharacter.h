@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "BlasterCharacter.h"
+#include "Engine/DataTable.h"
 #include "BaseAICharacter.generated.h"
 
-
-USTRUCT (BlueprintType)
-struct FAISpawnData
+USTRUCT (Blueprintable)
+struct FAISpawnData : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -20,7 +20,6 @@ struct FAISpawnData
 	float MaxShield;
 };
 
-
 UCLASS()
 class BLASTER_API ABaseAICharacter : public ABlasterCharacter
 {
@@ -29,11 +28,17 @@ class BLASTER_API ABaseAICharacter : public ABlasterCharacter
 public:
 	ABaseAICharacter();
 
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SpawnData", meta = (AllowPrivateAccess = true))
+	class UDataTable* DT_AISpawn;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser) override;
 	virtual void ElimTimerFinished() override;
+
 public:
-	virtual void SetAILevel(int Level);
-	virtual void SetAISpawnData(FAISpawnData SpawnData);
+	virtual void SetAILevel (int Level);
+	virtual void SetAISpawnData (FAISpawnData SpawnData);
+	FAISpawnData GetSpawnDataFromTable(FString RowName);
 };

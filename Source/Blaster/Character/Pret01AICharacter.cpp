@@ -91,7 +91,6 @@ void APret01AICharacter::SetAILevel(int Level)
 {
 	Super::SetAILevel(Level);
 	
-	// Max Speed = 300;
 	float MaxSpeed = 300;
 	
 	switch (Level)

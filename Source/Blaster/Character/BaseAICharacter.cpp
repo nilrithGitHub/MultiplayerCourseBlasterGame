@@ -6,6 +6,7 @@
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetStringLibrary.h"
 
 ABaseAICharacter::ABaseAICharacter()
 {
@@ -51,7 +52,14 @@ void ABaseAICharacter::ElimTimerFinished()
 
 void ABaseAICharacter::SetAILevel(int Level)
 {
+	FString Row = UKismetStringLibrary::Conv_Int64ToString(Level);
+	FAISpawnData Data = GetSpawnDataFromTable(Row);
 
+	GetCharacterMovement()->MaxWalkSpeed = Data.MaxWalkSpeed;
+	MaxHealth = Data.MaxHealh;
+	MaxShield = Data.MaxShield;
+	Health = MaxHealth;
+	Shield = MaxShield;
 }
 
 void ABaseAICharacter::SetAISpawnData(FAISpawnData SpawnData)
@@ -59,6 +67,27 @@ void ABaseAICharacter::SetAISpawnData(FAISpawnData SpawnData)
 	MaxHealth = SpawnData.MaxHealh;
 	MaxShield = SpawnData.MaxShield;
 	GetCharacterMovement()->MaxWalkSpeed = SpawnData.MaxWalkSpeed;
-	GetCharacterMovement()->MaxAcceleration = SpawnData.
-	
+}
+
+FAISpawnData ABaseAICharacter::GetSpawnDataFromTable (FString RowName)
+{
+	float MaxWalkSpeed = 0;
+	float MaxHealth = 1;
+	float MaxShield = 1;
+
+	FAISpawnData* Row = DT_AISpawn->FindRow<FAISpawnData>(FName(RowName), TEXT(""));
+
+	if (Row)
+	{
+		MaxWalkSpeed = Row->MaxWalkSpeed;
+		MaxHealth = Row->MaxHealh;
+		MaxShield = Row->MaxShield;
+
+		FAISpawnData data = FAISpawnData();
+		data.MaxHealh = MaxWalkSpeed;
+		data.MaxHealh = MaxHealth;
+		data.MaxShield = MaxShield;
+	}
+
+	return FAISpawnData();
 }
