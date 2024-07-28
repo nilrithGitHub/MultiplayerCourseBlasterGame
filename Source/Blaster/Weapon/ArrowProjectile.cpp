@@ -60,9 +60,9 @@ void AArrowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 				const float DamageToCause = ABlasterCharacter::IsBoneHead(Hit.BoneName.ToString()) ? HeadShotDamage : Damage;
 
 
-				FString LogMessage = FString::Printf(TEXT("Hit: %s = %f"), *Hit.BoneName.ToString(), DamageToCause);
-				//FString LogMessage = FString::Printf(TEXT("HitComp: %s"), *HitComp->GetFName().ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
+				//FString LogMessage = FString::Printf(TEXT("Hit: %s = %f"), *Hit.BoneName.ToString(), DamageToCause);
+				////FString LogMessage = FString::Printf(TEXT("HitComp: %s"), *HitComp->GetFName().ToString());
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
 
 
 				UGameplayStatics::ApplyDamage(OtherActor, DamageToCause, OwnerController, this, UDamageType::StaticClass());

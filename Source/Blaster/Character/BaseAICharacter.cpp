@@ -71,22 +71,45 @@ void ABaseAICharacter::SetAISpawnData(FAISpawnData SpawnData)
 
 FAISpawnData ABaseAICharacter::GetSpawnDataFromTable (FString RowName)
 {
-	float MaxWalkSpeed = 0;
-	float MaxHealth = 1;
-	float MaxShield = 1;
+	float LMaxWalkSpeed = 0;
+	float LMaxHealth = 1;
+	float LMaxShield = 1;
 
 	FAISpawnData* Row = DT_AISpawn->FindRow<FAISpawnData>(FName(RowName), TEXT(""));
 
 	if (Row)
 	{
-		MaxWalkSpeed = Row->MaxWalkSpeed;
-		MaxHealth = Row->MaxHealh;
-		MaxShield = Row->MaxShield;
+		LMaxWalkSpeed = Row->MaxWalkSpeed;
+		LMaxHealth = Row->MaxHealh;
+		LMaxShield = Row->MaxShield;
+
+		FString LogMessage = FString::Printf(TEXT("MaxWalkSpeed: %f, MaxHealh: %f, MaxShield: %f"), LMaxWalkSpeed, LMaxHealth, LMaxShield);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
 
 		FAISpawnData data = FAISpawnData();
-		data.MaxHealh = MaxWalkSpeed;
-		data.MaxHealh = MaxHealth;
-		data.MaxShield = MaxShield;
+		data.MaxHealh = LMaxWalkSpeed;
+		data.MaxHealh = LMaxHealth;
+		data.MaxShield = LMaxShield;
+		return data;
+	}
+	else
+	{
+		Row = DT_AISpawn->FindRow<FAISpawnData>(FName("max"), TEXT(""));
+		if (Row)
+		{
+			LMaxWalkSpeed = Row->MaxWalkSpeed;
+			LMaxHealth = Row->MaxHealh;
+			LMaxShield = Row->MaxShield;
+
+			FString LogMessage = FString::Printf(TEXT("Max Level"), LMaxWalkSpeed, LMaxHealth, LMaxShield);
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (LogMessage));
+
+			FAISpawnData data = FAISpawnData();
+			data.MaxHealh = LMaxWalkSpeed;
+			data.MaxHealh = LMaxHealth;
+			data.MaxShield = LMaxShield;
+			return data;
+		}
 	}
 
 	return FAISpawnData();
