@@ -177,9 +177,9 @@ void ABuildAndDefenseGameMode::StartEnemyWave_Implementation()
 		AActor* EnemySpawnManagerActor = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemySpawnManager::StaticClass()); 
 		if (EnemySpawnManagerActor)
 		{
-			FVector SpawnLocation;
+			/*FVector SpawnLocation = FVector(0, 0, 0);
 			FRotator SpawnRotator = FRotator::ZeroRotator;
-			FVector SpawnScale = FVector(1, 1, 1);
+			FVector SpawnScale = FVector(1, 1, 1);*/
 
 			EnemySpawnManager = Cast<AEnemySpawnManager> (EnemySpawnManagerActor); // cast to AEnemySpawnManager
 			if (EnemySpawnManager)
@@ -189,8 +189,6 @@ void ABuildAndDefenseGameMode::StartEnemyWave_Implementation()
 
 				// Update Current Difficulty To one on start
 				UpdateCurrentDifficulty(1);
-				
-				
 			}
 		}
 	}

@@ -9,6 +9,7 @@
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 #include "RocketMovementComponent.h"
+#include "NiagaraSystemInstance.h"
 
 AProjectileRocket::AProjectileRocket()
 {

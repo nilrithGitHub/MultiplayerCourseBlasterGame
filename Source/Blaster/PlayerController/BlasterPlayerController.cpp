@@ -168,10 +168,16 @@ void ABlasterPlayerController::CheckPing(float DeltaTime)
 	HighPingRunningTime += DeltaTime;
 	if (HighPingRunningTime > CheckPingFrequency)
 	{
-		PlayerState = PlayerState == nullptr ? GetPlayerState<APlayerState>() : PlayerState;
+		//PlayerState = PlayerState == nullptr ? GetPlayerState<APlayerState>() : PlayerState;
+		if (PlayerState == nullptr)
+		{
+			PlayerState = GetPlayerState<APlayerState>();
+		}
+		
 		if (PlayerState)
 		{
-			if (PlayerState->GetPing() * 4 > HighPingThreshold) // ping is compressed; it's actually ping / 4
+			if (PlayerState->GetPingInMilliseconds () * 4 > HighPingThreshold)
+			//if (PlayerState->GetPing() * 4 > HighPingThreshold) // ping is compressed; it's actually ping / 4
 			{
 				HighPingWarning();
 				PingAnimationRunningTime = 0.f;
