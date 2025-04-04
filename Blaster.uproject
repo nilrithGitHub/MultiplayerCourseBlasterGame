@@ -17,7 +17,7 @@
     },
     {
       "Name": "Bridge",
-      "Enabled": true
+      "Enabled": false
     },
     {
       "Name": "WebBrowserWidget",
